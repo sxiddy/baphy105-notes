@@ -1,0 +1,13 @@
+{
+ "modules": [
+  {
+   "id": "m1",
+   "num": "01",
+   "title": "Wave-Particle Duality",
+   "free": true,
+   "topics": 7,
+   "questions": 0
+  }
+ ],
+ "papers": []
+}

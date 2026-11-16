@@ -120,7 +120,7 @@ for (const f of fs.readdirSync(path.join(ROOT, 'viz-paid')).filter((f) => /^viz-
 }
 
 // Modules (names, chunks) come from content/modules.json, the one place to add a module. Every module's notes are free.
-fs.writeFileSync(path.join(APP, 'js', 'modules.js'), `window.MODULES_CONFIG = ${JSON.stringify(MODULES.map(({ id, num, title, chunks, syllabus }) => ({ id, num, title, free: true, chunks, syllabus })))};\n`);
+fs.writeFileSync(path.join(APP, 'js', 'modules.js'), `window.MODULES_CONFIG = ${JSON.stringify(MODULES.map(({ id, num, title, chunks, syllabus, syllabusRows }) => ({ id, num, title, free: true, chunks, syllabus, syllabusRows: syllabusRows || [] })))};\n`);
 fs.writeFileSync(path.join(ROOT, 'api', '_access.json'), JSON.stringify({ freeFiles, proFiles, freeModules: MODULES.map((m) => m.id), paidModules: MODULES.map(({ id, num, title }) => ({ id, num, title })), fileModule }, null, 1) + '\n');
 // file lists the gate loads (names only, no content): free files for everyone, Pro files after payment
 fs.writeFileSync(path.join(APP, 'js', 'data-files.js'), `window.FREE_FILES = ${JSON.stringify(freeFiles)};\nwindow.PRO_FILES = ${JSON.stringify(proFiles)};\nwindow.FILE_MODULE = ${JSON.stringify(fileModule)};\n`);

@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "id": "m1",
+    "num": "01",
+    "title": "Wave-Particle Duality",
+    "chunks": ["1a"],
+    "questions": [],
+    "syllabus": "Dual nature of radiation, Young's double slit experiment, blackbody radiation, Planck's hypothesis, de Broglie hypothesis, wavefunction, Stern-Gerlach experiment.",
+    "free": true,
+    "syllabusRows": [
+      { "n": "1", "text": "Dual nature of radiation", "topics": ["m1-dual-nature"] },
+      { "n": "2", "text": "Young's double slit experiment", "topics": ["m1-ydse"] },
+      { "n": "3", "text": "Blackbody radiation", "topics": ["m1-blackbody"] },
+      { "n": "4", "text": "Planck's hypothesis", "topics": ["m1-planck"] },
+      { "n": "5", "text": "de Broglie hypothesis", "topics": ["m1-de-broglie"] },
+      { "n": "6", "text": "Wavefunction", "topics": ["m1-wavefunction"] },
+      { "n": "7–8", "text": "Stern-Gerlach experiment", "topics": ["m1-stern-gerlach"] }
+    ]
+  }
+]

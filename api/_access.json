@@ -1,0 +1,23 @@
+{
+ "freeFiles": [
+  "figs.js",
+  "chunk-1a.js"
+ ],
+ "proFiles": [
+  "pro-1a.js"
+ ],
+ "freeModules": [
+  "m1"
+ ],
+ "paidModules": [
+  {
+   "id": "m1",
+   "num": "01",
+   "title": "Wave-Particle Duality"
+  }
+ ],
+ "fileModule": {
+  "chunk-1a.js": "m1",
+  "pro-1a.js": "m1"
+ }
+}

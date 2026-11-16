@@ -123,6 +123,13 @@ window.__startApp = function () {
     });
     (ch.figures || []).forEach((f) => { FIGS[f.id] = f; });
   });
+  // VTOP syllabus rows (owner, 16-11-2026): each module lists VTOP's "Course Syllabus Modules" rows in VTOP's order,
+  // with the topics that teach each row under it. ROW maps a topic id to its row; topics follow row order.
+  const ROW = {};
+  MODULES.forEach((m) => (m.syllabusRows || []).forEach((r) => r.topics.forEach((id) => { ROW[id] = r; })));
+  MODULES.forEach((m) => { if (!(m.syllabusRows || []).length) return; const pos = {}; m.syllabusRows.forEach((r, i) => r.topics.forEach((id, j) => { pos[id] = i * 100 + j; })); m.topics.sort((a, b) => (pos[a.id] ?? 1e6) - (pos[b.id] ?? 1e6)); });
+  TOPICS.length = 0; MODULES.forEach((m) => m.topics.forEach((t) => { t.idx = TOPICS.length; TOPICS.push(t); }));
+  const rowHead = (m, t, i, cls) => { const r = ROW[t.id]; return r && (i === 0 || ROW[m.topics[i - 1].id] !== r) ? `<div class="${cls}"><span class="row-n">${esc(r.n)}</span>${esc(r.text)}</div>` : ''; };
   // Free/Pro (owner, 30-09-2026): the notes are free; Pro users also get the Pro companions (every flashcard, the
   // formulas and one-liners of each topic, the answers to every question, the interactive widgets).
   const PRO = !!window.PRO;
@@ -365,7 +372,7 @@ window.__startApp = function () {
               <span class="sb-gcount" data-count="${m.id}"></span>${icon('chev', 'sb-chev')}
             </button>
             <div class="sb-items"><div>
-              ${m.topics.map((t) => `<a class="sb-topic" href="#${t.id}" data-key="${t.id}"><span class="tick" data-tick="${t.id}"></span><span class="lbl">${rt(t.short || t.title)}</span><button class="tag-dot" data-act="tag" data-t="${t.id}" title="Colour tag" aria-label="Colour tag for ${rt(t.short || t.title)}"></button></a>`).join('')}
+              ${m.topics.map((t, i) => rowHead(m, t, i, 'sb-row') + `<a class="sb-topic" href="#${t.id}" data-key="${t.id}"><span class="tick" data-tick="${t.id}"></span><span class="lbl">${rt(t.short || t.title)}</span><button class="tag-dot" data-act="tag" data-t="${t.id}" title="Colour tag" aria-label="Colour tag for ${rt(t.short || t.title)}"></button></a>`).join('')}
               <a class="sb-topic summary" href="#${m.id}-summary" data-key="${m.id}-summary">${icon('book')}<span class="lbl">Module summary</span></a>
             </div></div>
           </div>`).join('')}
@@ -996,7 +1003,7 @@ window.__startApp = function () {
         <section class="mod-sec">
           <div class="mod-head"><span class="mod-num">Module ${m.num}</span><h2 class="h-sec"><a href="#${m.id}" style="text-decoration:none">${esc(m.title)}</a></h2><span class="count">${doneIn(m.topics)}/${m.topics.length} done</span><button class="btn small ghost mod-reset" type="button" data-reset-mod="${m.id}" title="Start this module again from zero">${icon('trash')}Reset progress</button></div>
           <p class="mod-syl">${esc(m.syllabus)}</p>
-          <div>${m.topics.map(topicRow).join('')}${summaryRow(m)}</div>
+          <div>${m.topics.map((t, i) => rowHead(m, t, i, 'row-head') + topicRow(t)).join('')}${summaryRow(m)}</div>
         </section>`).join('')}
       ${MODULES.filter((m) => m.locked).map((m) => `
         <section class="mod-sec">
@@ -1061,7 +1068,7 @@ window.__startApp = function () {
           <button class="btn ghost" type="button" data-reset-mod="${m.id}" title="Start this module again from zero">${icon('trash')}Reset progress</button>
         </div>
       </div>
-      <div>${m.topics.map(topicRow).join('')}${summaryRow(m)}</div>`;
+      <div>${m.topics.map((t, i) => rowHead(m, t, i, 'row-head') + topicRow(t)).join('')}${summaryRow(m)}</div>`;
     return { el };
   }
 

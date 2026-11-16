@@ -1,0 +1,1 @@
+FIGDIMS({"m1-blackbody":{"w":600,"h":450,"svg":1},"m1-compton":{"w":600,"h":450,"svg":1},"m1-double-slit-particles":{"w":600,"h":570,"svg":1},"m1-em-wave":{"w":600,"h":340,"svg":1},"m1-interference":{"w":600,"h":560,"svg":1},"m1-stern-gerlach":{"w":600,"h":540,"svg":1},"m1-uv-catastrophe":{"w":600,"h":450,"svg":1},"m1-ydse":{"w":600,"h":460,"svg":1}});
