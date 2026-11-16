@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Admin · BAPHY105 Notes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,500&display=swap">
+<link rel="stylesheet" href="css/app.css">
+<style>
+  body { overflow-y: auto; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 36px 16px 80px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; margin: 22px 0 8px; }
+  @media (max-width: 860px) { .kpis { grid-template-columns: repeat(2, 1fr); } }
+  .kpis > div { background: var(--bg-2); padding: 16px 18px; }
+  .kpis .v { font-family: var(--serif); font-size: 32px; color: var(--white); line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .kpis .l { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+  .bars { display: flex; align-items: flex-end; gap: 4px; height: 120px; padding: 10px 0 0; border-bottom: 1px solid var(--line-2); }
+  .bars > div { flex: 1; background: var(--text-2); border-radius: 3px 3px 0 0; min-width: 4px; position: relative; }
+  .bars > div:hover::after { content: attr(data-tip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font: 11px var(--mono); color: var(--white); background: var(--surface-2); padding: 3px 6px; border-radius: 5px; white-space: nowrap; }
+  .axis { display: flex; justify-content: space-between; font: 11px var(--mono); color: var(--text-faint); margin-top: 6px; }
+  .fb { border: 1px solid var(--line); border-radius: 12px; background: var(--bg-2); padding: 12px 16px; margin-bottom: 8px; }
+  .fb small { font-family: var(--mono); color: var(--text-faint); }
+  .fb p { margin: 6px 0 0; color: var(--text-2); white-space: pre-wrap; }
+  .note { margin-top: 14px; }
+  form.row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  form.row input { height: 38px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--surface); color: var(--white); padding: 0 12px; font-family: var(--mono); min-width: 220px; }
+  .funnel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 6px 0 10px; }
+  .funnel > div { border: 1px solid var(--line); border-radius: 12px; background: var(--bg-2); padding: 14px 16px; display: grid; gap: 2px; }
+  .funnel b { font-family: var(--serif); font-size: 28px; font-weight: 500; color: var(--white); line-height: 1.1; }
+  .funnel span { font-size: 13.5px; color: var(--text-2); }
+  .funnel em { font-style: normal; font-family: var(--mono); font-size: 12px; color: var(--text-dim); }
+  @media (max-width: 700px) { .funnel { grid-template-columns: repeat(2, 1fr); } }
+  .look { border: 1px solid var(--line); border-radius: 12px; background: var(--bg-2); padding: 6px 16px 14px; margin: 4px 0 8px; }
+  tr.sdetail > td { background: var(--surface); padding: 6px 12px 10px; }
+  .look-row { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+  .look-row > span { color: var(--text-dim); font-size: 13.5px; }
+  .look-row code { font-size: 12px; }
+  .look-act { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 12px; }
+  @media (max-width: 560px) { .look-row { grid-template-columns: 1fr; gap: 2px; } }
+  .pill-tag { font: 11px var(--mono); border: 1px solid var(--line-2); border-radius: 99px; padding: 2px 8px; margin-left: 6px; color: var(--white); }
+  .fb-act { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .fb-reply { margin-top: 10px; border-left: 3px solid var(--line-2); padding: 2px 0 2px 12px; }
+  .fb-rbox { margin-top: 10px; }
+  .fb-rbox summary { cursor: pointer; color: var(--text-2); font-size: 14px; }
+  textarea.ann { display: block; width: 100%; min-height: 70px; margin-top: 6px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--surface); color: var(--white); padding: 10px 12px; font: 15px/1.5 var(--sans); resize: vertical; box-sizing: border-box; }
+  .dt { display: inline-flex; flex-direction: column; line-height: 1.3; white-space: nowrap; }
+  .dt b { font-weight: 500; color: var(--white); }
+  .dt small { font-size: 12px; color: var(--text-dim); }
+  .sale { margin-top: 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg-2); padding: 12px 16px; }
+  .sale p { margin: 6px 0 10px; font-size: 14px; }
+  input.ann-line { display: block; width: 100%; max-width: 520px; height: 38px; margin-top: 6px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--surface); color: var(--white); padding: 0 12px; font: 14.5px var(--sans); box-sizing: border-box; }
+  input.dtp { color-scheme: dark; font-family: var(--mono); }
+  form.row label.lim input.dtp { width: 230px; }
+  select.sel { height: 38px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--surface); color: var(--white); padding: 0 10px; }
+  .srow-more { display: flex; align-items: center; gap: 10px; margin: 10px 0 0; font-size: 13.5px; }
+  .srow { display: flex; gap: 8px; flex-wrap: wrap; }
+  .srow input { height: 38px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--surface); color: var(--white); padding: 0 12px; font-family: var(--mono); }
+  label.lim { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-dim); }
+  form.row label.lim input { min-width: 0; width: 70px; }
+  form.row label.lim input[type="checkbox"] { width: 16px; height: 16px; padding: 0; margin: 0; accent-color: #f4f4f6; }
+  form.row label.lim:has(input[type="checkbox"]) { height: 38px; padding: 0 12px; border: 1px solid var(--line-2); border-radius: 10px; color: var(--text-2); cursor: pointer; }
+  details.bulk { margin: 12px 0 8px; border: 1px dashed var(--line-2); border-radius: 12px; padding: 10px 14px; }
+  details.bulk summary { cursor: pointer; color: var(--text-2); font-size: 14.5px; }
+  details.bulk input[type="file"] { min-width: 0; max-width: 100%; height: auto; border: 0; background: none; padding: 0; font-family: var(--sans); font-size: 13.5px; }
+  .msg { font-size: 14px; color: var(--warn); min-height: 1.4em; margin-top: 8px; }
+  /* admin shell: sections one at a time; sidebar on wide screens, a scrolling chip bar on phones */
+  .adm-top { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin: 6px 0 14px; }
+  .adm-subj { display: flex; gap: 8px; align-items: center; font-size: 14px; }
+  .adm-subj select { max-width: 70vw; }
+  .adm-nav { position: sticky; top: 0; z-index: 5; display: flex; gap: 6px; overflow-x: auto; padding: 8px 0; margin: 0 0 14px; background: var(--bg); border-bottom: 1px solid var(--line); scrollbar-width: none; }
+  .adm-nav button { flex: none; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--line-2); background: var(--bg-2); color: var(--text); font: 500 14px var(--sans); cursor: pointer; }
+  .adm-nav button.on { background: var(--white); color: var(--bg); border-color: var(--white); }
+  .adm-nav .n { margin-left: 6px; font: 500 12px var(--mono); opacity: 0.7; }
+  #out [data-grp][hidden] { display: none !important; }
+  @media (min-width: 900px) {
+    .wrap.adm { display: grid; grid-template-columns: 210px minmax(0, 1fr); column-gap: 28px; max-width: 1240px; }
+    .wrap.adm > .eyebrow, .wrap.adm > .adm-top, .wrap.adm > #login { grid-column: 1 / -1; }
+    .adm-nav { flex-direction: column; overflow: visible; align-self: start; top: 12px; border: 0; padding: 0; }
+    .adm-nav button { text-align: left; border-radius: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap adm">
+  <div class="eyebrow"><span class="code">Owner</span><span>BAPHY105 Notes</span><span class="dot">·</span><a href="./" style="color:inherit">Back to the site</a></div>
+  <div class="adm-top"><h1 class="h-display" style="font-size:34px;margin:0">Admin</h1>
+    <label class="adm-subj"><span class="muted">Subject</span><select id="subj" class="sel" aria-label="Subject">
+      <option value="">BAPHY105 · Engineering Physics</option>
+      <option value="https://bachy105.vercel.app/admin">BACHY105 · Applied Chemistry ↗</option>
+      <option value="https://baeng101.vercel.app/admin">BAENG101 · English ↗</option>
+    </select></label></div>
+  <nav class="adm-nav" id="anav" hidden></nav>
+  <div id="login">
+    <p class="muted">Enter your admin key (the <code>ADMIN_KEY</code> you set in Vercel). It stays in this tab only.</p>
+    <form class="row" id="f"><input id="k" type="password" placeholder="Admin key" autocomplete="current-password" required><button class="btn primary">Show stats</button></form>
+    <p class="msg" id="lm"></p>
+  </div>
+  <div id="out" hidden></div>
+</div>
+<script>
+(function () {
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  let key = ''; try { key = sessionStorage.getItem('bn_admin') || ''; } catch (e) {}
+  async function call(method, data) {
+    const r = await fetch('/api/stats', { method, headers: { 'x-admin-key': key, 'Content-Type': 'application/json' }, body: data ? JSON.stringify(data) : undefined });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || 'Request failed (' + r.status + ')');
+    return j;
+  }
+  function days(obj, n) {
+    const out = []; const d = new Date();
+    for (let i = n - 1; i >= 0; i--) { const x = new Date(d); x.setTime(d.getTime() - i * 864e5); const k = new Date(x.getTime() + 5.5 * 3600e3).toISOString().slice(0, 10); out.push([k, (obj && obj[k]) || 0]); }
+    return out;
+  }
+  function bars(series) {
+    const max = Math.max(1, ...series.map((s) => s[1]));
+    return `<div class="bars">${series.map(([k, v]) => `<div style="height:${Math.max(2, (v / max) * 100)}%" data-tip="${k}: ${v}"></div>`).join('')}</div><div class="axis"><span>${series[0][0]}</span><span>${series[series.length - 1][0]}</span></div>`;
+  }
+  const fbFilter = { help: 'open', idea: 'open' };
+  // all times in Indian time (IST, UTC+5:30)
+  const IST = 5.5 * 3600e3;
+  const istParts = (s) => {
+    const t = Date.parse(s); if (isNaN(t)) return null;
+    const d = new Date(t + IST), h = d.getUTCHours(), m = String(d.getUTCMinutes()).padStart(2, '0');
+    return { time: String(h % 12 || 12).padStart(2, '0') + ':' + m + (h < 12 ? ' AM' : ' PM'), date: String(d.getUTCDate()).padStart(2, '0') + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + d.getUTCFullYear() };
+  };
+  const ist = (s) => { const p = istParts(s); return p ? p.date + ' ' + p.time : ''; }; // for CSV
+  const whenInline = (s) => { const p = istParts(s); return p ? esc(p.date + ' ' + p.time) : ''; }; // one-line spots only (lookup summary, report headers)
+  // default for every time on this page, including any added later: IST date above the 12-hour time (28-09-2026 / 03:11 AM)
+  const when = (s) => { const p = istParts(s); return p ? '<span class="dt"><b>' + esc(p.date) + '</b><small>' + esc(p.time) + '</small></span>' : ''; };
+  const pct = (a, b) => (b ? Math.round((a / b) * 100) + '%' : '—');
+  const modName = (s, id) => { const m = (s.paidModules || []).find((x) => x.id === id); return m ? 'Module ' + (+m.num) : id; };
+  const modsLabel = (s, mods) => (mods && mods.length ? mods.map((id) => modName(s, id)).join(', ') + ' only' : 'All modules');
+  const tbl = (head, rows) => `<div class="tbl-wrap"><table class="tbl"><thead><tr>${head.map((h) => `<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
+
+  const KIND = { mistake: 'Mistake in the notes', suggestion: 'Suggestion', bug: "Something isn't working", other: 'Other', idea: 'Idea' };
+  // box: 'help' (Help? requests) or 'idea' (Any ideas?)
+  function feedbackHTML(s, box) {
+    const all = (s.feedback || []).filter((f) => (box === 'idea') === (f.kind === 'idea'));
+    const n = (st) => all.filter((f) => f.status === st).length;
+    const cur = fbFilter[box], list = all.filter((f) => f.status === cur);
+    const names = box === 'idea' ? [['open', 'New'], ['fixed', 'Done'], ['ignored', 'Dismissed']] : [['open', 'Open'], ['fixed', 'Fixed'], ['ignored', 'Ignored']];
+    const tabs = names.map(([k, l]) => `<button class="btn small${cur === k ? ' primary' : ' ghost'}" data-fbf="${k}" data-box="${box}">${l} ${n(k)}</button>`).join(' ');
+    const where = (f) => (f.topic ? ' · ' + esc(f.topic) + (f.tab ? ' › ' + esc(f.tab) : '') : '');
+    const item = (f) => `<div class="fb"><small>${whenInline(f.at)}${box === 'help' ? ' · <b>' + esc(KIND[f.kind] || f.kind) + '</b>' : ''}${where(f)}</small>${f.email || f.contact ? `<small style="display:block">${esc(f.email || '')}${f.contact ? (f.email ? ' · ' : '') + esc(f.contact) : ''}</small>` : ''}<p>${esc(f.text)}</p>
+      <div class="fb-act">${f.status !== 'fixed' ? `<button class="btn small" data-fb="${esc(f.id)}" data-st="fixed">${box === 'idea' ? 'Mark done' : 'Mark fixed'}</button>` : ''}${f.status !== 'ignored' ? `<button class="btn small ghost" data-fb="${esc(f.id)}" data-st="ignored">${box === 'idea' ? 'Dismiss' : 'Ignore'}</button>` : ''}${f.status !== 'open' ? `<button class="btn small ghost" data-fb="${esc(f.id)}" data-st="open">Reopen</button>` : ''}${f.email ? `<a class="btn small ghost" href="mailto:${esc(f.email)}">Reply by email</a>` : ''}</div>
+      ${f.reply ? `<div class="fb-reply"><small>Your reply · ${whenInline(f.reply.at)}</small><p>${esc(f.reply.text)}</p></div>` : ''}
+      ${f.email ? `<details class="fb-rbox"><summary>${f.reply ? 'Reply again' : 'Reply on the site'}</summary><textarea class="ann" maxlength="1500" data-rt="${esc(f.id)}" placeholder="The student sees this under Messages in the sidebar"></textarea><p class="row" style="margin-top:8px;align-items:center"><button class="btn small primary" data-reply="${esc(f.id)}">Send reply</button><span class="msg" data-rm="${esc(f.id)}" style="margin:0"></span></p></details>` : ''}</div>`;
+    return `<p style="margin:4px 0 14px">${tabs}</p>${list.length ? list.map(item).join('') : `<p class="muted">Nothing ${cur === 'open' ? (box === 'idea' ? 'new yet' : 'open. All caught up') : 'here'}.</p>`}`;
+  }
+  // emails pasted or read from a .txt/.csv file: anything separated by spaces, commas, semicolons or new lines
+  const emailsIn = (text) => [...new Set((String(text).toLowerCase().match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/g) || []))];
+  function bulkHTML(id, what) {
+    return `<details class="bulk"><summary>Add many students at once</summary>
+      <p class="muted" style="font-size:13.5px;margin:8px 0">Paste emails separated by spaces, commas or new lines, or pick a .txt or .csv file (any column with emails works).</p>
+      <textarea class="ann" id="${id}t" placeholder="a.2026@vitstudent.ac.in, b.2026@vitstudent.ac.in&#10;c.2026@vitstudent.ac.in"></textarea>
+      <p class="row" style="margin-top:8px;align-items:center"><input type="file" id="${id}f" accept=".txt,.csv,text/plain,text/csv"><span class="muted" id="${id}c" style="font-size:13.5px">0 emails</span></p>
+      ${what}<p class="msg" id="${id}m"></p></details>`;
+  }
+
+  // Permanent / Temporary switch for device limits and free access: Temporary shows an end date-time (this computer's time, IST in India)
+  const whenPick = (id) => `<label class="lim">For <select id="${id}m" class="sel"><option value="p">Permanent</option><option value="t">Temporary</option></select></label><label class="lim" id="${id}w" style="display:none">until <input id="${id}u" type="datetime-local" class="sel dtp"></label>`;
+  const limUntil = (l) => (l.until ? 'until ' + whenInline(l.until) : 'permanent');
+  const accessLabel = (s, x) => (x.paid ? `Paid ₹${x.paid.amount}` : x.free ? `Free · ${modsLabel(s, x.free.modules)}` : ((s.freeModules || []).length ? (s.freeModules || []).map((id) => 'Module ' + (+String(id).replace(/\D/g, ''))).join(', ') + ' only' : 'No access'));
+  // study numbers from the student's synced progress (api/sync.js); null = never synced (older app or never studied)
+  const dur = (sec) => { const m = Math.floor((+sec || 0) / 60); return m < 60 ? m + ' min' : Math.floor(m / 60) + ' h ' + (m % 60) + ' min'; };
+  const studyCell = (p) => (p ? `<span class="dt"><b>${esc(dur(p.total))}</b><small>${esc(dur(p.today))} today · ${p.streak} day${p.streak === 1 ? '' : 's'} in a row · ${p.topics} topic${p.topics === 1 ? '' : 's'} done</small></span>` : '<span class="muted">not synced yet</span>');
+  let shown = 5; // students list starts with 5 rows; "Show more" adds 10 at a time
+  const SF = { acc: 'all', act: 'all', sort: 'last' }; // student list filters
+  function studentsHTML(s, q) {
+    // search matches the email, a free-access name or note, or a payment id; the dropdowns narrow and sort the list
+    const t = q.trim().toLowerCase(), now = Date.now(), DAY = 864e5;
+    const names = Object.fromEntries((s.free || []).map((g) => [g.email, String(g.name || '').toLowerCase()])), ts = (v) => Date.parse(v) || 0;
+    const hit = (x) => !t || x.email.includes(t) || (names[x.email] || '').includes(t) || (x.paid && x.paid.id && String(x.paid.id).toLowerCase().includes(t));
+    const accOk = (x) => ({ all: true, paid: !!x.paid, free: !x.paid && !!x.free, none: !x.paid && !x.free, full: !!(x.paid || x.free) })[SF.acc];
+    const ago = (x) => (ts(x.lastSeen) ? now - ts(x.lastSeen) : Infinity);
+    const actOk = (x) => ({ all: true, today: ago(x) < DAY, week: ago(x) < 7 * DAY, idle: ago(x) >= 30 * DAY, never: !ts(x.lastSeen) && !(x.progress && x.progress.total) })[SF.act];
+    const key = { last: (x) => -ts(x.lastSeen), first: (x) => -ts(x.first), study: (x) => -((x.progress && x.progress.total) || 0), visits: (x) => -(x.visits || 0), email: (x) => x.email }[SF.sort];
+    const list = (s.students || []).filter((x) => hit(x) && accOk(x) && actOk(x)).sort((a, b) => { const ka = key(a), kb = key(b); return ka < kb ? -1 : ka > kb ? 1 : 0; });
+    if (!list.length) {
+      const e = q.trim().toLowerCase();
+      return /^[a-z0-9._%+-]+@vitstudent.ac.in$/.test(e) ? `<p class="muted">${esc(e)} isn't in the list (never signed in, paid or given free access). <button class="btn small" data-look-email="${esc(e)}">Look up anyway</button></p>` : `<p class="muted">${q || SF.acc !== 'all' || SF.act !== 'all' ? 'No student matches that. Try clearing the search or setting the filters back to Everyone / Any activity.' : 'Nobody has signed in yet.'}</p>`;
+    }
+    const rows = list.slice(0, shown).map((x) => `<tr><td><button class="linkish" data-look-email="${esc(x.email)}">${esc(x.email)}</button></td><td>${esc(accessLabel(s, x))}</td><td>${x.first ? when(x.first) : x.early ? '<span class="muted">before tracking started</span>' : '<span class="muted">not yet</span>'}</td><td>${x.lastSeen ? when(x.lastSeen) : '—'}</td><td>${studyCell(x.progress)}</td><td>${x.visits}</td><td>${x.logins}</td><td style="white-space:nowrap">${x.phones} phone${x.phones === 1 ? '' : 's'} · ${x.pcs} PC${x.pcs === 1 ? '' : 's'}</td></tr>`);
+    return '<p class="muted" style="margin:-4px 0 10px;font-size:13.5px">Click a student to see their payments and devices, and to change their access.</p>' + tbl(['Student email', 'Access', 'First sign-in (IST)', 'Last used (IST)', 'Study', 'Visits', 'Sign-ins', 'Devices'], rows) + `<p class="srow-more">${list.length > shown ? `<button class="btn small" data-more>Show more</button>` : ''}${shown > 5 ? `<button class="btn small ghost" data-less>Show less</button>` : ''}<span class="muted">Showing ${Math.min(shown, list.length)} of ${list.length}</span></p>`;
+  }
+  function studentsCSV(s) {
+    const q = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+    const head = ['email', 'access', 'paid_amount', 'payment_id', 'paid_at_ist', 'free_modules', 'first_sign_in_ist', 'last_used_ist', 'study_total_min', 'study_today_min', 'streak_days', 'topics_done', 'modules_done', 'visits', 'sign_ins', 'phones', 'pcs'];
+    const lines = (s.students || []).map((x) => [x.email, accessLabel(s, x), x.paid ? x.paid.amount : '', x.paid ? x.paid.id : '', x.paid ? ist(x.paid.at) : '', x.free ? (x.free.modules || ['all']).join(' ') : '', ist(x.first), ist(x.lastSeen), ...(x.progress ? [Math.round(x.progress.total / 60), Math.round(x.progress.today / 60), x.progress.streak, x.progress.topics, x.progress.mods] : ['', '', '', '', '']), x.visits, x.logins, x.phones, x.pcs].map(q).join(','));
+    const blob = new Blob([[head.join(','), ...lines].join('\n')], { type: 'text/csv' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'baphy105-students-' + new Date().toISOString().slice(0, 10) + '.csv'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+  function lookupHTML(s, r) {
+    const d = r.devices, l = r.limits, st = (s.students || []).find((x) => x.email === r.email), p = st && st.progress;
+    return `<div class="look">
+      <div class="look-row"><span>Payments</span><div>${r.notixError ? '<span class="muted">Could not ask Notix: ' + esc(r.notixError) + '</span><br>' : ''}${r.payments.length ? r.payments.map((p) => `₹${p.amount} on ${whenInline(p.at)} <code>${esc(p.id)}</code>${p.via ? ' · on ' + esc(p.via) : ''}${p.status && p.status !== 'paid' ? ' · ' + esc(p.status) : ''}`).join('<br>') : (r.razorpayError ? '<span class="muted">Could not check Razorpay: ' + esc(r.razorpayError) + '</span>' : '<span class="muted">No payment from this student</span>')}</div></div>
+      <div class="look-row"><span>Free access</span><div>${r.free ? `Yes${r.free.name ? ', ' + esc(r.free.name) : ''} · ${esc(modsLabel(s, r.free.modules))} · since ${whenInline(r.free.at)} · ${limUntil(r.free)}` : '<span class="muted">No</span>'}</div></div>
+      <div class="look-row"><span>Study</span><div>${p ? `${esc(dur(p.total))} in total · ${esc(dur(p.today))} today · ${p.streak} day${p.streak === 1 ? '' : 's'} in a row · ${p.topics} topic${p.topics === 1 ? '' : 's'} and ${p.mods} module${p.mods === 1 ? '' : 's'} done <span class="muted">(synced ${whenInline(p.at)})</span>` : '<span class="muted">Not synced yet</span>'}</div></div>
+      <div class="look-row"><span>Devices in use</span><div>${d.phones} of ${l.phones} phone${l.phones === 1 ? '' : 's'} · ${d.pcs} of ${l.pcs} laptop${l.pcs === 1 ? '' : 's'}/PC${l.pcs === 1 ? '' : 's'} ${l.custom ? '<span class="pill-tag">custom limit, ' + limUntil(l) + '</span>' : '<span class="muted">(default)</span>'}</div></div>
+      <div class="look-act">
+        ${r.free ? `<button class="btn small ghost" data-look="revoke">Remove free access</button>` : `<button class="btn small" data-look="grant">Give free access…</button>`}
+        <button class="btn small ghost" data-look="limits">Change device limits…</button>
+        <button class="btn small ghost" data-look="reset">Reset devices</button>
+      </div></div>`;
+  }
+
+  // where the sales numbers come from (Notix sells Pro for every subject), and anything paid here before Notix
+  function salesNote(s) {
+    const P = s.payments || {};
+    if (P.source !== 'notix') return '';
+    if (P.notixError) return `<div class="note heads-up"><div class="note-label">Could not read sales from Notix: ${esc(P.notixError)}</div><p>Sales numbers are blank until it answers. Check that <code>STORE_URL</code> and <code>STORE_SECRET</code> in Vercel → Settings → Environment Variables match the Notix project, then reload.</p></div>`;
+    const B = P.before || { count: 0, revenue: 0 };
+    return `<p class="muted" style="margin:-4px 0 14px;font-size:13.5px">Sales are read live from Notix, so they match the Notix admin page for this subject${P.manual ? ` (plus ${P.manual} given Pro by hand there, not counted as sales)` : ''}.${B.count ? ` Before Notix, this site took ${B.count} payment${B.count === 1 ? '' : 's'} directly (₹${B.revenue.toLocaleString('en-IN')}); those are listed under Recent payments as "this site".` : ''}</p>`;
+  }
+  // modules and question papers on the site, from api/_content.json (rebuilt by every build), with how they are used
+  function contentHTML(s) {
+    const C = s.content || { modules: [], papers: [] };
+    const mods = C.modules.length ? tbl(['Module', 'Topics opened', 'Topic views', 'Questions', 'Quiz answers', 'Right'], C.modules.map((m) => `<tr><td><b>Module ${+m.num}</b> · ${esc(m.title)}</td><td>${m.opened} of ${m.topics}</td><td>${m.views.toLocaleString('en-IN')}</td><td>${m.questions}</td><td>${m.answered.toLocaleString('en-IN')}</td><td>${m.answered ? Math.round(100 * m.right / m.answered) + '%' : '—'}</td></tr>`)) : '<p class="muted">No modules yet.</p>';
+    const kind = (k) => (k === 'actual' ? 'Actual paper' : k === 'model' ? 'Model paper' : esc(k || 'Paper'));
+    const papers = C.papers.length ? tbl(['Paper', 'Type', 'Questions', 'Open to'], C.papers.map((p) => `<tr><td>${esc(p.title)}${p.sub ? '<br><span class="muted" style="font-size:13px">' + esc(p.sub) + '</span>' : ''}</td><td>${kind(p.kind)}</td><td>${p.questions || '—'}</td><td>${p.access === 'free' ? 'Everyone' : 'Pro'}</td></tr>`)) : '<p class="muted">No question papers on the site yet.</p>';
+    return `<section class="sum-sec"><h2 class="h-sec">Content <small>${C.modules.length} module${C.modules.length === 1 ? '' : 's'} · ${C.papers.length} paper${C.papers.length === 1 ? '' : 's'}</small></h2><p class="muted" style="font-size:13.5px">Follows content/modules.json and content/papers-*.js: a module or paper you add shows up here after the next build.</p>${mods}<h3 style="margin:18px 0 8px;font-size:15px">Question papers</h3>${papers}</section>`;
+  }
+
+  function render(s) {
+    const v30 = days(s.visits, 30), p30 = days(s.payments.byDay, 30);
+    const visitors = v30.reduce((a, x) => a + x[1], 0);
+    const views = Object.entries(s.views || {}).sort((a, b) => b[1] - a[1]).slice(0, 15);
+    const F = s.funnel || { visitors: 0, paywall: 0, start: 0, paid: 0 };
+    const Q = s.quiz || { top: [], answered: 0, questions: 0 };
+    const B = s.banner || {};
+    const modChecks = (s.paidModules || []).map((m) => `<label class="lim"><input type="checkbox" class="gmod" value="${esc(m.id)}" checked> Module ${+m.num}</label>`).join('');
+    $('#out').innerHTML = `
+      <div class="note"><div class="note-label">Your own access</div><p>Turn on Pro on this device, free, with no device limit. Do it once on each phone or PC you use.</p><p style="margin-top:10px"><button class="btn primary" id="me">Turn on Pro on this device</button> <span class="msg" id="mm" style="display:inline-block;margin-left:10px"></span></p></div>
+      ${s.razorpayError ? `<div class="note heads-up"><div class="note-label">Razorpay said: ${esc(s.razorpayError)}</div><p>Payment numbers below are empty because Razorpay refused the keys. In Vercel → Settings → Environment Variables, check that <code>RAZORPAY_KEY_ID</code> and <code>RAZORPAY_KEY_SECRET</code> are a matching pair from the same mode (both live or both test), then redeploy. Students can't pay until this is fixed.</p></div>` : ''}
+      ${s.storage ? '' : `<div class="note heads-up"><div class="note-label">Storage not set up yet</div><p>Payments below come straight from Razorpay. Everything else starts working once you add Upstash Redis in Vercel → Storage (free).</p></div>`}
+
+
+      <div class="kpis">
+        <div><div class="v">${s.payments.count == null ? '—' : s.payments.count}</div><div class="l">paid users</div></div>
+        <div><div class="v">${s.payments.revenue == null ? '—' : '₹' + s.payments.revenue.toLocaleString('en-IN')}</div><div class="l">collected</div></div>
+        ${s.payments.source === 'notix' ? `<div><div class="v">${s.payments.refunded == null ? '—' : '₹' + s.payments.refunded.toLocaleString('en-IN')}</div><div class="l">refunded${s.payments.refunds ? ' · ' + s.payments.refunds : ''}</div></div>` : `<div><div class="v">₹${s.payments.fees.toLocaleString('en-IN')}</div><div class="l">Razorpay fees</div></div>`}
+        <div><div class="v">${s.storage ? visitors : '—'}</div><div class="l">visitors, last 30 days</div></div>
+      </div>
+      ${salesNote(s)}
+
+      ${s.storage ? `<section class="sum-sec"><h2 class="h-sec">Students <small>${(s.students || []).length} students · ${(s.students || []).filter((x) => x.logins || x.lastSeen || x.early).length} signed in · ${(s.students || []).filter((x) => x.paid).length} paid · ${(s.students || []).filter((x) => x.free).length} free access</small></h2>
+        <p class="row srow" style="margin:0 0 12px"><input id="sq" type="search" placeholder="Search email, name or payment id" style="min-width:260px">
+          <select id="sfa" class="sel" aria-label="Access"><option value="all">Everyone</option><option value="paid">Paid</option><option value="free">Free access</option><option value="full">Paid or free access</option><option value="none">No access yet</option></select>
+          <select id="sfb" class="sel" aria-label="Activity"><option value="all">Any activity</option><option value="today">Active today</option><option value="week">Active this week</option><option value="idle">Not seen for 30+ days</option><option value="never">Never used</option></select>
+          <select id="sfs" class="sel" aria-label="Sort"><option value="last">Sort: last used</option><option value="first">Sort: newest sign-in</option><option value="study">Sort: most study time</option><option value="visits">Sort: most visits</option><option value="email">Sort: email A–Z</option></select>
+          <button class="btn" id="scsv">Download CSV</button></p>
+        <div id="slist">${studentsHTML(s, '')}</div>
+      </section>` : ''}
+
+
+      ${s.storage ? `<section class="sum-sec" style="margin-top:36px"><h2 class="h-sec">Device reset requests <small>${(s.resetRequests || []).length} waiting</small></h2>
+        <p class="muted" style="font-size:13.5px">Students can ask once a week. Approving clears all their phones and PCs, so they sign in again on the devices they use now.</p>
+        ${(s.resetRequests || []).length ? tbl(['Student email', 'Asked (IST)', 'From', 'Reason', ''], s.resetRequests.map((r) => `<tr><td><code>${esc(r.email)}</code></td><td>${when(r.at)}</td><td>${r.kind === 'phone' ? 'phone' : 'laptop/PC'}</td><td>${esc(r.reason) || '<span class="muted">—</span>'}</td><td style="white-space:nowrap"><button class="btn small primary" data-rr="approve-reset" data-email="${esc(r.email)}">Approve</button> <button class="btn small ghost" data-rr="decline-reset" data-email="${esc(r.email)}">Decline</button></td></tr>`)) : '<p class="muted">No requests right now.</p>'}</section>` : ''}
+
+      ${s.storage ? `<section class="sum-sec" style="margin-top:36px"><h2 class="h-sec">Conversion <small>last 30 days</small></h2>
+        <div class="funnel">
+          <div><b>${F.visitors}</b><span>visited the site</span></div>
+          <div><b>${F.gopro || 0}</b><span>saw the Go Pro page</span><em>${pct(F.gopro || 0, F.visitors)} of visitors</em></div>
+          <div><b>${F.paywall}</b><span>saw the payment page</span><em>${pct(F.paywall, F.visitors)} of visitors</em></div>
+          <div><b>${F.start}</b><span>tapped Pay</span><em>${pct(F.start, F.paywall)} of those</em></div>
+          <div><b>${F.paid}</b><span>paid</span><em>${pct(F.paid, F.start)} of those</em></div>
+        </div>
+        <p class="muted" style="font-size:13.5px">Counts started when this was added, so older days show 0. Each browser counts once per visit.</p>
+        <p style="font-size:14.5px;margin-top:10px"><b>${days(s.battles, 30).reduce((a, x) => a + x[1], 0)}</b> 1v1 quiz battles started in the last 30 days.</p></section>` : ''}
+
+      ${s.storage ? `<section class="sum-sec"><h2 class="h-sec">Settings</h2>
+        <div class="sale" style="margin-top:0"><div class="note-label">Google sign-in</div>
+          ${s.signin ? '<p><b>On.</b> Students sign in with their VIT Google account before they can open the notes.</p>' : '<p><b>Off.</b> Anyone can open the site without signing in, and nobody new can sign in. Students who were already signed in stay signed in and keep what they paid for. Messages, progress sync and battles need a signed-in account, so guests don’t get them.</p>'}
+          ${!s.signin && !s.freeNow ? '<p><b>Heads-up:</b> the site is paid and sign-in is off, so new students can only use the free modules and can’t pay (paying needs a signed-in account).</p>' : ''}
+          <p class="row" style="margin-top:8px"><button class="btn ${s.signin ? '' : 'primary'}" data-si="${s.signin ? 0 : 1}">${s.signin ? 'Turn sign-in off' : 'Turn sign-in back on'}</button></p><p class="msg" id="sim"></p></div>
+        <div class="sale"><div class="note-label">Free or paid</div>
+          ${s.freeSite ? '<p><b>Free.</b> Every module is open to everyone who can open the site. No payment page. Payments already made stay recorded, so switching back to paid keeps paid students unlocked.</p>' : (s.freeNow ? '<p><b>Free right now</b> because of the ₹0 temporary offer below. When it ends the site is paid again by itself.</p>' : '<p><b>Paid.</b> The free modules are open, and the rest need a payment or free access, as usual.</p>')}
+          <p class="row" style="margin-top:8px"><button class="btn ${s.freeSite ? 'primary' : ''}" data-fm="${s.freeSite ? 0 : 1}">${s.freeSite ? 'Make the site paid again' : 'Make the whole site free'}</button></p><p class="msg" id="fmm"></p></div>
+        <form class="row" id="pf" style="margin-top:18px"><label class="lim">Price ₹ <input id="pr" type="number" min="1" max="5000" value="${esc(s.price)}" required style="width:90px"></label><button class="btn">Save price</button></form>
+        <p class="muted" style="font-size:13.5px;margin-top:6px">For new payments only. Everyone who already paid keeps access. The site shows the new price straight away.</p><p class="msg" id="pm"></p>
+        <div class="sale"><div class="note-label">Temporary offer</div>
+          ${s.sale ? `<p><b>Running now: ${+s.sale.rupees === 0 ? 'FREE' : '₹' + esc(s.sale.rupees)}</b> instead of <s>₹${esc(s.price)}</s>${+s.sale.rupees === 0 ? ' (every module is open to everyone who can open the site)' : ''}, until ${whenInline(s.sale.until)} IST${s.sale.text ? ', with the message "' + esc(s.sale.text) + '"' : ''}. After that the price goes back to ₹${esc(s.price)} by itself. <button class="btn small ghost" id="se">End offer now</button></p>` : `<p class="muted">Set a lower price until a date and time you pick, e.g. ₹30 until 11:59 PM tonight, or ₹0 to make every module FREE until then. Students see it as an offer, still pay once, and the normal price comes back automatically when it ends.</p>`}
+          <form class="row" id="sf"><label class="lim">₹ <input id="sp" type="number" min="0" max="5000" value="${esc(s.sale ? s.sale.rupees : 30)}" required style="width:80px"></label>
+            <label class="lim">until <input id="sh" type="datetime-local" class="sel dtp" required></label>
+            <button class="btn primary">${s.sale ? 'Restart offer' : 'Start offer'}</button></form>
+          <label class="muted" for="st" style="font-size:13.5px;display:block;margin-top:10px">Message on the payment page (optional)</label><input id="st" class="ann-line" maxlength="140" placeholder="e.g. It's my bday so enjoyyy 🎉" value="${esc(s.sale ? s.sale.text : '')}"><p class="msg" id="sm"></p></div>
+        <form id="bf" style="margin-top:18px"><label class="muted" for="bt" style="font-size:13.5px">Announcement at the top of the site</label>
+          <textarea id="bt" maxlength="240" placeholder="e.g. Module 4 notes are up!" class="ann">${esc(B.text || '')}</textarea>
+          <p class="row" style="margin-top:8px"><button class="btn primary" data-ban="1">${B.on ? 'Update announcement' : 'Show announcement'}</button>${B.on ? '<button class="btn ghost" data-ban="0">Hide it</button>' : ''} <span class="muted" style="font-size:13.5px;align-self:center">${B.on ? 'Showing now' : 'Not showing'}</span></p>
+          <p class="msg" id="bm"></p></form>
+        <div class="sale"><div class="note-label">Payments</div>
+          ${s.paused ? `<p><b>Payments are paused.</b> Students see a notice instead of the Pay button${s.paused.text ? ': "' + esc(s.paused.text) + '"' : ''}. Free modules and everyone who already paid work as usual.</p>` : `<p class="muted">Payments are on. Pause them (for example while Razorpay reviews the website) and the payment page shows a notice instead of the Pay button.</p>`}
+          <label class="muted" for="pzt" style="font-size:13.5px;display:block">Notice on the payment page (optional)</label><input id="pzt" class="ann-line" maxlength="240" placeholder="e.g. Payments are paused for a few hours while we update the site." value="${esc(s.paused ? s.paused.text : '')}">
+          <p class="row" style="margin-top:8px"><button class="btn ${s.paused ? '' : 'primary'}" data-pz="1">${s.paused ? 'Update notice' : 'Pause payments'}</button>${s.paused ? '<button class="btn primary" data-pz="0">Turn payments back on</button>' : ''}</p><p class="msg" id="pzm"></p></div>
+        <div class="sale"><div class="note-label">Legal pages</div>
+          <p class="muted">The business name shown on the <a href="terms.html" target="_blank" style="color:inherit">terms</a>, <a href="refund.html" target="_blank" style="color:inherit">refund</a> and <a href="contact.html" target="_blank" style="color:inherit">contact</a> pages. Use exactly the name on your Razorpay account.</p>
+          <form class="row" id="bzf"><input id="bzn" class="ann-line" maxlength="120" placeholder="Name on the Razorpay account" value="${esc(s.business || '')}" style="flex:1;min-width:0"><button class="btn">Save name</button></form><p class="msg" id="bzm"></p>
+          <p class="muted" style="font-size:13.5px;margin-top:8px">Razorpay reviewer sign-in (<a href="review.html" target="_blank" style="color:inherit">review.html</a>, username review@baphy105): <b>${s.reviewOn ? 'on' : 'off'}</b>. ${s.reviewOn ? 'It uses the REVIEW_CODE you set in Vercel. Delete that variable (and redeploy) to switch it off.' : 'To switch it on, add an environment variable REVIEW_CODE (the access code you give Razorpay) in Vercel and redeploy.'}</p></div>
+      </section>` : ''}
+
+      <section class="sum-sec"><h2 class="h-sec">Payments per day <small>last 30 days</small></h2>${bars(p30)}</section>
+      ${s.storage ? `<section class="sum-sec"><h2 class="h-sec">Visitors per day <small>last 30 days</small></h2>${bars(v30)}</section>` : ''}
+
+      ${s.storage ? `<section class="sum-sec"><h2 class="h-sec">Quiz insights <small>${Q.answered} answers · ${Q.questions} questions</small></h2>
+        <p class="muted">The questions people get wrong most often (at least 3 answers). A high miss rate usually means the topic needs a clearer explanation.</p>
+        ${Q.top.length ? tbl(['Question', 'Wrong', 'Answers'], Q.top.map((q) => `<tr><td>${esc(q.label)}<br><small class="muted"><code>${esc(q.id)}</code></small></td><td><b>${pct(q.wrong, q.total)}</b></td><td>${q.total}</td></tr>`)) : '<p class="muted">Not enough answers yet.</p>'}</section>` : ''}
+
+      ${s.storage ? `<section class="sum-sec"><h2 class="h-sec">Marked "Confusing?"</h2>
+        <p class="muted">Topic tabs students flagged as confusing, most first. Good candidates to rewrite.</p>
+        ${(s.confusing || []).length ? tbl(['Topic › tab', 'Students'], s.confusing.map((c) => `<tr><td>${esc(c.label)}</td><td><b>${c.count}</b></td></tr>`)) : '<p class="muted">No flags yet.</p>'}</section>` : ''}
+
+      ${s.storage ? `<section class="sum-sec"><h2 class="h-sec">Most opened topics</h2>${views.length ? tbl(['Topic', 'Opens'], views.map(([t, n]) => `<tr><td>${esc(t)}</td><td>${n}</td></tr>`)) : '<p class="muted">No data yet.</p>'}</section>` : ''}
+
+      ${s.storage ? `<section class="sum-sec"><h2 class="h-sec">Help? requests <small>mistakes, suggestions, problems</small></h2><div id="fbl-help">${feedbackHTML(s, 'help')}</div></section>` : ''}
+      ${s.storage ? `<section class="sum-sec"><h2 class="h-sec">Ideas from students</h2><div id="fbl-idea">${feedbackHTML(s, 'idea')}</div></section>` : ''}
+
+      <section class="sum-sec"><h2 class="h-sec">Recent payments</h2>${s.payments.recent.length ? tbl(['When (IST)', 'Student', 'Amount', 'Payment ID'].concat(s.payments.source === 'notix' ? ['Paid on'] : []), s.payments.recent.map((p) => `<tr><td>${when(p.at)}</td><td>${esc(p.email)}</td><td>₹${esc(p.amount)}${p.bundle ? ' <span class="muted">(share of a cart)</span>' : ''}${p.status === 'refunded' ? ' <span class="muted">refunded</span>' : ''}</td><td><code>${esc(p.id)}</code></td>${s.payments.source === 'notix' ? `<td>${esc(p.via || '')}</td>` : ''}</tr>`)) : '<p class="muted">No payments yet.</p>'}</section>
+
+      ${contentHTML(s)}
+
+      <section class="sum-sec"><h2 class="h-sec">Free access <small>${(s.free || []).length}</small></h2>
+        <p class="muted">Add a VIT student email and that student gets the ticked modules free. Nothing for them to do: it unlocks as soon as they sign in with that account. Same device limit as payers (1 phone + 1 laptop/PC unless you change it below). Remove them and access stops right away.</p>
+        <form class="row" id="gf"><input id="gp" type="email" inputmode="email" autocomplete="off" placeholder="name.2026@vitstudent.ac.in" style="min-width:280px" required><input id="gn" placeholder="Name (optional)" style="min-width:160px">${modChecks}${whenPick('gw')}<button class="btn primary">Give free access</button></form><p class="msg" id="gm"></p>
+        ${bulkHTML('bg', `<p class="row" style="margin-top:6px">${modChecks.split('gmod').join('bgmod')}<input id="bgn" placeholder="Name or note (optional)" style="min-width:180px">${whenPick('bgw')}<button class="btn primary" id="bgb">Give free access to all</button></p>`)}
+        ${(s.free || []).length ? tbl(['Student email', 'Name', 'Access', 'Added (IST)', 'How long', ''], s.free.map((f) => `<tr><td><code>${esc(f.email)}</code></td><td>${esc(f.name)}</td><td>${esc(modsLabel(s, f.modules))}</td><td>${when(f.at)}</td><td style="white-space:nowrap">${limUntil(f)}</td><td><button class="btn ghost" data-revoke="${esc(f.email)}">Remove</button></td></tr>`)) : '<p class="muted">Nobody yet.</p>'}
+      </section>
+
+      <section class="sum-sec"><h2 class="h-sec">Device limits <small>${(s.limits || []).length} custom</small></h2>
+        <p class="muted">Everyone gets <b>1 phone + 1 laptop/PC</b> by default. Set a different number for a specific student here. It works for payers and free-access people alike. 0 means that kind of device is blocked.</p>
+        <form class="row" id="lf"><input id="lp" type="email" inputmode="email" autocomplete="off" placeholder="name.2026@vitstudent.ac.in" style="min-width:280px" required>
+          <label class="lim">Phones <input id="lph" type="number" min="0" max="20" value="2" required></label>
+          <label class="lim">Laptops/PCs <input id="lpc" type="number" min="0" max="20" value="3" required></label>
+          ${whenPick('lw')}
+          <button class="btn primary">Save limit</button></form><p class="msg" id="lmm"></p>
+        ${bulkHTML('bl', `<p class="row" style="margin-top:6px"><label class="lim">Phones <input id="blph" type="number" min="0" max="20" value="1"></label><label class="lim">Laptops/PCs <input id="blpc" type="number" min="0" max="20" value="1"></label>${whenPick('blw')}<button class="btn primary" id="blb">Set this limit for all</button></p>`)}
+        ${(s.limits || []).length ? tbl(['Student email', 'Phones', 'Laptops/PCs', 'How long', ''], s.limits.map((l) => `<tr><td><code>${esc(l.email)}</code></td><td>${esc(l.phones)}</td><td>${esc(l.pcs)}</td><td style="white-space:nowrap">${limUntil(l)}</td><td><button class="btn ghost" data-edit-lim="${esc(l.email)}" data-ph="${esc(l.phones)}" data-pc="${esc(l.pcs)}" data-until="${esc(l.until || '')}">Edit</button> <button class="btn ghost" data-clear-lim="${esc(l.email)}">Back to 1 + 1</button></td></tr>`)) : '<p class="muted">No custom limits yet.</p>'}
+      </section>
+
+      <section class="sum-sec"><h2 class="h-sec">Reset a student's devices</h2>
+        <p class="muted">If someone gets a new phone or PC, clear their devices here so they can unlock the new one. Works for payers and free-access students alike.</p>
+        <form class="row" id="rf"><input id="rp" type="email" inputmode="email" autocomplete="off" placeholder="name.2026@vitstudent.ac.in" style="min-width:280px" required><button class="btn">Reset devices</button></form><p class="msg" id="rm"></p>
+      </section>`;
+
+    const post = (data) => call('POST', data);
+    $('#me').addEventListener('click', async () => {
+      $('#mm').textContent = 'Unlocking…';
+      try { await post({ action: 'unlock-me' }); $('#mm').innerHTML = 'Done. <a href="./" style="color:inherit">Open the site →</a>'; }
+      catch (err) { $('#mm').textContent = err.message; }
+    });
+
+    // students list: click a student to open their details (payments, free access, devices) and actions in place
+    const openStudent = async (email, btn, keepOpen) => {
+      const tr = btn.closest('tr');
+      let box;
+      if (tr) {
+        const nx = tr.nextElementSibling;
+        if (nx && nx.classList.contains('sdetail')) { if (!keepOpen) { nx.remove(); return; } box = nx.firstElementChild; }
+        else { const row = document.createElement('tr'); row.className = 'sdetail'; row.innerHTML = `<td colspan="${tr.children.length}"></td>`; tr.after(row); box = row.firstElementChild; }
+      } else {
+        box = btn.parentElement.nextElementSibling && btn.parentElement.nextElementSibling.classList.contains('sfree') ? btn.parentElement.nextElementSibling : Object.assign(document.createElement('div'), { className: 'sfree' });
+        if (!box.isConnected) btn.parentElement.after(box);
+      }
+      box.innerHTML = '<p class="muted" style="margin:10px 0">Loading…</p>';
+      try {
+        const r = await post({ action: 'lookup', email });
+        box.innerHTML = lookupHTML(s, r) + '<p class="msg" data-smsg></p>';
+        const say = (t) => { box.querySelector('[data-smsg]').textContent = t; };
+        $$('[data-look]', box).forEach((b) => b.addEventListener('click', async () => {
+          const k = b.dataset.look;
+          if (k === 'grant') { $('#gp').value = r.email; $('#gf').scrollIntoView({ block: 'center' }); $('#gn').focus(); return; }
+          if (k === 'limits') { $('#lp').value = r.email; $('#lph').value = r.limits.phones; $('#lpc').value = r.limits.pcs; setWhen('lw', r.limits.until); $('#lf').scrollIntoView({ block: 'center' }); $('#lph').focus(); return; }
+          if (k === 'revoke' && !confirm('Remove free access for ' + r.email + '?')) return;
+          if (k === 'reset' && !confirm('Clear all devices for ' + r.email + '? They will need to sign in again on each device.')) return;
+          b.disabled = true;
+          try { await post({ action: k === 'reset' ? 'reset-devices' : 'revoke', email: r.email }); openStudent(email, btn, true); }
+          catch (err) { b.disabled = false; say(err.message); }
+        }));
+      } catch (err) { box.innerHTML = `<p class="msg">${esc(err.message)}</p>`; }
+    };
+    const redrawStudents = () => { $('#slist').innerHTML = studentsHTML(s, $('#sq').value.trim()); wireStudents(); };
+    const wireStudents = () => {
+      $$('[data-look-email]').forEach((b) => b.addEventListener('click', () => openStudent(b.dataset.lookEmail, b)));
+      $$('[data-more]').forEach((b) => b.addEventListener('click', () => { shown += 10; redrawStudents(); }));
+      $$('[data-less]').forEach((b) => b.addEventListener('click', () => { shown = 5; redrawStudents(); }));
+    };
+    if ($('#slist')) {
+      wireStudents();
+      $('#sq').addEventListener('input', () => { shown = 5; redrawStudents(); });
+      [['#sfa', 'acc'], ['#sfb', 'act'], ['#sfs', 'sort']].forEach(([sel, k]) => { $(sel).value = SF[k]; $(sel).addEventListener('change', (e) => { SF[k] = e.target.value; shown = 5; redrawStudents(); }); });
+      $('#scsv').addEventListener('click', () => studentsCSV(s));
+    }
+
+    // Permanent / Temporary pickers (device limits and free access)
+    const pad2 = (n) => String(n).padStart(2, '0'), locDT = (d) => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + 'T' + pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+    const setWhen = (id, until) => {
+      if (!$('#' + id + 'm')) return;
+      const tonight = new Date(); tonight.setHours(23, 59, 0, 0);
+      $('#' + id + 'm').value = until ? 't' : 'p'; $('#' + id + 'u').value = locDT(until ? new Date(until) : tonight); $('#' + id + 'u').min = locDT(new Date());
+      $('#' + id + 'w').style.display = until ? '' : 'none';
+    };
+    // null = permanent; otherwise the end time in ms (throws if it isn't in the future)
+    const getWhen = (id) => {
+      if ($('#' + id + 'm').value !== 't') return null;
+      const end = new Date($('#' + id + 'u').value).getTime();
+      if (!(end > Date.now() + 60e3)) throw new Error('Pick an end date and time in the future for a temporary limit.');
+      return end;
+    };
+    ['lw', 'blw', 'gw', 'bgw'].forEach((id) => { if (!$('#' + id + 'm')) return; setWhen(id, null); $('#' + id + 'm').addEventListener('change', () => { $('#' + id + 'w').style.display = $('#' + id + 'm').value === 't' ? '' : 'none'; }); });
+
+    // settings
+    if ($('#sh')) { // offer end picker, in this computer's local time (IST in India)
+      const pad = (n) => String(n).padStart(2, '0'), loc = (d) => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+      const tonight = new Date(); tonight.setHours(23, 59, 0, 0);
+      $('#sh').value = loc(s.sale ? new Date(s.sale.until) : tonight); $('#sh').min = loc(new Date());
+    }
+    if ($('#sf')) $('#sf').addEventListener('submit', async (e) => {
+      e.preventDefault(); $('#sm').textContent = 'Saving…';
+      try { const end = new Date($('#sh').value).getTime(); if (!(end > Date.now() + 60e3)) { $('#sm').textContent = 'Pick an end date and time in the future.'; return; } const hours = (end - Date.now()) / 3600e3;
+      const r = await post({ action: 'set-sale', rupees: +$('#sp').value, hours, text: $('#st').value }); $('#sm').textContent = 'Offer on: ' + (+$('#sp').value ? '₹' + (+$('#sp').value) : 'FREE') + ' until ' + whenInline(new Date(r.until).toISOString()) + ' IST.'; setTimeout(load, 1500); }
+      catch (err) { $('#sm').textContent = err.message; }
+    });
+    if ($('#se')) $('#se').addEventListener('click', async () => {
+      if (!confirm('End the offer now and go back to ₹' + s.price + '?')) return;
+      try { await post({ action: 'end-sale' }); load(); } catch (err) { $('#sm').textContent = err.message; }
+    });
+    if ($('#pf')) $('#pf').addEventListener('submit', async (e) => {
+      e.preventDefault(); $('#pm').textContent = 'Saving…';
+      try { await post({ action: 'set-price', rupees: +$('#pr').value }); $('#pm').textContent = 'Saved. New payments are now ₹' + (+$('#pr').value) + '.'; }
+      catch (err) { $('#pm').textContent = err.message; }
+    });
+    $$('[data-ban]').forEach((b) => b.addEventListener('click', async (e) => {
+      e.preventDefault(); $('#bm').textContent = 'Saving…';
+      try { await post({ action: 'set-banner', text: $('#bt').value, on: b.dataset.ban === '1' }); $('#bm').textContent = b.dataset.ban === '1' ? 'Showing on the site now.' : 'Hidden.'; setTimeout(load, 1200); }
+      catch (err) { $('#bm').textContent = err.message; }
+    }));
+
+    $$('[data-si]').forEach((b) => b.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const on = b.dataset.si === '1';
+      if (!on && !confirm('Turn Google sign-in off? Anyone will be able to open the site without signing in.')) return;
+      $('#sim').textContent = 'Saving…';
+      try { await post({ action: 'set-signin', on }); $('#sim').textContent = on ? 'Sign-in is on again.' : 'Sign-in is off. The site opens without it within a few seconds.'; setTimeout(load, 1200); }
+      catch (err) { $('#sim').textContent = err.message; }
+    }));
+    $$('[data-fm]').forEach((b) => b.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const free = b.dataset.fm === '1';
+      if (free && !confirm('Make every module free for everyone?')) return;
+      $('#fmm').textContent = 'Saving…';
+      try { await post({ action: 'set-mode', free }); $('#fmm').textContent = free ? 'The whole site is free now.' : 'The site is paid again.'; setTimeout(load, 1200); }
+      catch (err) { $('#fmm').textContent = err.message; }
+    }));
+    $$('[data-pz]').forEach((b) => b.addEventListener('click', async (e) => {
+      e.preventDefault(); $('#pzm').textContent = 'Saving…';
+      try { await post({ action: 'set-paused', on: b.dataset.pz === '1', text: $('#pzt').value }); $('#pzm').textContent = b.dataset.pz === '1' ? 'Payments paused.' : 'Payments are on again.'; setTimeout(load, 1200); }
+      catch (err) { $('#pzm').textContent = err.message; }
+    }));
+    if ($('#bzf')) $('#bzf').addEventListener('submit', async (e) => {
+      e.preventDefault(); $('#bzm').textContent = 'Saving…';
+      try { await post({ action: 'set-business', name: $('#bzn').value }); $('#bzm').textContent = 'Saved. The legal pages show it now.'; }
+      catch (err) { $('#bzm').textContent = err.message; }
+    });
+
+    // mistake reports
+    const repaintFeedback = () => { ['help', 'idea'].forEach((x) => { if ($('#fbl-' + x)) $('#fbl-' + x).innerHTML = feedbackHTML(s, x); }); wireFeedback(); };
+    const wireFeedback = () => {
+      $$('[data-fbf]').forEach((b) => b.addEventListener('click', () => { fbFilter[b.dataset.box] = b.dataset.fbf; repaintFeedback(); }));
+      $$('[data-fb]').forEach((b) => b.addEventListener('click', async () => {
+        b.disabled = true;
+        try { await post({ action: 'feedback-status', id: b.dataset.fb, status: b.dataset.st }); const f = s.feedback.find((x) => x.id === b.dataset.fb); if (f) f.status = b.dataset.st; repaintFeedback(); }
+        catch (err) { b.disabled = false; alert(err.message); }
+      }));
+      $$('[data-reply]').forEach((b) => b.addEventListener('click', async () => {
+        const id = b.dataset.reply, ta = $(`[data-rt="${id}"]`), msg = $(`[data-rm="${id}"]`), text = ta.value.trim();
+        if (text.length < 2) { msg.textContent = 'Type a reply first.'; return; }
+        b.disabled = true; msg.textContent = 'Sending…';
+        try { const r = await post({ action: 'reply', id, text }); const f = s.feedback.find((x) => x.id === id); if (f) f.reply = { text, at: r.at }; repaintFeedback(); }
+        catch (err) { b.disabled = false; msg.textContent = err.message; }
+      }));
+    };
+    if ($('#fbl-help')) wireFeedback();
+
+    // device reset requests
+    $$('[data-rr]').forEach((b) => b.addEventListener('click', async () => {
+      const ok = b.dataset.rr === 'approve-reset';
+      if (ok && !confirm('Clear all devices for ' + b.dataset.email + '? They sign in again on the devices they use now.')) return;
+      b.disabled = true;
+      try { await post({ action: b.dataset.rr, email: b.dataset.email }); load(); }
+      catch (err) { b.disabled = false; alert(err.message); }
+    }));
+
+    // many students at once: paste or a .txt/.csv file
+    const wireBulk = (id, send) => {
+      const ta = $('#' + id + 't'), count = () => { const n = emailsIn(ta.value).length; $('#' + id + 'c').textContent = n + ' email' + (n === 1 ? '' : 's'); };
+      ta.addEventListener('input', count);
+      $('#' + id + 'f').addEventListener('change', async (e) => { const f = e.target.files[0]; if (!f) return; if (f.size > 2e6) { $('#' + id + 'm').textContent = 'That file is too big (2 MB max).'; return; } ta.value = (ta.value.trim() ? ta.value.trim() + '\n' : '') + await f.text(); count(); });
+      $('#' + id + 'b').addEventListener('click', async () => {
+        const emails = emailsIn(ta.value), m = $('#' + id + 'm');
+        if (!emails.length) { m.textContent = 'Paste some emails or pick a file first.'; return; }
+        if (!confirm('Apply this to ' + emails.length + ' student' + (emails.length === 1 ? '' : 's') + '?')) return;
+        m.textContent = 'Saving…';
+        try { const r = await send(emails); m.textContent = 'Done for ' + r.done + ' student' + (r.done === 1 ? '' : 's') + '.' + (r.invalid.length ? ' Skipped (not VIT student emails): ' + r.invalid.join(', ') : ''); setTimeout(load, 2500); }
+        catch (err) { m.textContent = err.message; }
+      });
+    };
+    if ($('#bgt')) wireBulk('bg', (emails) => { const mods = $$('.bgmod').filter((c) => c.checked).map((c) => c.value); if (!mods.length) throw new Error('Tick at least one module.'); return post({ action: 'bulk-grant', emails, modules: mods, name: $('#bgn').value, until: getWhen('bgw') }); });
+    if ($('#blt')) wireBulk('bl', (emails) => post({ action: 'bulk-limits', emails, phones: $('#blph').value, pcs: $('#blpc').value, until: getWhen('blw') }));
+
+    // free access
+    $('#gf').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const mods = $$('.gmod').filter((c) => c.checked).map((c) => c.value);
+      if (!mods.length) { $('#gm').textContent = 'Tick at least one module.'; return; }
+      $('#gm').textContent = 'Saving…';
+      try { await post({ action: 'grant', email: $('#gp').value, name: $('#gn').value, modules: mods, until: getWhen('gw') }); $('#gm').textContent = 'Added. It unlocks as soon as they sign in with that account.'; setTimeout(load, 2500); }
+      catch (err) { $('#gm').textContent = err.message; }
+    });
+    $$('[data-revoke]').forEach((b) => b.addEventListener('click', async () => {
+      if (!confirm('Remove free access for ' + b.dataset.revoke + '?')) return;
+      b.disabled = true;
+      try { await post({ action: 'revoke', email: b.dataset.revoke }); load(); }
+      catch (err) { b.disabled = false; alert(err.message); }
+    }));
+
+    // device limits
+    $('#lf').addEventListener('submit', async (e) => {
+      e.preventDefault(); $('#lmm').textContent = 'Saving…';
+      try { await post({ action: 'set-limits', email: $('#lp').value, phones: $('#lph').value, pcs: $('#lpc').value, until: getWhen('lw') }); $('#lmm').textContent = 'Saved. Refreshing the list…'; load(); }
+      catch (err) { $('#lmm').textContent = err.message; }
+    });
+    $$('[data-edit-lim]').forEach((b) => b.addEventListener('click', () => {
+      $('#lp').value = b.dataset.editLim; $('#lph').value = b.dataset.ph; $('#lpc').value = b.dataset.pc; setWhen('lw', b.dataset.until || null);
+      $('#lf').scrollIntoView({ block: 'center' }); $('#lph').focus();
+    }));
+    $$('[data-clear-lim]').forEach((b) => b.addEventListener('click', async () => {
+      if (!confirm('Set ' + b.dataset.clearLim + ' back to 1 phone + 1 laptop/PC?')) return;
+      b.disabled = true;
+      try { await post({ action: 'clear-limits', email: b.dataset.clearLim }); load(); }
+      catch (err) { b.disabled = false; alert(err.message); }
+    }));
+
+    $('#rf').addEventListener('submit', async (e) => {
+      e.preventDefault(); $('#rm').textContent = 'Resetting…';
+      try { await post({ action: 'reset-devices', email: $('#rp').value }); $('#rm').textContent = 'Done. They can now sign in on new devices.'; }
+      catch (err) { $('#rm').textContent = err.message; }
+    });
+  }
+  async function load() {
+    $('#lm').textContent = 'Loading…';
+    try { const s = await call('GET'); $('#login').hidden = true; $('#out').hidden = false; render(s); }
+    catch (e) { $('#lm').textContent = e.message; try { sessionStorage.removeItem('bn_admin'); } catch (x) {} }
+  }
+  $('#f').addEventListener('submit', (e) => { e.preventDefault(); key = $('#k').value; try { sessionStorage.setItem('bn_admin', key); } catch (x) {} load(); });
+  if (key) load();
+})();
+</script>
+
+<script>
+(() => {
+  document.getElementById('subj').addEventListener('change', (e) => { if (e.target.value) location.href = e.target.value; });
+  // which section goes where: matched on each section's heading
+  const GROUPS = [
+    ['overview', 'Overview', /^(Conversion|Payments per day|Visitors per day|Quiz insights|Marked|Most opened)/],
+    ['students', 'Students', /^Students/],
+    ['payments', 'Payments', /^Recent payments/],
+    ['free', 'Free access', /^Free access/],
+    ['devices', 'Devices & resets', /^(Device reset requests|Device limits|Reset a student)/],
+    ['messages', 'Messages', /^(Help\? requests|Ideas from students)/],
+    ['battles', 'Battles', /^Battles/],
+    ['subjects', 'Subjects', /^Subject:/],
+    ['content', 'Content', /^Content/],
+    ['papers', 'Question papers', /^Question papers/],
+    ['settings', 'Settings', /^Settings/],
+  ];
+  let cur = (location.hash || '#overview').slice(1);
+  const out = document.getElementById('out'), nav = document.getElementById('anav');
+  const sec = (title, html) => { const x = document.createElement('section'); x.className = 'sum-sec'; x.innerHTML = '<h2 class="h-sec">' + title + '</h2>' + html; return x; };
+  function regroup() {
+    if (out.hidden || out.dataset.grouped === '1') return;
+    out.dataset.grouped = '1';
+    // Battles: the count line from the conversion box becomes its own section
+    const conv = [...out.querySelectorAll('section.sum-sec')].find((x) => /^Conversion/.test(x.querySelector('h2')?.textContent || ''));
+    const bl = conv && [...conv.querySelectorAll('p')].find((p) => /quiz battles/.test(p.textContent));
+    if (bl) out.appendChild(sec('Battles', '<p class="muted" style="font-size:14px">Free students get one preview battle; Pro students battle on any topic.</p>' + bl.outerHTML)), bl.remove();
+    // Subjects: Pro price and offer move out of Settings into this subject's card
+    const set = [...out.querySelectorAll('section.sum-sec')].find((x) => /^Settings/.test(x.querySelector('h2')?.textContent || ''));
+    if (set) {
+      const sub = sec('Subject: BAPHY105 Engineering Physics', '<p class="muted" style="font-size:14px">Pro price and offers for this subject. The notes stay free; the price is for the Pro features.</p>');
+      const pf = set.querySelector('#pf');
+      if (pf) { let n = pf.nextElementSibling; sub.appendChild(pf); while (n && n.matches('p')) { const nx = n.nextElementSibling; sub.appendChild(n); n = nx; } }
+      const offer = [...set.querySelectorAll('.sale')].find((x) => /Temporary offer/.test(x.textContent));
+      if (offer) sub.appendChild(offer);
+      const syl = (window.MODULES_CONFIG || []).map((m) => '<li><b>Module ' + (+m.num) + ' · ' + m.title + '</b><br><span class="muted" style="font-size:13.5px">' + (m.syllabus || '') + '</span></li>').join('');
+      sub.insertAdjacentHTML('beforeend', '<div class="sale"><div class="note-label">Syllabus on the site</div>' + (syl ? '<ul style="margin:6px 0 0;padding-left:18px">' + syl + '</ul>' : '<p class="muted">No modules yet.</p>') + '<p class="muted" style="font-size:13.5px">Modules and syllabus lines come from content/modules.json (ask Claude to change them).</p></div>');
+      out.appendChild(sub);
+    }
+    // Question papers: what is live
+    const files = [].concat(window.FREE_FILES || [], window.PRO_FILES || []);
+    out.appendChild(sec('Question papers', '<p>' + (files.includes('papers-free.js') ? 'Actual CAT papers are live (questions free, model answers Pro).' : 'No actual CAT papers on the site yet.') + '</p><p>' + (files.includes('papers-pro.js') ? 'Model papers and model answers are live (Pro).' : 'No model papers yet.') + '</p><p class="muted" style="font-size:13.5px">Send the papers to Claude; they are typed into content/papers-free.js and papers-pro.js.</p>'));
+    // tag every top-level block with its group; the KPI cards and notes at the top belong to the overview
+    [...out.children].forEach((el) => {
+      const h = el.matches('section') ? (el.querySelector('h2')?.textContent || '').trim() : '';
+      const g = h && GROUPS.find((x) => x[2].test(h));
+      el.dataset.grp = g ? g[0] : 'overview';
+    });
+    nav.innerHTML = GROUPS.filter((g) => out.querySelector('[data-grp="' + g[0] + '"]')).map((g) => '<button data-g="' + g[0] + '">' + g[1] + '</button>').join('');
+    nav.hidden = false;
+    show(cur);
+  }
+  function show(g) {
+    if (!out.querySelector('[data-grp="' + g + '"]')) g = 'overview';
+    cur = g; history.replaceState(null, '', '#' + g);
+    [...out.children].forEach((el) => { el.hidden = el.dataset.grp !== g; });
+    nav.querySelectorAll('button').forEach((b) => b.classList.toggle('on', b.dataset.g === g));
+  }
+  nav.addEventListener('click', (e) => { const b = e.target.closest('[data-g]'); if (b) { show(b.dataset.g); window.scrollTo(0, 0); } });
+  // the page re-renders #out after every action: group again each time
+  new MutationObserver(() => { if (out.dataset.grouped !== '1' || !out.querySelector('[data-grp]')) { out.dataset.grouped = ''; regroup(); } }).observe(out, { childList: true, attributes: true, attributeFilter: ['hidden'] });
+})();
+</script>
+<script src="js/modules.js"></script>
+<script src="js/data-files.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+{
+  "open": false,
+  "note": "open: true = no sign-in and every Pro feature free for everyone (payments off). The owner's switches on the admin page override this once set. Set to false (and push) for Google sign-in and payments."
+}

@@ -1,0 +1,10 @@
+node_modules/
+tmp/
+src/
+publish/
+.env
+.env.*
+.claude/WORKPLAN.md
+.claude/LOCK
+src/vtop/
+src/papers/

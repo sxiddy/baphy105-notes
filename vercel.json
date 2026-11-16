@@ -1,0 +1,53 @@
+{
+  "buildCommand": "",
+  "installCommand": "",
+  "outputDirectory": "app",
+  "functions": {
+    "api/content.js": {
+      "includeFiles": "protected/data/**"
+    },
+    "api/img.js": {
+      "includeFiles": "protected/img/**"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/logout",
+      "destination": "/api/login?out=1"
+    },
+    {
+      "source": "/api/verify-payment",
+      "destination": "/api/verify"
+    },
+    {
+      "source": "/data/:f",
+      "destination": "/api/content?f=:f"
+    },
+    {
+      "source": "/img/:f",
+      "destination": "/api/img?f=:f"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/admin",
+      "destination": "/admin.html",
+      "permanent": false
+    },
+    {
+      "source": "/stats",
+      "destination": "/admin.html",
+      "permanent": false
+    },
+    {
+      "source": "/stats/html",
+      "destination": "/admin.html",
+      "permanent": false
+    },
+    {
+      "source": "/stats.html",
+      "destination": "/admin.html",
+      "permanent": false
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "fake-store",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/fakeredis.js"
+      ],
+      "port": 5288
+    },
+    {
+      "name": "notes-app",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/serve.js",
+        "app",
+        "4173"
+      ],
+      "port": 4173
+    },
+    {
+      "name": "notes-paywall",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/serve.js",
+        "app",
+        "4175"
+      ],
+      "port": 4175,
+      "env": {
+        "PAYWALL": "1"
+      }
+    },
+    {
+      "name": "notes-admin",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/serve.js",
+        "app",
+        "4181"
+      ],
+      "port": 4181,
+      "env": {
+        "PAYWALL": "1",
+        "DEV_LOGIN": "1",
+        "ADMIN_KEY": "testkey",
+        "UPSTASH_REDIS_REST_URL": "http://127.0.0.1:5288",
+        "UPSTASH_REDIS_REST_TOKEN": "x",
+        "REVIEW_CODE": "localreview"
+      }
+    },
+    {
+      "name": "notes-dev",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/serve.js",
+        "app",
+        "4190"
+      ],
+      "port": 4190,
+      "env": {
+        "PAYWALL": "1",
+        "DEV_BYPASS": "1",
+        "UPSTASH_REDIS_REST_URL": "http://127.0.0.1:5288",
+        "UPSTASH_REDIS_REST_TOKEN": "x"
+      }
+    }
+  ]
+}
