@@ -7,6 +7,14 @@
    "free": true,
    "topics": 7,
    "questions": 0
+  },
+  {
+   "id": "m2",
+   "num": "02",
+   "title": "Mathematical Foundations of Quantum Mechanics",
+   "free": false,
+   "topics": 11,
+   "questions": 0
   }
  ],
  "papers": []

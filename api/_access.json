@@ -1,23 +1,33 @@
 {
  "freeFiles": [
   "figs.js",
-  "chunk-1a.js"
+  "chunk-1a.js",
+  "chunk-2a.js"
  ],
  "proFiles": [
-  "pro-1a.js"
+  "pro-1a.js",
+  "pro-2a.js"
  ],
  "freeModules": [
-  "m1"
+  "m1",
+  "m2"
  ],
  "paidModules": [
   {
    "id": "m1",
    "num": "01",
    "title": "Wave-Particle Duality"
+  },
+  {
+   "id": "m2",
+   "num": "02",
+   "title": "Mathematical Foundations of Quantum Mechanics"
   }
  ],
  "fileModule": {
   "chunk-1a.js": "m1",
-  "pro-1a.js": "m1"
+  "pro-1a.js": "m1",
+  "chunk-2a.js": "m2",
+  "pro-2a.js": "m2"
  }
 }
