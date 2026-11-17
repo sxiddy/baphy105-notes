@@ -261,5 +261,88 @@
         ]
       }
     ]
+  },
+  {
+    "id": "m5",
+    "num": "05",
+    "title": "Elements of Quantum Computing",
+    "chunks": [
+      "5a"
+    ],
+    "questions": [],
+    "syllabus": "Introduction to qubits, single qubit states, the Bloch sphere, two-qubit systems, quantum entanglement, Bell states, single qubit gates, Pauli and Hadamard gates, two-qubit gates (CNOT), generation of entangled states.",
+    "free": false,
+    "syllabusRows": [
+      {
+        "n": "1",
+        "text": "Introduction to qubits",
+        "topics": [
+          "m5-qubits"
+        ]
+      },
+      {
+        "n": "2",
+        "text": "Single qubit states",
+        "topics": [
+          "m5-single-qubit"
+        ]
+      },
+      {
+        "n": "3",
+        "text": "the Bloch Sphere",
+        "topics": [
+          "m5-bloch"
+        ]
+      },
+      {
+        "n": "4",
+        "text": "Two-qubit systems",
+        "topics": [
+          "m5-two-qubit"
+        ]
+      },
+      {
+        "n": "5",
+        "text": "Quantum entanglement",
+        "topics": [
+          "m5-entanglement"
+        ]
+      },
+      {
+        "n": "6",
+        "text": "Bell states",
+        "topics": [
+          "m5-bell"
+        ]
+      },
+      {
+        "n": "7",
+        "text": "Single qubit gates",
+        "topics": [
+          "m5-gates"
+        ]
+      },
+      {
+        "n": "8",
+        "text": "Pauli and Hadamard Gates",
+        "topics": [
+          "m5-pauli-h"
+        ]
+      },
+      {
+        "n": "9",
+        "text": "Two-qubit gates- CNOT gates",
+        "topics": [
+          "m5-cnot"
+        ]
+      },
+      {
+        "n": "10",
+        "text": "Generation of entangled states.",
+        "topics": [
+          "m5-bell-gen"
+        ]
+      }
+    ]
   }
 ]

@@ -131,6 +131,51 @@ add('m1', 'Wien a check: nu_max/T from Planck peak (2.821 kB/h)', (2.821 * kB) /
   { const k = Math.sqrt(2 * me * 4 * eV) / hb; add('m4', 'STM φ = 4 eV: k2', k, '1/m'); add('m4', 'STM current ratio for 0.1 nm', Math.exp(2 * k * 0.1e-9)); }
 }
 
+// ---- Module 5 (quantum computing)
+{
+  const C = (re, im = 0) => ({ re, im });
+  const cm = (a, b) => C(a.re * b.re - a.im * b.im, a.re * b.im + a.im * b.re), ca = (a, b) => C(a.re + b.re, a.im + b.im), cj = (a) => C(a.re, -a.im);
+  const fmt = (z) => { const r = +z.re.toFixed(4) + 0, i = +z.im.toFixed(4) + 0; return i === 0 ? `${r}` : r === 0 ? `${i}i` : `${r}${i < 0 ? '−' : '+'}${Math.abs(i)}i`; };
+  const R = (rows) => rows.map((r) => r.map((x) => (typeof x === 'number' ? C(x) : x)));
+  const mm = (A, B) => A.map((r) => B[0].map((_, j) => r.reduce((s, x, k) => ca(s, cm(x, B[k][j])), C(0))));
+  const M = (A) => '[' + A.map((r) => r.map(fmt).join(', ')).join('; ') + ']';
+  const col = (...v) => R(v.map((x) => [x])), s = 1 / Math.SQRT2, i = C(0, 1), mi = C(0, -1);
+  const kron = (A, B) => { const K = []; for (let r = 0; r < A.length * B.length; r++) { K.push([]); for (let c = 0; c < A[0].length * B[0].length; c++) K[r].push(cm(A[Math.floor(r / B.length)][Math.floor(c / B[0].length)], B[r % B.length][c % B[0].length])); } return K; };
+  const dag = (A) => A[0].map((_, j) => A.map((r) => cj(r[j])));
+  const X = R([[0, 1], [1, 0]]), Y = R([[0, mi], [i, 0]]), Z = R([[1, 0], [0, -1]]), H = R([[s, s], [s, -s]]), I2 = R([[1, 0], [0, 1]]);
+  const CN = R([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0]]);
+  const vec = (A) => '(' + A.map((r) => fmt(r[0])).join(', ') + ')';
+  add('m5', 'A(3|0>+4i|1>): A, P0, P1', `${1 / Math.sqrt(9 + 16)}, ${9 / 25}, ${16 / 25}`);
+  add('m5', '(|0>+|1>)/2 norm²', 0.25 + 0.25);
+  add('m5', '(√3/2, 1/2): P0, P1', `${3 / 4}, ${1 / 4}`);
+  add('m5', 'twice-as-likely angle from |0> axis, from |1> axis (deg)', `${rad2deg(Math.atan(Math.SQRT2)).toFixed(2)}, ${rad2deg(Math.atan(1 / Math.SQRT2)).toFixed(2)}`);
+  const bloch = (a, b) => { const ph = Math.atan2(a.im, a.re); const ia = C(Math.cos(-ph), Math.sin(-ph)); a = cm(a, ia); b = cm(b, ia); const th = 2 * Math.acos(Math.min(1, a.re)); const phi = (rad2deg(Math.atan2(b.im, b.re)) + 360) % 360; const ab = cm(cj(a), b); return `θ=${rad2deg(th).toFixed(2)}°, φ=${Math.abs(b.re) + Math.abs(b.im) < 1e-12 ? '-' : phi.toFixed(2)}°, n=(${(2 * ab.re).toFixed(3)}, ${(2 * ab.im).toFixed(3)}, ${(a.re ** 2 - (b.re ** 2 + b.im ** 2)).toFixed(3)})`; };
+  add('m5', 'Bloch (|0>+i|1>)/√2', bloch(C(s), C(0, s)));
+  add('m5', 'Bloch (√3/2)|0>+(1/2)|1>', bloch(C(Math.sqrt(3) / 2), C(0.5)));
+  add('m5', 'Bloch |->', bloch(C(s), C(-s)));
+  add('m5', 'θ=120°, φ=0: amplitudes, P1, cosθ', `${Math.cos(deg(60)).toFixed(4)}, ${Math.sin(deg(60)).toFixed(4)}, ${(Math.sin(deg(60)) ** 2).toFixed(4)}, ${Math.cos(deg(120)).toFixed(4)}`);
+  { const th = 0.7, ph = 1.1, a = C(Math.cos(th / 2)), b = C(Math.cos(ph) * Math.sin(th / 2), Math.sin(ph) * Math.sin(th / 2)), v = R([[a], [b]]);
+    const ex = (S) => { const w = mm(S, v); return ca(cm(cj(a), w[0][0]), cm(cj(b), w[1][0])).re; };
+    add('m5', '<σx>,<σy>,<σz> vs sinθcosφ, sinθsinφ, cosθ', `${ex(X).toFixed(5)}=${(Math.sin(th) * Math.cos(ph)).toFixed(5)}, ${ex(Y).toFixed(5)}=${(Math.sin(th) * Math.sin(ph)).toFixed(5)}, ${ex(Z).toFixed(5)}=${Math.cos(th).toFixed(5)}`);
+    // X, Y, Z, H Bloch maps
+    const bv = (u) => { const A = u[0][0], B = u[1][0], ab = cm(cj(A), B); return [2 * ab.re, 2 * ab.im, A.re ** 2 + A.im ** 2 - B.re ** 2 - B.im ** 2].map((x) => x.toFixed(4)).join(', '); };
+    add('m5', 'Bloch n before', bv(v)); add('m5', '  after X (x,−y,−z)', bv(mm(X, v))); add('m5', '  after Y (−x,y,−z)', bv(mm(Y, v))); add('m5', '  after Z (−x,−y,z)', bv(mm(Z, v))); add('m5', '  after H (z,−y,x)', bv(mm(H, v))); }
+  add('m5', 'Y(α,β) with α=1, β=2', vec(mm(Y, col(1, 2))));
+  add('m5', 'X|+>, X|->', `${vec(mm(X, col(s, s)))}, ${vec(mm(X, col(s, -s)))}`);
+  add('m5', 'Z|+>', vec(mm(Z, col(s, s)))); add('m5', '<+|->', s * s - s * s);
+  add('m5', 'H|0>, H|1>', `${vec(mm(H, col(1, 0)))}, ${vec(mm(H, col(0, 1)))}`);
+  add('m5', 'H†H', M(mm(dag(H), H))); add('m5', 'ZH', M(mm(Z, H))); add('m5', 'HZH', M(mm(H, mm(Z, H)))); add('m5', 'HXH', M(mm(H, mm(X, H))));
+  add('m5', 'X², Y², Z²', `${M(mm(X, X))} ${M(mm(Y, Y))} ${M(mm(Z, Z))}`);
+  { const Tg = R([[1, 0], [0, C(Math.cos(Math.PI / 4), Math.sin(Math.PI / 4))]]); const T2 = mm(Tg, Tg); add('m5', 'T², T⁴', `${M(T2)} ${M(mm(T2, T2))}`); }
+  add('m5', '|+>⊗|+>', vec(kron(col(s, s), col(s, s))));
+  add('m5', 'ad−bc: |+>|+>, (|00>+|01>)/√2, Φ+, Ψ+, Ψ−', [0.25 - 0.25, s * 0 - s * 0, s * s - 0, 0 - s * s, 0 - s * -s].map((x) => +x.toFixed(4)).join(', '));
+  add('m5', '<Φ+|Φ->', s * s - s * s);
+  add('m5', 'CNOT (a,b,c,d)=(1,2,3,4)', vec(mm(CN, col(1, 2, 3, 4)))); add('m5', 'CNOT²', M(mm(CN, CN)));
+  const HI = kron(H, I2);
+  for (const [lab, v] of [['00', col(1, 0, 0, 0)], ['01', col(0, 1, 0, 0)], ['10', col(0, 0, 1, 0)], ['11', col(0, 0, 0, 1)]]) { const v1 = mm(HI, v); add('m5', `|${lab}> → H⊗I → CNOT`, `${vec(v1)} → ${vec(mm(CN, v1))}`); }
+  add('m5', 'CNOT (|0>+|1>)|0>/√2', vec(mm(CN, kron(col(s, s), col(1, 0)))));
+}
+
 const want = process.argv.slice(2);
 for (const [m, lines] of Object.entries(out)) if (!want.length || want.includes(m)) console.log('## ' + m + '\n' + lines.join('\n'));
 module.exports = out;

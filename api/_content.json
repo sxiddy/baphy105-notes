@@ -31,6 +31,14 @@
    "free": false,
    "topics": 7,
    "questions": 0
+  },
+  {
+   "id": "m5",
+   "num": "05",
+   "title": "Elements of Quantum Computing",
+   "free": false,
+   "topics": 10,
+   "questions": 0
   }
  ],
  "papers": []
