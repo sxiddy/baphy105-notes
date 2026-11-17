@@ -176,6 +176,50 @@ add('m1', 'Wien a check: nu_max/T from Planck peak (2.821 kB/h)', (2.821 * kB) /
   add('m5', 'CNOT (|0>+|1>)|0>/√2', vec(mm(CN, kron(col(s, s), col(1, 0)))));
 }
 
+// ---- MCQ banks (content/q-*.js): every numerical option marked correct, recomputed
+{
+  const hb = h / (2 * Math.PI);
+  add('m1', 'MCQ p(700 nm)', h / 700e-9, 'kg m/s');
+  add('m1', 'MCQ Compton shift 90 deg', (h / (me * c)) * (1 - Math.cos(deg(90))), 'm');
+  { const l = h * c / (90e3 * e), l2 = l + (h / (me * c)) * 0.5; add('m1', 'MCQ 90 keV at 60 deg: E prime', h * c / l2 / e / 1e3, 'keV'); }
+  add('m1', 'MCQ YDSE electron lambda = beta d/D', 0.75e-3 * 2e-6 / 1.5, 'm');
+  add('m1', 'MCQ YDSE second order angle', rad2deg(Math.asin(2 * 650e-9 / 0.25e-3)), 'deg');
+  add('m1', 'MCQ Stefan ratio', (1800 / 1200) ** 4);
+  add('m1', 'MCQ star T', 2.898e-3 / 480e-9, 'K');
+  add('m1', 'MCQ orange quantum', h * 5e14 / e, 'eV');
+  add('m1', 'MCQ electron 150 V', h / Math.sqrt(2 * me * e * 150), 'm');
+  add('m1', 'MCQ proton 5 kV', h / Math.sqrt(2 * mp * e * 5000), 'm');
+  add('m1', 'MCQ A for x(1-x)', Math.sqrt(30));
+  add('m2', 'MCQ det diag(3,-2,-1)', 3 * -2 * -1);
+  add('m2', 'MCQ norm (2,i)', Math.sqrt(5));
+  add('m2', 'MCQ P(e1) for (2+i,1)', 5 / 6);
+  add('m2', 'MCQ a from 2/9 + a²/3 + 4/9 = 1', Math.sqrt(3 * (1 - 6 / 9)));
+  add('m2', 'MCQ (1,2)⊗(3,4,5)', [1, 2].flatMap((a) => [3, 4, 5].map((b) => a * b)).join(', '));
+  add('m2', 'MCQ A⊗B top-right = a12·b12', 2 * 5);
+  add('m2', 'MCQ [1 2;0 1](2,3)', `${1 * 2 + 2 * 3}, ${3}`);
+  add('m2', 'MCQ eig [2 1+i;1-i 3]: (5 ± √(25-16))/2', `${(5 + 3) / 2}, ${(5 - 3) / 2}`);
+  add('m2', 'MCQ eig block [2 -3;2 -5]: (-3 ± √(9+16))/2', `${(-3 + 5) / 2}, ${(-3 - 5) / 2}`);
+  add('m3', 'MCQ die <j>, σ²', `${21 / 6}, ${(91 / 6 - 12.25).toFixed(4)}`);
+  add('m3', 'MCQ <E> weights', `${9 / 25}, ${16 / 25}`);
+  add('m3', 'MCQ <Sz>/ħ', (1 / 3 - 2 / 3) / 2);
+  add('m3', 'MCQ Δp min (Δx 0.1 nm)', hb / 2e-10, 'kg m/s');
+  add('m3', 'MCQ k = p/ħ', 4.5e-24 / hb, '1/m');
+  add('m3', 'MCQ seq SG −z count', 2000 / 8);
+  add('m3', 'MCQ triangle <x²>/a² = 3·(1/30)', 3 / 30);
+  { const Eb = (n, L) => n * n * h * h / (8 * me * L * L); const E0 = Eb(1, 1e-9) / e;
+    add('m4', 'MCQ cube 1 nm: 3E0, 6E0', `${(3 * E0).toFixed(3)}, ${(6 * E0).toFixed(3)} eV`);
+    add('m4', 'MCQ 1 Å box E1', Eb(1, 1e-10) / e, 'eV');
+    add('m4', 'MCQ 2 Å box Δν (n 9-7)', (Eb(9, 2e-10) - Eb(7, 2e-10)) / h, 'Hz');
+    add('m4', 'MCQ P(0..a/4) n=1', 0.25 - 1 / (2 * Math.PI));
+    add('m4', 'MCQ half-box P(E1) = 4/π²', 4 / Math.PI ** 2);
+    const deg14 = [], deg27 = []; for (let a = 1; a <= 6; a++) for (let b = 1; b <= 6; b++) for (let cc = 1; cc <= 6; cc++) { const s = a * a + b * b + cc * cc; if (s === 14) deg14.push(1); if (s === 27) deg27.push(1); }
+    add('m4', 'MCQ degeneracy 14E0, 27E0', `${deg14.length}, ${deg27.length}`);
+    const k2 = Math.sqrt(2 * me * 5 * e) / hb; add('m4', 'MCQ T approx 16(E/U)(1-E/U)e^{-2k2L}', 4 * Math.exp(-2 * k2 * 0.2e-9)); }
+  add('m5', 'MCQ P(1) for (3|0>+4i|1>)/5', 16 / 25);
+  add('m5', 'MCQ |+>|+> P(11)', 0.5 ** 2);
+  add('m5', 'MCQ θ for cos(θ/2)=√3/2', rad2deg(2 * Math.acos(Math.sqrt(3) / 2)), 'deg');
+}
+
 const want = process.argv.slice(2);
 for (const [m, lines] of Object.entries(out)) if (!want.length || want.includes(m)) console.log('## ' + m + '\n' + lines.join('\n'));
 module.exports = out;

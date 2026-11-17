@@ -6,7 +6,7 @@
    "title": "Wave-Particle Duality",
    "free": true,
    "topics": 7,
-   "questions": 0
+   "questions": 31
   },
   {
    "id": "m2",
@@ -14,7 +14,7 @@
    "title": "Mathematical Foundations of Quantum Mechanics",
    "free": false,
    "topics": 11,
-   "questions": 0
+   "questions": 34
   },
   {
    "id": "m3",
@@ -22,7 +22,7 @@
    "title": "Postulates of Quantum Mechanics",
    "free": false,
    "topics": 6,
-   "questions": 0
+   "questions": 30
   },
   {
    "id": "m4",
@@ -30,7 +30,7 @@
    "title": "Applications of Quantum Mechanics",
    "free": false,
    "topics": 7,
-   "questions": 0
+   "questions": 32
   },
   {
    "id": "m5",
@@ -38,7 +38,7 @@
    "title": "Elements of Quantum Computing",
    "free": false,
    "topics": 10,
-   "questions": 0
+   "questions": 39
   }
  ],
  "papers": []

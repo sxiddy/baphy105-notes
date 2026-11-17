@@ -6,7 +6,9 @@
     "chunks": [
       "1a"
     ],
-    "questions": [],
+    "questions": [
+      "q-1a.js"
+    ],
     "syllabus": "Dual nature of radiation, Young's double slit experiment, blackbody radiation, Planck's hypothesis, de Broglie hypothesis, wavefunction, Stern-Gerlach experiment.",
     "free": true,
     "syllabusRows": [
@@ -68,7 +70,9 @@
     "chunks": [
       "2a"
     ],
-    "questions": [],
+    "questions": [
+      "q-2a.js"
+    ],
     "syllabus": "Linear vector space, basis vectors, orthonormal sets, Hilbert space, Dirac notation, inner and outer products, tensor product, linear operators, Hermitian, unitary and projection operators, eigenvalues and eigenvectors, Pauli matrices, commutation relations.",
     "free": false,
     "syllabusRows": [
@@ -152,7 +156,9 @@
     "chunks": [
       "3a"
     ],
-    "questions": [],
+    "questions": [
+      "q-3a.js"
+    ],
     "syllabus": "Observables, expectation values, measurement in quantum mechanics, sequential Stern-Gerlach experiment, time-dependent and time-independent Schrödinger equations, numerical problems.",
     "free": false,
     "syllabusRows": [
@@ -207,7 +213,9 @@
     "chunks": [
       "4a"
     ],
-    "questions": [],
+    "questions": [
+      "q-4a.js"
+    ],
     "syllabus": "Particle in a one-dimensional potential well, extension to three-dimensional wells, energy eigenvalues and eigenfunctions, degeneracy, quantum tunnelling, tunnelling probability, numerical problems.",
     "free": false,
     "syllabusRows": [
@@ -269,7 +277,9 @@
     "chunks": [
       "5a"
     ],
-    "questions": [],
+    "questions": [
+      "q-5a.js"
+    ],
     "syllabus": "Introduction to qubits, single qubit states, the Bloch sphere, two-qubit systems, quantum entanglement, Bell states, single qubit gates, Pauli and Hadamard gates, two-qubit gates (CNOT), generation of entangled states.",
     "free": false,
     "syllabusRows": [
