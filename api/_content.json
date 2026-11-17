@@ -23,6 +23,14 @@
    "free": false,
    "topics": 6,
    "questions": 0
+  },
+  {
+   "id": "m4",
+   "num": "04",
+   "title": "Applications of Quantum Mechanics",
+   "free": false,
+   "topics": 7,
+   "questions": 0
   }
  ],
  "papers": []

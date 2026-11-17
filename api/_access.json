@@ -3,17 +3,20 @@
   "figs.js",
   "chunk-1a.js",
   "chunk-2a.js",
-  "chunk-3a.js"
+  "chunk-3a.js",
+  "chunk-4a.js"
  ],
  "proFiles": [
   "pro-1a.js",
   "pro-2a.js",
-  "pro-3a.js"
+  "pro-3a.js",
+  "pro-4a.js"
  ],
  "freeModules": [
   "m1",
   "m2",
-  "m3"
+  "m3",
+  "m4"
  ],
  "paidModules": [
   {
@@ -30,6 +33,11 @@
    "id": "m3",
    "num": "03",
    "title": "Postulates of Quantum Mechanics"
+  },
+  {
+   "id": "m4",
+   "num": "04",
+   "title": "Applications of Quantum Mechanics"
   }
  ],
  "fileModule": {
@@ -38,6 +46,8 @@
   "chunk-2a.js": "m2",
   "pro-2a.js": "m2",
   "chunk-3a.js": "m3",
-  "pro-3a.js": "m3"
+  "pro-3a.js": "m3",
+  "chunk-4a.js": "m4",
+  "pro-4a.js": "m4"
  }
 }

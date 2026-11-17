@@ -109,6 +109,28 @@ add('m1', 'Wien a check: nu_max/T from Planck peak (2.821 kB/h)', (2.821 * kB) /
   add('m3', 'B equal weights (1+2+3)/3', 2);
 }
 
+// ---- Module 4
+{
+  const hb = h / (2 * Math.PI), eV = e, num = (f, a, b, n = 200000) => { let s = 0; const d = (b - a) / n; for (let k = 0; k < n; k++) s += f(a + (k + 0.5) * d); return s * d; };
+  const Ebox = (n, L, m = me) => (n * n * h * h) / (8 * m * L * L);
+  add('m4', 'E1 electron, 1 nm box', Ebox(1, 1e-9) / eV, 'eV'); add('m4', 'E1 electron, 1 Å box', Ebox(1, 1e-10) / eV, 'eV');
+  add('m4', 'E1 electron, 2 Å box', Ebox(1, 2e-10) / eV, 'eV');
+  add('m4', 'FAT 2 Å box: n=9 minus n=7 energy', (Ebox(9, 2e-10) - Ebox(7, 2e-10)) / eV, 'eV');
+  add('m4', 'FAT 2 Å box: Δν = 32h/(8mL²)', (Ebox(9, 2e-10) - Ebox(7, 2e-10)) / h, 'Hz');
+  add('m4', 'P(0..L/4), n=1 = 1/4 − 1/2π', 0.25 - 1 / (2 * Math.PI)); add('m4', 'numeric check', num((x) => 2 * Math.sin(Math.PI * x) ** 2, 0, 0.25));
+  add('m4', 'P(0..L/4), n=2 = 1/4', num((x) => 2 * Math.sin(2 * Math.PI * x) ** 2, 0, 0.25));
+  add('m4', 'P(L/4..3L/4), n=1 = 1/2 + 1/π', num((x) => 2 * Math.sin(Math.PI * x) ** 2, 0.25, 0.75));
+  add('m4', 'orthonormal ∫ψ1ψ2 (a=1)', num((x) => 2 * Math.sin(Math.PI * x) * Math.sin(2 * Math.PI * x), 0, 1));
+  { const c1 = (8 * Math.sqrt(15)) / Math.PI ** 3; add('m4', 'Prob1 c1 = 8√15/π³', c1); add('m4', 'Prob1 |c1|²', c1 * c1); add('m4', 'Prob1 c1 numeric', num((x) => Math.sqrt(2) * Math.sin(Math.PI * x) * Math.sqrt(30) * x * (1 - x), 0, 1)); let S = 0; for (let n = 1; n < 400; n += 2) S += (64 * 15) / (n * Math.PI) ** 6; add('m4', 'Prob1 Σ|cn|²', S); }
+  { const c = (n) => (2 / (n * Math.PI)) * (1 - Math.cos((n * Math.PI) / 2)); add('m4', 'Prob2 c1..c5', [1, 2, 3, 4, 5].map((n) => c(n).toFixed(4)).join(', ')); add('m4', 'Prob2 c1 numeric', num((x) => Math.sqrt(2) * Math.sqrt(2) * Math.sin(Math.PI * x), 0, 0.5)); add('m4', 'Prob2 P(E1) = 4/π²', 4 / Math.PI ** 2); }
+  { const lv = {}; for (let a = 1; a <= 4; a++) for (let b = 1; b <= 4; b++) for (let c = 1; c <= 4; c++) { const s2 = a * a + b * b + c * c; (lv[s2] = lv[s2] || []).push(`${a}${b}${c}`); } add('m4', '3D levels (n²sum: count)', Object.keys(lv).map(Number).sort((x, y) => x - y).slice(0, 7).map((k) => `${k}:${lv[k].length}`).join(' ')); }
+  const tunnel = (E, U, L) => { const k2 = Math.sqrt(2 * me * (U - E) * eV) / hb; const exact = 1 / (1 + (U * U * Math.sinh(k2 * L) ** 2) / (4 * E * (U - E))); const approx = 16 * (E / U) * (1 - E / U) * Math.exp(-2 * k2 * L); return { k2, exact, approx, bare: Math.exp(-2 * k2 * L) }; };
+  { const t = tunnel(5, 10, 0.2e-9); add('m4', 'FAT 5 eV, 10 eV, 0.2 nm: k2', t.k2, '1/m'); add('m4', '  2 k2 L', 2 * t.k2 * 0.2e-9); add('m4', '  T exact', t.exact); add('m4', '  T ≈ 16(E/U)(1−E/U)e^{−2k2L}', t.approx); add('m4', '  T ≈ e^{−2k2L}', t.bare); }
+  add('m4', 'Two barriers: T2 = T1² for double width (bare exponential)', 0.1 ** 2);
+  add('m4', 'Cube 1 nm: 3E0, 6E0', `${(3 * Ebox(1, 1e-9) / eV).toFixed(3)}, ${(6 * Ebox(1, 1e-9) / eV).toFixed(3)} eV`); add('m4', 'a,a,2a: (1,1,2) and (2,1,1) sums', `${1 + 1 + 1}, ${4 + 1 + 0.25}`);
+  { const k = Math.sqrt(2 * me * 4 * eV) / hb; add('m4', 'STM φ = 4 eV: k2', k, '1/m'); add('m4', 'STM current ratio for 0.1 nm', Math.exp(2 * k * 0.1e-9)); }
+}
+
 const want = process.argv.slice(2);
 for (const [m, lines] of Object.entries(out)) if (!want.length || want.includes(m)) console.log('## ' + m + '\n' + lines.join('\n'));
 module.exports = out;
