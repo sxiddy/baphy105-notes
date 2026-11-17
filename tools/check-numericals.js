@@ -85,6 +85,30 @@ add('m1', 'Wien a check: nu_max/T from Planck peak (2.821 kB/h)', (2.821 * kB) /
   add('m2', '∫ e^{-2x^2} dx = √(π/2)', Math.sqrt(Math.PI / 2));
 }
 
+// ---- Module 3
+{
+  const hb = h / (2 * Math.PI), num = (f, a, b, n = 200000) => { let s = 0; const d = (b - a) / n; for (let k = 0; k < n; k++) s += f(a + (k + 0.5) * d); return s * d; };
+  const ages = [[14, 1], [15, 1], [16, 3], [22, 2], [24, 2], [25, 5]], N = ages.reduce((s, a) => s + a[1], 0);
+  const m1_ = ages.reduce((s, a) => s + a[0] * a[1], 0) / N, m2_ = ages.reduce((s, a) => s + a[0] * a[0] * a[1], 0) / N;
+  add('m3', 'ages N', N); add('m3', 'ages <j>', m1_); add('m3', 'ages <j^2> (6434/14)', m2_); add('m3', 'ages variance (130/7)', m2_ - m1_ ** 2); add('m3', 'ages sigma', Math.sqrt(m2_ - m1_ ** 2));
+  add('m3', 'die <j>', 3.5); add('m3', 'die <j^2> (91/6)', 91 / 6); add('m3', 'die variance (35/12)', 91 / 6 - 12.25);
+  add('m3', 'Gaussian 1/√π e^-x² : norm', num((x) => Math.exp(-x * x) / Math.sqrt(Math.PI), -10, 10)); add('m3', 'Gaussian <x^2>', num((x) => x * x * Math.exp(-x * x) / Math.sqrt(Math.PI), -10, 10));
+  { const a = 1, psi2 = (x) => (3 / (2 * a ** 3)) * (a - Math.abs(x)) ** 2; add('m3', 'triangle norm (a=1)', num(psi2, -1, 1)); add('m3', 'triangle <x^2> (a=1) = a²/10', num((x) => x * x * psi2(x), -1, 1)); }
+  add('m3', 'Ex4 <Sz>/ħ = (1/3 - 2/3)/2', (1 / 3 - 2 / 3) / 2);
+  add('m3', 'Ex5 <A> for [2 1;1 3], (1,1)/√2', (2 + 1 + 1 + 3) / 2);
+  add('m3', 'CAT <A> for [1 i;-i 1], (1,1)/√2: ½[(1+i)+(1-i)]', 0.5 * 2);
+  add('m3', 'P2 3σx+4σz eigen: λ^2 = 9+16', Math.sqrt(9 + 16));
+  add('m3', 'P2 λ=-5 vector (1,-3): check 4·1+3·(-3), 3·1-4·(-3)', `${4 - 9}, ${3 + 12}`);
+  add('m3', 'P4 <E> weights 9/25, 16/25', `${9 / 25}, ${16 / 25}`);
+  add('m3', 'P5 A e^-2|x|: norm with A=1', num((x) => Math.exp(-2 * Math.abs(x)), -30, 30)); add('m3', 'P5 <x^2>', num((x) => x * x * Math.exp(-2 * Math.abs(x)), -30, 30));
+  add('m3', 'ħ = h/2π', hb, 'J s');
+  add('m3', 'P6 Δp ≥ ħ/(2·1e-10)', hb / 2e-10, 'kg m/s');
+  { const p = 4.5e-24, k = p / hb, E = p * p / (2 * 9.11e-31), w = E / hb; add('m3', 'P9 k', k, '1/m'); add('m3', 'P9 E', E, 'J'); add('m3', 'P9 E in eV', E / e, 'eV'); add('m3', 'P9 ω', w, 'rad/s'); }
+  add('m3', 'Seq SG: 2000 → +z → +x → +z', `${2000 / 2}, ${2000 / 4}, ${2000 / 8}`);
+  { const A = 1, B = 3; /* B = 3iA */ add('m3', 'P3 B=3iA: e^{ikx} coeff A/2 + B/2i, e^{-ikx} coeff A/2 - B/2i', `${A / 2 + B / 2}, ${A / 2 - B / 2}`); }
+  add('m3', 'B equal weights (1+2+3)/3', 2);
+}
+
 const want = process.argv.slice(2);
 for (const [m, lines] of Object.entries(out)) if (!want.length || want.includes(m)) console.log('## ' + m + '\n' + lines.join('\n'));
 module.exports = out;

@@ -144,5 +144,60 @@
         ]
       }
     ]
+  },
+  {
+    "id": "m3",
+    "num": "03",
+    "title": "Postulates of Quantum Mechanics",
+    "chunks": [
+      "3a"
+    ],
+    "questions": [],
+    "syllabus": "Observables, expectation values, measurement in quantum mechanics, sequential Stern-Gerlach experiment, time-dependent and time-independent Schrödinger equations, numerical problems.",
+    "free": false,
+    "syllabusRows": [
+      {
+        "n": "1",
+        "text": "Observables",
+        "topics": [
+          "m3-observables"
+        ]
+      },
+      {
+        "n": "2",
+        "text": "Expectation values",
+        "topics": [
+          "m3-expectation"
+        ]
+      },
+      {
+        "n": "3",
+        "text": "Measurement in Quantum Mechanics",
+        "topics": [
+          "m3-measurement"
+        ]
+      },
+      {
+        "n": "4–5",
+        "text": "Sequential Stern Gerlach Experiment",
+        "topics": [
+          "m3-seq-sg"
+        ]
+      },
+      {
+        "n": "6",
+        "text": "Time dependent Schrödinger equation",
+        "topics": [
+          "m3-tdse"
+        ]
+      },
+      {
+        "n": "7–8",
+        "text": "Time independent Schrödinger equation; numerical problems",
+        "topics": [
+          "m3-tise"
+        ]
+      }
+    ]
   }
 ]
