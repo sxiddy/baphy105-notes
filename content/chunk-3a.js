@@ -232,6 +232,7 @@ CHUNK({
 <div class="result">+ℏ/2 along x (state |+x⟩) and −ℏ/2 (state |−x⟩), each with probability ½.</div></div>` },
         { title: 'z → x → z, stage by stage', html: `
 <figure data-fig="m3-seq-sg"></figure>
+<div data-viz="seq-sg"></div>
 <ol>
 <li><b>First SG along z:</b> an unpolarised beam (say 2000 atoms) splits into |+z⟩ and |−z⟩, about 1000 each. The |−z⟩ beam is blocked.</li>
 <li><b>Second SG along x:</b> the 1000 atoms in |+z⟩ split into |+x⟩ and |−x⟩, about 500 each (probability ½ each). Keep |+x⟩.</li>

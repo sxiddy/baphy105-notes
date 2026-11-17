@@ -25,6 +25,7 @@ CHUNK({
 <div class="note exam"><p>The 10-mark question “derive energy eigenvalues and eigenfunctions of a particle in a 1D box” needs: potential with sketch, TISE, general solution, both boundary conditions, ka = nπ, Eₙ, normalisation, ψₙ, and the level/probability diagram. If the box is 0 ≤ x ≤ 3L, put a = 3L: Eₙ = n²π²ℏ²/18mL², ψₙ = √(2/3L) sin(nπx/3L).</p></div>` },
         { title: 'Levels and densities', html: `
 <figure data-fig="m4-box"></figure>
+<div data-viz="box-levels"></div>
 <ul>
 <li><b>Ground state</b> n = 1: E₁ = π²ℏ²/2ma² = h²/8ma². It is <b>not zero</b>: a confined particle can never be at rest (zero-point energy, linked to Δx Δp ≥ ℏ/2).</li>
 <li><b>First excited</b> n = 2: E₂ = 4E₁. <b>Second excited</b> n = 3: E₃ = 9E₁. The n-th eigenfunction is the (n − 1)-th excited state.</li>
@@ -213,6 +214,7 @@ CHUNK({
 <p class="lead">Classically, a particle with energy E meeting a barrier of height U > E is always reflected. Quantum mechanically its wavefunction leaks into the barrier, so there is a <b>finite probability</b> of finding it on the far side: <b>tunnelling</b>.</p>
 <div class="eq">V = 0 (x &lt; 0, region I);  V = U (0 ≤ x ≤ L, region II);  V = 0 (x &gt; L, region III);  E &lt; U</div>
 <figure data-fig="m4-tunnel"></figure>
+<div data-viz="tunnel"></div>
 <p>TISE in each region: d²ψ/dx² + (2m/ℏ²)(E − V)ψ = 0.</p>
 <ul>
 <li><b>Region I:</b> d²ψ/dx² + k₁²ψ = 0, k₁ = √(2mE)/ℏ. ψ<sub>I</sub> = e<sup>ik₁x</sup> + r e<sup>−ik₁x</sup>: incident plus reflected wave (r = reflection amplitude).</li>

@@ -24,7 +24,10 @@
   "qa-4a.js",
   "pro-5a.js",
   "qa-5a.js",
-  "papers-pro.js"
+  "papers-pro.js",
+  "viz-m3.js",
+  "viz-m4.js",
+  "viz-m5.js"
  ],
  "freeModules": [
   "m1",
@@ -80,6 +83,9 @@
   "chunk-5a.js": "m5",
   "pro-5a.js": "m5",
   "q-5a.js": "m5",
-  "qa-5a.js": "m5"
+  "qa-5a.js": "m5",
+  "viz-m3.js": "m3",
+  "viz-m4.js": "m4",
+  "viz-m5.js": "m5"
  }
 }

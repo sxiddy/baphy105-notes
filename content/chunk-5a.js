@@ -132,6 +132,7 @@ CHUNK({
         { title: 'Geometry', html: `
 <p class="lead">Since a qubit state has exactly two real parameters, it can be drawn as a point on the surface of a unit sphere, the <b>Bloch sphere</b>.</p>
 <figure data-fig="m5-bloch"></figure>
+<div data-viz="bloch"></div>
 <ul>
 <li><b>θ</b> is the polar angle from the +z axis, 0 ≤ θ ≤ π. <b>φ</b> is the azimuthal angle about z, measured from the x axis, 0 ≤ φ &lt; 2π.</li>
 <li>North pole (θ = 0): |0⟩. South pole (θ = π): |1⟩. These are the computational basis states.</li>
