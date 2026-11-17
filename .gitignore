@@ -8,3 +8,5 @@ publish/
 .claude/LOCK
 src/vtop/
 src/papers/
+
+.vercel
