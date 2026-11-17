@@ -279,7 +279,8 @@ CHUNK({
 <li>Predicts <b>zero energy at very high frequencies</b>, solving the ultraviolet catastrophe.</li>
 </ul>
 <p>Planck received the <b>Nobel Prize in 1918</b> for the discovery of energy quanta. It was the <b>first step toward quantum theory</b>.</p>
-<p>Both <b>Wien’s displacement law</b> (find the peak of the curve) and the <b>Stefan–Boltzmann law</b> (integrate over all frequencies) can be derived from Planck’s law.</p>` },
+<p>Both <b>Wien’s displacement law</b> (find the peak of the curve) and the <b>Stefan–Boltzmann law</b> (integrate over all frequencies) can be derived from Planck’s law.</p>
+<div class="worked"><div class="solve"><div class="eq">U = ∫<sub>0</sub><sup>∞</sup> u(ν) dν = (8πh/c<sup>3</sup>) ∫<sub>0</sub><sup>∞</sup> ν<sup>3</sup> dν/(e<sup>hν/k<sub>B</sub>T</sup> − 1)</div><div class="eq">Put x = hν/k<sub>B</sub>T: U = (8πk<sub>B</sub><sup>4</sup>T<sup>4</sup>/h<sup>3</sup>c<sup>3</sup>) ∫<sub>0</sub><sup>∞</sup> x<sup>3</sup> dx/(e<sup>x</sup> − 1), and the integral is π<sup>4</sup>/15</div><div class="eq">U = (8π<sup>5</sup>k<sub>B</sub><sup>4</sup>/15h<sup>3</sup>c<sup>3</sup>) T<sup>4</sup> = 7.56 × 10<sup>−16</sup> T<sup>4</sup> J m<sup>−3</sup></div></div><div class="result"><p>U ∝ T<sup>4</sup>; the power per unit area (c/4)U = σT<sup>4</sup> with σ = 2π<sup>5</sup>k<sub>B</sub><sup>4</sup>/15h<sup>3</sup>c<sup>2</sup> = 5.67 × 10<sup>−8</sup> W m<sup>−2</sup> K<sup>−4</sup> (asked in CAT-1)</p></div></div>` },
         { title: 'Postulates', html: `
 <p class="lead">Planck’s formula rests on the idea that energy is exchanged in <b>lumps</b>, not continuously.</p>
 <ol>

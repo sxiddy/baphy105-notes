@@ -220,6 +220,49 @@ add('m1', 'Wien a check: nu_max/T from Planck peak (2.821 kB/h)', (2.821 * kB) /
   add('m5', 'MCQ θ for cos(θ/2)=√3/2', rad2deg(2 * Math.acos(Math.sqrt(3) / 2)), 'deg');
 }
 
+// ---- Past papers on the site (content/papers-*.js): every number in a model answer
+{
+  const hb = h / (2 * Math.PI);
+  // CAT-1 F1 Fall 2026-27 (constants as printed: me = 9.109e-31, mp = 1.673e-27)
+  const meP = 9.109e-31, mpP = 1.673e-27, lc = h / (meP * c);
+  add('pp', 'C1F26 Q3a Compton wavelength h/mc', lc, 'm');
+  add('pp', 'C1F26 Q3a shift at 60', lc * 0.5 * 1e12, 'pm'); add('pp', 'C1F26 Q3a lambda prime', 142 + lc * 0.5 * 1e12, 'pm');
+  add('pp', 'C1F26 Q3a max shift (180)', 2 * lc * 1e12, 'pm');
+  { const le = h / Math.sqrt(2 * meP * e * 5000), lp = h / Math.sqrt(2 * mpP * e * 5000);
+    add('pp', 'C1F26 Q3b electron 5 kV', le, 'm'); add('pp', 'C1F26 Q3b proton 5 kV', lp, 'm'); add('pp', 'C1F26 Q3b ratio le/lp = sqrt(mp/me)', le / lp); }
+  add('pp', 'C1F26 Q4a Δv = ħ/(2 m Δx), 70 kg, 1 m', hb / (2 * 70 * 1), 'm/s');
+  add('pp', 'C1F26 Q4b ∫x³/(e^x−1) = π⁴/15', Math.PI ** 4 / 15);
+  add('pp', 'C1F26 Q4b a = 8π⁵kB⁴/(15h³c³)', (8 * Math.PI ** 5 * kB ** 4) / (15 * h ** 3 * c ** 3), 'J m-3 K-4');
+  add('pp', 'C1F26 Q4b σ = (c/4)a', (c / 4) * (8 * Math.PI ** 5 * kB ** 4) / (15 * h ** 3 * c ** 3), 'W m-2 K-4');
+  // CAT-1 C1 Winter 2025-26
+  { const l = 0.01e-9, d = 2 * h / (me * c), l2 = l + d, K = h * c / l - h * c / l2;
+    add('pp', 'C1W26 Q3a max shift', d, 'm'); add('pp', 'C1W26 Q3a lambda prime', l2, 'm'); add('pp', 'C1W26 Q3a Kmax', K, 'J'); add('pp', 'C1W26 Q3a Kmax keV', K / e / 1e3, 'keV');
+    add('pp', 'C1W26 Q3a photon energy keV', h * c / l / e / 1e3, 'keV'); }
+  add('pp', 'C1W26 Q3b ∫(x+3x²)² = 1/3+3/2+9/5', 1 / 3 + 3 / 2 + 9 / 5); add('pp', 'C1W26 Q3b A = √(30/109)', Math.sqrt(30 / 109));
+  // CAT-2 F1 Fall 2026-27
+  { const C = (re, im = 0) => ({ re, im }), cm = (a, b) => C(a.re * b.re - a.im * b.im, a.re * b.im + a.im * b.re), ca = (a, b) => C(a.re + b.re, a.im + b.im), cj = (a) => C(a.re, -a.im);
+    const f = (z) => `${+z.re.toFixed(4)}${z.im < 0 ? '−' : '+'}${Math.abs(+z.im.toFixed(4))}i`;
+    const psi = [C(0, -3), C(2, 1), C(4)], chi = [C(2), C(0, -1), C(2, -3)];
+    add('pp', 'C2F26 Q2b <chi|psi>', f(psi.reduce((s, x, k) => ca(s, cm(cj(chi[k]), x)), C(0))));
+    add('pp', 'C2F26 Q2b |psi><chi|', psi.map((a) => chi.map((b) => f(cm(a, cj(b)))).join(', ')).join(' ; '));
+    add('pp', 'C2F26 Q5b norm² 1/5 + 1/10', 1 / 5 + 1 / 10); add('pp', 'C2F26 Q5b <A> = (1/5 + 8/10)/(3/10)', (1 / 5 + 8 / 10) / (3 / 10));
+    add('pp', 'C2F26 Q5b as printed (no normalising) 1/5 + 8/10', 1 / 5 + 8 / 10); }
+  // CAT-2 F2 Winter 2025-26: a, probabilities, <A>, eigenvalues (already in m2/m3 lines); box of width 3L
+  add('pp', 'C2W26 Q4a P = 2/9, 1/3, 4/9 (sum)', 2 / 9 + 1 / 3 + 4 / 9);
+  // FAT C1 Winter 2025-26
+  { const Eb = (n, m, L) => n * n * h * h / (8 * m * L * L);
+    add('pp', 'FW26 Q9b marble E1,E2,E3', [1, 2, 3].map((n) => Eb(n, 0.2, 0.02).toExponential(3)).join(', '), 'J');
+    add('pp', 'FW26 Q9b m=1e-31, L=5 nm E1,E2,E3', [1, 2, 3].map((n) => Eb(n, 1e-31, 5e-9).toExponential(3)).join(', '), 'J');
+    add('pp', 'FW26 Q9b same in eV', [1, 2, 3].map((n) => (Eb(n, 1e-31, 5e-9) / e).toFixed(4)).join(', '), 'eV'); }
+  add('pp', 'FW26 Q9a A = √(2a), <x> = 1/(2a) at a = 1: ∫2e^{-2x}, ∫2x e^{-2x}', `${(() => { let s = 0, t = 0; for (let k = 0; k < 400000; k++) { const x = (k + 0.5) * 1e-4; s += 2 * Math.exp(-2 * x) * 1e-4; t += 2 * x * Math.exp(-2 * x) * 1e-4; } return s.toFixed(4) + ', ' + t.toFixed(4); })()}`);
+  // FAT D1 Fall 2025-26
+  add('pp', 'FD25 Q2 eig [1 -2; 2 1]: 1 ± 2i (trace 2, det 5)', `${1 + 1}, ${1 * 1 + 2 * 2}`);
+  { const C = (re, im = 0) => ({ re, im }), cm = (a, b) => C(a.re * b.re - a.im * b.im, a.re * b.im + a.im * b.re), ca = (a, b) => C(a.re + b.re, a.im + b.im), cj = (a) => C(a.re, -a.im);
+    const psi = [C(1, 1), C(2), C(0, -1)], phi = [C(0, 1), C(1, -1), C(2)]; const z = psi.reduce((s, x, k) => ca(s, cm(cj(x), phi[k])), C(0)); add('pp', 'FD25 Q2(OR)iii <psi|phi>', `${z.re}+${z.im}i`); }
+  add('pp', 'FD25 Q3b T2 = 0.1^2', 0.1 ** 2);
+  add('pp', 'FD25 Q5b SG counts I→II→III→IV', `${2000 / 2}, ${2000 / 4}, ${2000 / 4}, ${2000 / 8} + ${2000 / 8}`);
+}
+
 const want = process.argv.slice(2);
 for (const [m, lines] of Object.entries(out)) if (!want.length || want.includes(m)) console.log('## ' + m + '\n' + lines.join('\n'));
 module.exports = out;

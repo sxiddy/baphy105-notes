@@ -192,7 +192,7 @@ if (!files.length) { console.error('usage: node tools/validate.js <file...> | --
 
 const g = { topicIds: new Set(), figIds: new Set(), vizUsed: new Map() };
 const target = new Set(files.map((f) => path.resolve(f)));
-const allTopicIds = new Set();
+const allTopicIds = new Set(); const tabCount = {};
 // Load every chunk (for cross-file checks); only report errors for targeted files.
 for (const cf of chunkFiles) {
   const isTarget = target.has(path.resolve(cf));
@@ -215,7 +215,7 @@ for (const cf of chunkFiles) {
     checkChunk(cf, d.chunk, g);
     errors = e0; warnings = w0; console.log = saveLog;
   }
-  for (const t of d.chunk.topics || []) allTopicIds.add(t.id);
+  for (const t of d.chunk.topics || []) { allTopicIds.add(t.id); tabCount[t.id] = (t.tabs || []).length; }
 }
 const seenQ = new Set();
 for (const f of files) {
@@ -253,6 +253,8 @@ for (const f of files) {
         for (const k of ['prompt', 'passage', 'answer']) if (q[k] != null) checkHtml(`${w} ${k}`, q[k], ctx);
         (q.parts || []).forEach((x, i) => checkHtml(`${w} part ${i + 1}`, x.text, ctx));
         for (const id of q.topics || []) if (!allTopicIds.has(id)) err(w, `unknown topic "${id}"`);
+        if (p.kind === 'actual' && /free/.test(base) && !(q.notes || []).length) err(w, 'notes[] (topic.tab refs) required');
+        for (const r of q.notes || []) { const m = /^([a-z0-9-]+)\.(\d+)$/.exec(r); if (!m || !allTopicIds.has(m[1]) || +m[2] >= tabCount[m[1]]) err(w, `bad notes ref "${r}"`); }
       }
     }
     for (const id of Object.keys(d.papers.asked || {})) if (!allTopicIds.has(id)) err(`${base} › asked`, `unknown topic "${id}"`);

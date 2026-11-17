@@ -10,7 +10,8 @@
   "chunk-4a.js",
   "q-4a.js",
   "chunk-5a.js",
-  "q-5a.js"
+  "q-5a.js",
+  "papers-free.js"
  ],
  "proFiles": [
   "pro-1a.js",
@@ -22,7 +23,8 @@
   "pro-4a.js",
   "qa-4a.js",
   "pro-5a.js",
-  "qa-5a.js"
+  "qa-5a.js",
+  "papers-pro.js"
  ],
  "freeModules": [
   "m1",

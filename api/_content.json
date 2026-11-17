@@ -41,5 +41,54 @@
    "questions": 39
   }
  ],
- "papers": []
+ "papers": [
+  {
+   "id": "cat1-f1",
+   "kind": "actual",
+   "title": "CAT-1 · Slot F1+TF1 · 14-08-2026",
+   "sub": "Actual paper · Fall 2026–27",
+   "questions": 8,
+   "access": "free"
+  },
+  {
+   "id": "cat1-c1",
+   "kind": "actual",
+   "title": "CAT-1 · Slot C1+TC1 · 29-01-2026",
+   "sub": "Actual paper · Winter 2025–26 · with answer key",
+   "questions": 8,
+   "access": "free"
+  },
+  {
+   "id": "cat2-f1",
+   "kind": "actual",
+   "title": "CAT-2 · Slot F1+TF1 · 03-10-2026",
+   "sub": "Actual paper · Fall 2026–27 · open book",
+   "questions": 9,
+   "access": "free"
+  },
+  {
+   "id": "cat2-f2",
+   "kind": "actual",
+   "title": "CAT-2 · Slot F2+TF2 · 22-03-2026",
+   "sub": "Actual paper · Winter 2025–26 · open book · with answer key",
+   "questions": 8,
+   "access": "free"
+  },
+  {
+   "id": "fat-c1",
+   "kind": "actual",
+   "title": "FAT · Slot C1+TC1 · April 2026",
+   "sub": "Actual paper · Winter 2025–26 · all modules",
+   "questions": 12,
+   "access": "free"
+  },
+  {
+   "id": "fat-d1",
+   "kind": "actual",
+   "title": "FAT · Slot D1+TD1 · Nov/Dec 2025",
+   "sub": "Actual paper · Fall 2025–26 · Chennai · all modules",
+   "questions": 11,
+   "access": "free"
+  }
+ ]
 }

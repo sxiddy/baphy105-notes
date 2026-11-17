@@ -2337,6 +2337,8 @@ window.__startApp = function () {
     }
     setCrumbs([{ t: 'Home', href: '#home' }, { t: 'Question papers', href: '#papers', hideSm: true }, { t: p.short || p.title }]); setActive('papers');
     document.title = `${p.title} · BAPHY105 Notes`;
+    const notesLinks = (refs) => refs.map((r) => { const [id, i] = r.split('.'); const t = TOPIC[id]; if (!t) return ''; const m = MOD[t.module], tb = t.tabs[+i];
+      return `<a href="#${id}.${+i}">Module ${+m.num} › ${rt(t.short || t.title)}${tb ? ` › ${rt(tb.title)}` : ''}</a>`; }).filter(Boolean).join('<span class="sep"> · </span>');
     const topicLinks = (ids) => (ids || []).filter((id) => TOPIC[id]).map((id) => `<a href="#${id}">${rt(TOPIC[id].short || TOPIC[id].title)}</a>`).join(' · ');
     el.innerHTML = `<div class="eyebrow"><span class="code">${p.kind === 'actual' ? 'Actual paper' : 'Model paper'}</span><span>${esc(p.sub || '')}</span></div>
       <h1 class="h-display">${esc(p.title)}</h1>
@@ -2348,7 +2350,7 @@ window.__startApp = function () {
         ${q.passage ? `<div class="paper-passage">${q.passage}</div>` : ''}
         ${q.parts ? `<ol class="paper-parts">${q.parts.map((x) => `<li>${x.text}${x.marks ? ` <span class="ew-score">(${esc(x.marks)} marks)</span>` : ''}</li>`).join('')}</ol>` : ''}
         ${q.answer ? `<details class="more paper-ans"><summary>Model answer</summary>${q.answer}</details>` : ''}
-        ${q.topics && q.topics.length ? `<p class="paper-rev">Revise: ${topicLinks(q.topics)}</p>` : ''}
+        ${q.notes && q.notes.length ? `<p class="paper-rev paper-notes">Notes: ${notesLinks(q.notes)}</p>` : q.topics && q.topics.length ? `<p class="paper-rev">Revise: ${topicLinks(q.topics)}</p>` : ''}
       </section>`).join('')}
       <p style="margin-top:32px"><a class="btn" href="#papers">${icon('left')}All question papers</a></p>`;
     // the answers reuse the notes' own diagrams; one from a module this student can't open yet shows a lock card instead
