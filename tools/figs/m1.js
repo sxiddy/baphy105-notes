@@ -38,8 +38,8 @@ const axes = (x0, y0, w, h, xl, yl) => L(x0, y0, x0 + w, y0, 'ds', 2.5, ' marker
       + T(60, y + 8, 'wave 1', 'dtb', 22, 'end') + T(60, y + 78, 'wave 2', 'dto', 22, 'end') + T(60, y + 173, 'sum', 'dtg', 22, 'end')
       + L(70, y + 112, 530, y + 112, 'ds3', 1.5, ' stroke-dasharray="6 6"');
   };
-  write('m1-interference', svg(560, panel(70, 0, 'In phase: constructive (bigger wave)') + panel(340, Math.PI, 'Out of phase: destructive (cancel)')
-    .replace(/>sum</, '>sum = 0<')));
+  write('m1-interference', svg(610, panel(70, 0, 'In phase: constructive (bigger wave)') + panel(390, Math.PI, 'Out of phase: destructive (cancel)')
+));
 }
 
 // 3. Young's double slit
@@ -56,7 +56,7 @@ const axes = (x0, y0, w, h, xl, yl) => L(x0, y0, x0 + w, y0, 'ds', 2.5, ' marker
   const pts = [];
   for (let i = 0; i <= 240; i++) { const y = 60 + (300 * i) / 240, u = (y - 210) / 300; const env = Math.exp(-(u * u) * 6); pts.push([430 + 120 * env * Math.cos(Math.PI * u * 7) ** 2, y]); }
   b += P(poly(pts), 'dsg', 3);
-  b += T(560, 216, 'bright', 'dtg', 22, 'end') + T(590, 438, 'bright: Δx = nλ   dark: Δx = (2n+1)λ/2', 'dt', 22, 'end');
+  b += T(600, 195, 'bright', 'dtg', 22, 'end') + T(590, 438, 'bright: Δx = nλ   dark: Δx = (2n+1)λ/2', 'dt', 22, 'end');
   b += L(150, 187, 420, 120, 'ds2', 1.5, ' stroke-dasharray="5 5"') + L(150, 233, 420, 120, 'ds2', 1.5, ' stroke-dasharray="5 5"') + `<circle cx="420" cy="120" r="5" class="dfw"/>` + T(405, 112, 'P', 'dt', 22, 'end');
   write('m1-ydse', svg(460, b));
 }
@@ -80,8 +80,8 @@ const rj = (nu, T) => (8 * Math.PI * nu * nu * kB * T) / c ** 3;
     const nup = 5.88e10 * T_, up = planck(nup, T_), px = x0 + (W * nup) / numax, py = y0 - (H * up) / umax;
     b += `<circle cx="${f1(px)}" cy="${f1(py)}" r="5" class="dfw"/>` + T(f1(px + 10), f1(py - 10), T_ + ' K', tcls[k], 24, 'start');
   });
-  b += T(300, 432, 'Peak ν<tspan dy="6" font-size="18">max</tspan><tspan dy="-6"> ∝ T (Wien); area ∝ T⁴</tspan>', 'dt', 24);
-  write('m1-blackbody', svg(450, b));
+  b += T(300, 452, 'Peak ν<tspan dy="6" font-size="18">max</tspan><tspan dy="-6"> ∝ T (Wien); area ∝ T⁴</tspan>', 'dt', 24);
+  write('m1-blackbody', svg(470, b));
 }
 
 // 5. Ultraviolet catastrophe: Rayleigh–Jeans vs Planck at 1500 K
@@ -93,8 +93,8 @@ const rj = (nu, T) => (8 * Math.PI * nu * nu * kB * T) / c ** 3;
   for (let i = 1; i <= 200; i++) { const nu = (numax * i) / 200; p.push([x0 + (W * nu) / numax, y0 - (H * planck(nu, T_)) / umax]); const ry = y0 - (H * rj(nu, T_)) / umax; if (ry > y0 - H - 10) r.push([x0 + (W * nu) / numax, ry]); }
   b += P(poly(r), 'dsr', 3.5, ' stroke-dasharray="10 6"') + P(poly(p), 'dsb', 3.5);
   b += T(r[r.length - 1][0] + 12, r[r.length - 1][1] + 26, 'Rayleigh–Jeans', 'dtr', 24, 'start') + T(r[r.length - 1][0] + 12, r[r.length - 1][1] + 54, '→ ∞ (ν² rise)', 'dtr', 22, 'start');
-  b += T(400, 330, 'Planck = experiment', 'dtb', 24, 'start') + T(300, 432, 'T = 1500 K: classical theory fails at high ν', 'dt', 24);
-  write('m1-uv-catastrophe', svg(450, b));
+  b += T(560, 245, 'Planck = experiment', 'dtb', 24, 'end') + T(300, 452, 'T = 1500 K: classical theory fails at high ν', 'dt', 24);
+  write('m1-uv-catastrophe', svg(470, b));
 }
 
 // 6. Compton scattering
