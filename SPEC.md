@@ -5,9 +5,11 @@ answers, widgets, quiz…) are split out server-side by `tools/build.js`, so con
 
 | Module | Source | Title |
 |---|---|---|
-| `m1` | `src/m1/m1.pdf` (74 pages, images) + **`src/m1/source-notes.md`** (full transcription, source slips, verified numbers) | Electrical: circuits and machines |
-| `m2` | `src/m2/m2.pdf` (153 pages) + `src/m2/m2.txt` | Electronics and communication |
-| `m4` | `src/m4/m4a.pdf`, `m4b.pdf` + `m4a.txt`, `m4b.txt`, `heads.txt` | Manufacturing, energy, mechanical automation |
+| `m1` | VTOP lecture notes Module 1, Planck/Compton/de Broglie/wavefunction notes (`src/text/vtop__*`) | Wave–particle duality |
+| `m2` | VTOP Module 2 lecture notes, Basics of linear algebra, Pauli matrices | Mathematical foundations of quantum mechanics |
+| `m3` | VTOP Module 3 lecture notes, postulates, expectation values, sequential SG | Postulates of quantum mechanics |
+| `m4` | VTOP Module 4 lecture notes, particle in a box, tunnelling and STM | Applications of quantum mechanics |
+| `m5` | VTOP Module 5 lecture notes | Elements of quantum computing |
 
 Page renders: `src/<m>/pages/pNN.png` (open with Read to see diagrams). Render missing ones with PyMuPDF
 (Python only for rendering into src/; every repo file is written with Node or the Write tool).
@@ -26,7 +28,7 @@ CHUNK({
   module: 'm1',
   topics: [
     {
-      id: 'm1-mesh',                    // unique, kebab-case, prefixed with the module id
+      id: 'm1-ydse',                    // unique, kebab-case, prefixed with the module id
       title: 'Mesh analysis',
       short: 'Mesh analysis',           // sidebar label, <= 24 chars
       blurb: 'One or two plain sentences on what the topic covers.',
@@ -34,23 +36,23 @@ CHUNK({
       tabs: [ { title: 'The idea', html: `<p class="lead">...</p>` } ],   // 3–7 tabs
       flashcards: [ { front: '...?', back: '...' } ],   // 6–12; the first 3 are the free samples, so make them the best
       oneLiners: [ '...' ],                              // 4–10 exam one-liners
-      formulas: [ { name: 'Ohm’s law', html: `V = IR`, note: '...' } ]   // may be []
+      formulas: [ { name: 'de Broglie wavelength', html: `λ = h/p`, note: '...' } ]   // may be []
     }
   ],
   figures: [
-    { id: 'm1-mesh-circuit', src: 'm1/pages/p11.png', crop: null, caption: 'What to notice, one or two sentences.', alt: 'Description for screen readers.' }
+    { id: 'm1-ydse', src: 'm1/pages/p11.png', crop: null, caption: 'What to notice, one or two sentences.', alt: 'Description for screen readers.' }
   ]
 });
 ```
 
 ### Figures: redrawn SVGs
 
-Every meaningful diagram, circuit, graph or table-as-image in the source is **redrawn** as `figs-svg/<figure id>.svg`
+Every meaningful diagram, set-up, graph or table-as-image in the source is **redrawn** as `figs-svg/<figure id>.svg`
 (rules in `figs-svg/README.md`: 600-wide viewBox, transparent, colours only via the dt/ds/df classes, smallest text 22,
 labels 24–26, stack panels vertically, nothing overlapping). In figures[], `src` is the page render the drawing comes
-from (it must exist), `crop` is null. The app adds "Adapted from VIT course slides" under the caption. Place with
-`<figure data-fig="id"></figure>` (once each). Circuits: one resistor style throughout, every element labelled with its
-value, current directions, polarities and node names exactly as in the source. Fix clear source mistakes in the drawing
+from (it must exist), `crop` is null. The app credits the VIT course material under the caption. Place with
+`<figure data-fig="id"></figure>` (once each). Apparatus and plots: every element labelled (source, slits, magnets, axes with units), values
+and state labels (|+z⟩, ψ<sub>n</sub>, E<sub>n</sub>) exactly as in the source. Fix clear source mistakes in the drawing
 and say so in a heads-up note. Look at your SVG: render it to PNG (e.g. headless Chrome, or
 `node tools/figs/phone-preview.js`) and open the PNG with Read before you call it done.
 
@@ -74,7 +76,7 @@ Only these tags: `p h3 h4 b em sub sup br ul ol li table thead tbody tr th td di
 | `<div class="note why">` | Intuition: the reason behind a fact. |
 | `<div class="note exam">` | How this gets asked / what to write in an exam. |
 | `<div class="note trap">` | A common mix-up. |
-| `<div class="note heads-up">` | The slides give a value/statement that differs from the textbook standard. Keep the slide's version in the main text (it's what the exam expects) and explain the standard value here. |
+| `<div class="note heads-up">` | The course material gives a value/statement that differs from the textbook standard. Keep the source's version in the main text (it's what the exam expects) and explain the standard value here. |
 | `<div class="note example">` | A named example / case. |
 | `<div class="worked"><div class="given">…</div><div class="solve">…</div><div class="result">…</div></div>` | Worked numerical: given values, steps (use `<p>` / `.eq` inside), boxed result. |
 | `<div class="mnemonic">` | A memory hook (only if genuinely useful). |
@@ -94,10 +96,10 @@ Write like the sharpest student in the class explaining it to a friend the night
 - Use tables, `.kv`, `.vs`, `.steps`, `.chips` to replace walls of text. A tab should be readable in 1–3 minutes.
 - Banned: "delve", "crucial", "pivotal", "vital role", "landscape", "realm", "harness", "leverage", "seamless", "robust", "unlock", "game-changer", "In summary", "In conclusion", "In essence", "It's worth noting", "It is important to note", "Let's dive", "Moreover", "Furthermore", "Additionally", "not only … but also", "isn't just … it's", rhetorical questions as openers, em-dash (—) asides, emoji, exclamation marks, "Imagine…" openers. Headings/tab titles are plain nouns ("Why lithium", "Charge & discharge"), not clever.
 - Voice: second person is fine ("you'll see", "notice that"). No hedging filler.
-- Electrical formatting: "10 Ω", "230 V", "50 Hz", "1500 rpm"; subscripts V<sub>rms</sub>, I<sub>a</sub>, E<sub>b</sub>; real minus sign −; en dash for ranges; × for multiplication.
+- Physics formatting: "6.626 × 10<sup>−34</sup> J s", "0.071 nm", "5 eV", kets |ψ⟩, bras ⟨φ|, ℏ; subscripts E<sub>n</sub>, k<sub>B</sub>, m<sub>e</sub>; real minus sign −; en dash for ranges; × for multiplication.
 - **Tables only for comparisons** (A vs B). Lists of facts go in lists, `.kv` or `.steps`.
 - Anything beyond the course material (extra depth, a standard value, a real-world link) is labelled **Extra:** — a `details.more` whose summary starts "Extra:", or a paragraph starting <b>Extra:</b>. A short `.note why` that only explains a source fact needs no label.
-- Worked numericals: every number comes from a script check (`node tools/check-m1.js` covers every Module 1 example). Where the source has a slip, keep the source's question, give the correct working, and explain the slip in `.note heads-up`. The known slips are listed in `src/m1/source-notes.md`.
+- Worked numericals: every number comes from a script check (`node tools/check-numericals.js` covers every module, the MCQs and the paper answers). Where the source has a slip, keep the source's question, give the correct working, and explain the slip in `.note heads-up`. Known slips are recorded in heads-up notes and in `src/PAPER-MAP.md`.
 
 ---
 

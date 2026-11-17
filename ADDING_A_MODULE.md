@@ -14,7 +14,7 @@ Add an entry to `content/modules.json`:
   "free": false,
   "chunks": ["H", "I"],
   "questions": "q-M5.js",
-  "syllabus": "One or two sentences from the syllabus slide."
+  "syllabus": "One or two sentences from the syllabus."
 }
 ```
 
@@ -30,7 +30,7 @@ Add an entry to `content/modules.json`:
 | `content/chunk-<X>.js` | topics, tabs, figures, flashcards | `CHUNK({...})`, see SPEC.md §1 |
 | `content/q-M5.js` | scenario questions | `QUESTIONS({...})`, SPEC.md §2 |
 | `content/summary-m5.js` | module summary page | `SUMMARY({...})` |
-| `src/m5/…` | slide renders and images used for figures | from the PPTX/PDF |
+| `src/m5/…` | page renders and images used for figures | from the PPTX/PDF |
 
 Interactive diagrams: put the code for a **free** module in `app/js/viz/`, for a **paid** module in `viz-paid/` (so it is only sent to paying users). Place them in notes with `<div data-viz="id"></div>`.
 
