@@ -49,5 +49,11 @@ module.exports = handle(async (req, res) => {
     if (count > 10) return send(res, 429, { error: 'Thanks! That is a lot of messages in one hour, please try again later.' });
     await store.pipeline([['LPUSH', 'feedback', JSON.stringify(item)], ['LTRIM', 'feedback', 0, 999]]);
   }
+  // tell the owner on Telegram through the Notix store (it holds the bot token); never blocks or fails the student's message
+  const url = process.env.STORE_URL, secret = process.env.STORE_SECRET;
+  if (url && secret) {
+    try { await fetch(url.replace(/\/$/, '') + '/api/notify', { method: 'POST', headers: { Authorization: 'Bearer ' + secret, 'Content-Type': 'application/json' }, body: JSON.stringify({ code: require('./_lib').STORE_CODE, kind: item.kind, topic: item.topic, tab: item.tab, text: item.text, email: item.email, contact: item.contact }), signal: AbortSignal.timeout(4000) }); }
+    catch (e) { /* the message is saved; the owner still sees it in the Notix inbox */ }
+  }
   send(res, 200, { ok: true, stored: store.configured() });
 });

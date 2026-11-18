@@ -45,6 +45,8 @@ module.exports = handle(async (req, res) => {
   if (b.action === 'reset-devices') return requestReset(req, res, u, b);
   if (await hasAccess(req)) return send(res, 200, { ok: true, already: true });
   const given = String(b.paymentId || '').trim();
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) // sells only on Notix: Pro unlocks by itself after paying there
+    return send(res, 404, { error: `No Pro found for ${u.e}. Pro is bought on Notix and unlocks here within a minute of paying, on the same student account. If it has not, use Help? to tell us.` });
 
   const pid = given || await findByEmail(u.e);
   if (!pid) return send(res, 404, { error: `No completed payment found for ${u.e}. If you paid before sign-in was added, enter your payment ID (it starts with pay_).` });

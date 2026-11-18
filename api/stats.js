@@ -27,6 +27,8 @@ const { notixSales, contentStats } = require('./_notix');
 const { paidModules = [], freeModules = [] } = require('./_access.json');
 
 async function paidPayments(pages) {
+  // no Razorpay keys (this subject sells only on Notix): the rest of the admin page still works, just without them
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) return [];
   const from = Math.floor(Date.now() / 1000) - 400 * 24 * 3600, out = [];
   for (let page = 0; page < pages; page++) {
     const list = await razorpay('GET', `/payments?from=${from}&count=100&skip=${page * 100}`);
