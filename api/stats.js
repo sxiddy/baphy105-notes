@@ -303,9 +303,9 @@ module.exports = handle(async (req, res) => {
     const early = (dk || []).map((k) => k.slice(k.indexOf(':') + 1, k.lastIndexOf(':'))).filter(isStudentEmail);
     const allEmails = [...new Set([...Object.keys(first), ...Object.keys(paidBy), ...Object.keys(freeBy), ...early, ...Object.keys(nxBy)])].filter(isStudentEmail); // not the Razorpay reviewer account
     studentsTotal = allEmails.length;
-    // only the 15 most recently active students: device counts cost 2 store requests per student (free tier is 500k/month)
+    // every student, most recently active first (on Turso the device counts cost almost nothing)
     const lastOf = (e) => seen[e] || login[e] || first[e] || '';
-    const emails = allEmails.sort((x, y) => (lastOf(y) > lastOf(x) ? 1 : lastOf(y) < lastOf(x) ? -1 : 0)).slice(0, 15);
+    const emails = allEmails.sort((x, y) => (lastOf(y) > lastOf(x) ? 1 : lastOf(y) < lastOf(x) ? -1 : 0)).slice(0, 2000);
     const dc = emails.length ? await store.pipeline(emails.flatMap((e) => deviceKeys(e).map((k) => ['ZCARD', k]))) : [];
     students = emails.map((e, i) => {
       const p = paidBy[e] != null ? parseJSON(paidBy[e], {}) : null;
