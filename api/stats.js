@@ -325,6 +325,8 @@ module.exports = handle(async (req, res) => {
     banner, paused: cfg.paused, business: cfg.business || '', reviewOn: reviewOn(), signin: mode.signin, freeSite: mode.freeMode, freeNow: mode.free,
     payments: salesSummary(pays, nx, byDay),
     content: contentStats(views, quizRaw),
+    // a deploy made from the CLI has no git commit: then a push to GitHub does not reach the live site (checked daily by Notix)
+    deploy: { git: !!process.env.VERCEL_GIT_COMMIT_SHA, sha: (process.env.VERCEL_GIT_COMMIT_SHA || '').slice(0, 7) },
     visits, views, feedback, free, limits, quiz, confusing, funnel, students, resetRequests, battles,
   });
 });
