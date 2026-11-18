@@ -6,42 +6,40 @@ PAPERS({
     { id: "cat1-c1", kind: 'actual', exam: "cat1", title: "CAT-1 · Slot C1+TC1 · 29-01-2026", sub: "Actual paper · Winter 2025–26 · with answer key" },
     { id: "cat2-f1", kind: 'actual', exam: "cat2", title: "CAT-2 · Slot F1+TF1 · 03-10-2026", sub: "Actual paper · Fall 2026–27 · open book" },
     { id: "cat2-f2", kind: 'actual', exam: "cat2", title: "CAT-2 · Slot F2+TF2 · 22-03-2026", sub: "Actual paper · Winter 2025–26 · open book · with answer key" },
-    { id: "fat-c1", kind: 'actual', exam: "fat", title: "FAT · Slot C1+TC1 · April 2026", sub: "Actual paper · Winter 2025–26 · all modules" },
-    { id: "fat-d1", kind: 'actual', exam: "fat", title: "FAT · Slot D1+TD1 · Nov/Dec 2025", sub: "Actual paper · Fall 2025–26 · Chennai · all modules" }
-  ],
+    { id: "fat-c1", kind: 'actual', exam: "fat", title: "FAT · Slot C1+TC1 · April 2026", sub: "Actual paper · Winter 2025–26 · all modules" }  ],
 
   asked: {
-    "m1-blackbody": [{ paper: "cat1-f1" }, { paper: "cat1-c1" }, { paper: "fat-c1" }, { paper: "fat-d1" }],
+    "m1-blackbody": [{ paper: "cat1-f1" }, { paper: "cat1-c1" }, { paper: "fat-c1" }],
     "m1-de-broglie": [{ paper: "cat1-f1" }],
-    "m1-dual-nature": [{ paper: "cat1-f1" }, { paper: "cat1-c1" }, { paper: "fat-c1" }, { paper: "fat-d1" }],
-    "m1-planck": [{ paper: "cat1-f1" }, { paper: "cat1-c1" }, { paper: "fat-c1" }, { paper: "fat-d1" }],
-    "m1-stern-gerlach": [{ paper: "cat1-f1" }, { paper: "fat-c1" }, { paper: "fat-d1" }],
+    "m1-dual-nature": [{ paper: "cat1-f1" }, { paper: "cat1-c1" }, { paper: "fat-c1" }],
+    "m1-planck": [{ paper: "cat1-f1" }, { paper: "cat1-c1" }, { paper: "fat-c1" }],
+    "m1-stern-gerlach": [{ paper: "cat1-f1" }, { paper: "fat-c1" }],
     "m1-wavefunction": [{ paper: "cat1-f1" }, { paper: "cat1-c1" }, { paper: "fat-c1" }],
-    "m1-ydse": [{ paper: "fat-d1" }],
+    "m1-ydse": [],
     "m2-basis": [{ paper: "cat1-c1" }],
     "m2-dirac": [{ paper: "cat2-f1" }, { paper: "cat2-f2" }],
-    "m2-eigen": [{ paper: "cat2-f2" }, { paper: "fat-d1" }],
-    "m2-hermitian": [{ paper: "cat2-f2" }, { paper: "fat-c1" }, { paper: "fat-d1" }],
+    "m2-eigen": [{ paper: "cat2-f2" }],
+    "m2-hermitian": [{ paper: "cat2-f2" }, { paper: "fat-c1" }],
     "m2-orthonormal": [{ paper: "cat1-c1" }, { paper: "cat2-f1" }],
-    "m2-outer": [{ paper: "cat2-f1" }, { paper: "fat-d1" }],
-    "m2-pauli": [{ paper: "cat2-f1" }, { paper: "fat-c1" }, { paper: "fat-d1" }],
+    "m2-outer": [{ paper: "cat2-f1" }],
+    "m2-pauli": [{ paper: "cat2-f1" }, { paper: "fat-c1" }],
     "m2-tensor": [{ paper: "cat1-c1" }, { paper: "cat2-f1" }, { paper: "fat-c1" }],
     "m2-vector-space": [{ paper: "cat1-c1" }],
     "m3-expectation": [{ paper: "cat2-f1" }, { paper: "cat2-f2" }, { paper: "fat-c1" }],
     "m3-measurement": [{ paper: "cat1-f1" }, { paper: "cat2-f1" }, { paper: "fat-c1" }],
     "m3-observables": [{ paper: "cat2-f1" }, { paper: "cat2-f2" }, { paper: "fat-c1" }],
-    "m3-seq-sg": [{ paper: "cat2-f1" }, { paper: "fat-c1" }, { paper: "fat-d1" }],
+    "m3-seq-sg": [{ paper: "cat2-f1" }, { paper: "fat-c1" }],
     "m3-tise": [{ paper: "cat2-f2" }],
-    "m4-box1d": [{ paper: "cat2-f2" }, { paper: "fat-c1" }, { paper: "fat-d1" }],
-    "m4-numericals": [{ paper: "fat-c1" }, { paper: "fat-d1" }],
-    "m4-tunnel-prob": [{ paper: "fat-c1" }, { paper: "fat-d1" }],
+    "m4-box1d": [{ paper: "cat2-f2" }, { paper: "fat-c1" }],
+    "m4-numericals": [{ paper: "fat-c1" }],
+    "m4-tunnel-prob": [{ paper: "fat-c1" }],
     "m4-tunnelling": [{ paper: "fat-c1" }],
-    "m5-bell": [{ paper: "fat-c1" }, { paper: "fat-d1" }],
+    "m5-bell": [{ paper: "fat-c1" }],
     "m5-bell-gen": [{ paper: "fat-c1" }],
     "m5-bloch": [{ paper: "fat-c1" }],
-    "m5-entanglement": [{ paper: "fat-c1" }, { paper: "fat-d1" }],
-    "m5-pauli-h": [{ paper: "fat-c1" }, { paper: "fat-d1" }],
-    "m5-qubits": [{ paper: "fat-d1" }],
+    "m5-entanglement": [{ paper: "fat-c1" }],
+    "m5-pauli-h": [{ paper: "fat-c1" }],
+    "m5-qubits": [],
     "m5-two-qubit": [{ paper: "cat2-f1" }, { paper: "fat-c1" }]
   },
 
@@ -350,80 +348,5 @@ PAPERS({
           topics: ["m5-bloch","m5-pauli-h"]
         }
       ]
-    },
-    {
-      id: "fat-d1", kind: 'actual', exam: "fat", title: "FAT · Slot D1+TD1 · Nov/Dec 2025", short: "D1+TD1 FAT", sub: "Actual paper · Fall 2025–26 · Chennai · all modules",
-      meta: [["Slot","D1+TD1"],["Date","Nov/Dec 2025"],["Duration","3 hours"],["Max marks","100"],["Pattern","Section I: 4 × 10, Section II: 4 × 15"]],
-      instructions: `Answer all questions. Section I: 4 × 10 marks; Section II: 4 × 15 marks.<br>CO1: Identify limitations of classical physics through experimental observations. CO2: Apply matrix algebra and Dirac notation for the understanding of quantum mechanical problems involving linear operators, eigenvalues and eigenvectors. CO3: Solve the particle in 1-D and 3-D potential box problem using the principles of quantum mechanics. CO4: Apply fundamental concepts of quantum states and operators to understand the principles of quantum computing.`,
-      questions: [
-        {
-          n: "1a", marks: 5, co: "1", bl: "1",
-          notes: ["m1-planck.0","m1-blackbody.2"],
-          prompt: `<p>How does Planck’s radiation law fundamentally differ from Rayleigh-Jeans law, and how did this difference help resolve the ultraviolet catastrophe that puzzled physicists?</p>`,
-          topics: ["m1-planck","m1-blackbody"]
-        },
-        {
-          n: "1b", marks: 5, co: "1", bl: "1",
-          notes: ["m1-dual-nature.2","m1-ydse.0"],
-          prompt: `<p>How does Young’s double-slit experiment demonstrate the principle of superposition?</p>`,
-          topics: ["m1-dual-nature","m1-ydse"]
-        },
-        {
-          n: "2", marks: 10, co: "2", bl: "2",
-          notes: ["m2-eigen.0","m2-hermitian.0"],
-          prompt: `<p>Find the eigenvalue and eigen function of the matrix A = [1 −2; 2 1]; also determine whether A is Hermitian. (10 marks)<br><b>(OR)</b> (i) If A = 2|ψ⟩⟨φ| − i|χ⟩⟨ψ| with |ψ⟩ = (1, 0, 0)<sup>T</sup>, |φ⟩ = (0, 1, 0)<sup>T</sup>, |χ⟩ = (0, 0, 1)<sup>T</sup>, find A. (5 marks) (ii) An operator Q̂ is given by the matrix representation [1 i; −i 2]. Find the adjoint of Q̂. (2 marks) (iii) Find the inner product ⟨ψ|φ⟩ for |ψ⟩ = (1 + i, 2, −i)<sup>T</sup> and |φ⟩ = (i, 1 − i, 2)<sup>T</sup>. (3 marks)</p>`,
-          topics: ["m2-eigen","m2-hermitian"]
-        },
-        {
-          n: "3a", marks: 5, co: "3", bl: "3",
-          notes: ["m4-tunnel-prob.0"],
-          prompt: `<p>Explain the factors influencing the probability of quantum tunnelling through a potential barrier, highlighting their significance and including the relevant equation.</p>`,
-          topics: ["m4-tunnel-prob"]
-        },
-        {
-          n: "3b", marks: 5, co: "3", bl: "3",
-          notes: ["m4-numericals.1"],
-          prompt: `<p>Two electrons approach potential barriers of the same height but different widths. One barrier has a width of 0.5 nm, and the other has a width of 1.0 nm. If the tunnelling probability for the first barrier is 10%, calculate the tunnelling probability for the second, assuming both electrons have the same energy.</p>`,
-          topics: ["m4-numericals"]
-        },
-        {
-          n: "4a", marks: 5, co: "4", bl: "2",
-          notes: ["m5-qubits.1"],
-          prompt: `<p>List and explain at least five key differences between classical bits and quantum bits (qubits).</p>`,
-          topics: ["m5-qubits"]
-        },
-        {
-          n: "4b", marks: 5, co: "4", bl: "2",
-          notes: ["m5-pauli-h.1"],
-          prompt: `<p>A qubit is initially in the state |ψ⟩ = (1/√2)(|0⟩ + |1⟩). Find the new state after applying the Pauli-Z gate.</p>`,
-          topics: ["m5-pauli-h"]
-        },
-        {
-          n: "5", marks: 15, co: "1", bl: "3",
-          notes: ["m1-stern-gerlach.0","m1-stern-gerlach.2","m3-seq-sg.1"],
-          prompt: `<p>a) Describe the construction and working principle and outcome of the Stern–Gerlach experiment. [9 marks] b) Write down clearly what happens at every stage and describe the output of each section of the Stern-Gerlach components given in the following figure. Let’s assume that initial beam contains 2000 particles. (Note: direction of motion of particles is along y axis). [6 marks]</p>`,
-          passage: `<p><b>Figure</b> (typed from the paper): |ψ<sub>in</sub>⟩, 2000 particles, enters SG ẑ (I). One output beam of I is blocked; the other enters SG x̂ (II). One output of II is blocked; the other enters SG x̂ (III). One output channel of III leads into SG ẑ (IV), whose two output beams leave the apparatus.</p>`,
-          topics: ["m1-stern-gerlach","m3-seq-sg"]
-        },
-        {
-          n: "6", marks: 15, co: "2", bl: "2",
-          notes: ["m2-pauli.1","m2-pauli.0","m2-outer.1","m2-hermitian.1"],
-          prompt: `<p>a) Given the Pauli matrices σ<sub>x</sub> = [0 1; 1 0], σ<sub>y</sub> = [0 −i; i 0], σ<sub>z</sub> = [1 0; 0 −1]: (i) Prove that [σ<sub>x</sub>, σ<sub>y</sub>] = 2iσ<sub>z</sub>. [3 marks] (ii) Compute [σ<sub>x</sub>, σ<sub>z</sub>]. [3 marks] (iii) Is σ<sub>z</sub> Hermitian? [3 marks] b) Define projection and unitary operators, and explain their significance in quantum mechanics. [6 marks]</p>`,
-          topics: ["m2-pauli","m2-outer","m2-hermitian"]
-        },
-        {
-          n: "7", marks: 15, co: "3", bl: "2",
-          notes: ["m4-box1d.0","m4-box1d.1"],
-          prompt: `<p>Consider a particle of mass m confined in a 1-dimensional box of length L. Derive the relations for the energy eigenvalues and associated wave functions of the particle. Draw the wave functions and their corresponding probability density for the particles in the 4th and 5th excited states.</p>`,
-          topics: ["m4-box1d"]
-        },
-        {
-          n: "8", marks: 15, co: "4", bl: "3",
-          notes: ["m5-qubits.0","m5-entanglement.0","m5-bell.2","m5-pauli-h.1","m5-pauli-h.2"],
-          prompt: `<p>a) Define superposition and entanglement in qubits. [3 marks] b) Explain how measurement of one qubit in a Bell state (|β<sub>00</sub>⟩) affects the state of the other qubit. [3 marks] c) If a qubit is in state |ψ⟩ = α|0⟩ + β|1⟩, find the resulting state after applying a Pauli-Y gate. [3 marks] d) Show that H|0⟩ = |+⟩ and H|1⟩ = |−⟩ where H refers to Hadamard gate. [6 marks]</p>`,
-          topics: ["m5-qubits","m5-entanglement","m5-bell","m5-pauli-h"]
-        }
-      ]
-    }
-  ]
+    }  ]
 });
