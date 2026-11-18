@@ -250,17 +250,17 @@ module.exports = handle(async (req, res) => {
   (nx.payments || []).forEach((p) => { if (p.status !== 'paid' || !p.at) return; const d = istDay(Date.parse(p.at)); byDay[d] = (byDay[d] || 0) + 1; });
   let quizRaw = {};
   let studentsTotal = 0;
-  let visits = null, views = null, feedback = null, free = [], limits = [], quiz = [], confusing = [], funnel = null, banner = null, students = [], resetRequests = [], battles = null;
+  let visits = null, loads = null, views = null, feedback = null, free = [], limits = [], quiz = [], confusing = [], funnel = null, banner = null, students = [], resetRequests = [], battles = null;
   if (store.configured()) {
-    const [v, w, f, fr, lm, qz, ql, cf, cl, fn, fs, bn, dr, bt, rp] = await store.pipeline([
+    const [v, w, f, fr, lm, qz, ql, cf, cl, fn, fs, bn, dr, bt, rp, ld] = await store.pipeline([
       ['HGETALL', 'visits'], ['HGETALL', 'views'], ['LRANGE', 'feedback', 0, 399], ['HGETALL', 'free'], ['HGETALL', 'limits'],
       ['HGETALL', 'quiz'], ['HGETALL', 'quizLabel'], ['HGETALL', 'confusing'], ['HGETALL', 'confusingLabel'], ['HGETALL', 'funnel'],
-      ['HGETALL', 'feedbackStatus'], ['HGET', 'config', 'banner'], ['HGETALL', 'devreq'], ['HGETALL', 'battles'], ['HGETALL', 'replies'],
+      ['HGETALL', 'feedbackStatus'], ['HGET', 'config', 'banner'], ['HGETALL', 'devreq'], ['HGETALL', 'battles'], ['HGETALL', 'replies'], ['HGETALL', 'loads'],
     ]);
     for (let i = 0; dr && i < dr.length; i += 2) { const x = parseJSON(dr[i + 1], {}) || {}; resetRequests.push({ email: dr[i], at: x.at || '', reason: x.reason || '', kind: x.kind || '' }); }
     resetRequests.sort((a, b) => (b.at > a.at ? 1 : -1));
     battles = store.pairs(bt);
-    visits = store.pairs(v); views = store.pairs(w);
+    visits = store.pairs(v); loads = store.pairs(ld); views = store.pairs(w);
     const gone = [];
     for (let i = 0; lm && i < lm.length; i += 2) { const l = parseLimits(lm[i + 1]); if (l.expired) gone.push(lm[i]); else limits.push({ email: lm[i], phones: l.phone, pcs: l.pc, until: l.until ? new Date(l.until).toISOString() : null }); }
     if (gone.length) await store.pipeline([['HDEL', 'limits', ...gone]]); // temporary limits that have ended
@@ -332,6 +332,6 @@ module.exports = handle(async (req, res) => {
     content: contentStats(views, quizRaw),
     // a deploy made from the CLI has no git commit: then a push to GitHub does not reach the live site (checked daily by Notix)
     deploy: { git: !!process.env.VERCEL_GIT_COMMIT_SHA, sha: (process.env.VERCEL_GIT_COMMIT_SHA || '').slice(0, 7) },
-    visits, views, feedback, free, limits, quiz, confusing, funnel, students, studentsTotal, resetRequests, battles,
+    visits, loads, views, feedback, free, limits, quiz, confusing, funnel, students, studentsTotal, resetRequests, battles,
   });
 });

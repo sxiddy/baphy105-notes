@@ -229,6 +229,7 @@
   function render(s) {
     const v30 = days(s.visits, 30), p30 = days(s.payments.byDay, 30);
     const visitors = v30.reduce((a, x) => a + x[1], 0);
+    const loads30 = days(s.loads || {}, 30).reduce((a, x) => a + x[1], 0); // every page load, counted since 19-11-2026
     const views = Object.entries(s.views || {}).sort((a, b) => b[1] - a[1]).slice(0, 15);
     const F = s.funnel || { visitors: 0, paywall: 0, start: 0, paid: 0 };
     const Q = s.quiz || { top: [], answered: 0, questions: 0 };
@@ -245,6 +246,7 @@
         <div><div class="v">${s.payments.revenue == null ? '—' : '₹' + s.payments.revenue.toLocaleString('en-IN')}</div><div class="l">collected</div></div>
         ${s.payments.source === 'notix' ? `<div><div class="v">${s.payments.refunded == null ? '—' : '₹' + s.payments.refunded.toLocaleString('en-IN')}</div><div class="l">refunded${s.payments.refunds ? ' · ' + s.payments.refunds : ''}</div></div>` : `<div><div class="v">₹${s.payments.fees.toLocaleString('en-IN')}</div><div class="l">Razorpay fees</div></div>`}
         <div><div class="v">${s.storage ? visitors : '—'}</div><div class="l">visitors, last 30 days</div></div>
+        <div><div class="v">${s.storage && s.loads ? loads30 : '—'}</div><div class="l">visits (every page load), last 30 days · since 19 Nov</div></div>
       </div>
       ${salesNote(s)}
 

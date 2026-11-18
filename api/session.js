@@ -22,10 +22,14 @@ module.exports = handle(async (req, res) => {
     if (claim.ok) headers = { 'Set-Cookie': userCookie(u.e, d) };
     else { deviceError = claim.why; headers = { 'Set-Cookie': clearUserCookie() }; u = null; }
   }
-  if (u && !reviewer && store.configured() && process.env.DEV_BYPASS !== '1') {
+  // every page load counts as one visit, signed in or not (the app adds v=1 once per load), for "visits" on /admin
+  const counting = !reviewer && store.configured() && process.env.DEV_BYPASS !== '1';
+  const cmds = counting && new URL(req.url, 'http://x').searchParams.get('v') === '1' ? [['HINCRBY', 'loads', store.today(), 1]] : [];
+  if (u && counting) {
     const now = new Date().toISOString();
-    await store.pipeline([['HSETNX', 'userFirst', u.e, now], ['HSET', 'userSeen', u.e, now], ['HINCRBY', 'userVisits', u.e, 1]]).catch(() => {});
+    cmds.push(['HSETNX', 'userFirst', u.e, now], ['HSET', 'userSeen', u.e, now], ['HINCRBY', 'userVisits', u.e, 1]);
   }
+  if (cmds.length) await store.pipeline(cmds).catch(() => {});
   send(res, 200, {
     user: u ? u.e : null, deviceError, owner: isOwner(req), paid: !!t, modules: t ? t.modules : null, free: !!(t && t.free), signin: mode.signin, freeSite: mode.free, freeOffer: mode.freeOffer,
     price: cfg.price, normalPrice: cfg.normalPrice, sale: cfg.sale, banner: cfg.banner, paused: cfg.paused, business: cfg.business || '', reviewer, keyId: process.env.RAZORPAY_KEY_ID || null,

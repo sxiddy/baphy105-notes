@@ -276,7 +276,7 @@
 
   (async () => {
     try {
-      S = await api('/api/session?d=' + deviceId());
+      S = await api('/api/session?v=1&d=' + deviceId());
       price = S.price || S.normalPrice || price; // a ₹0 offer: the app shows "FREE" instead of a price
       window.PRICE_RS = Math.round(price / 100);
       window.FREE_OFFER = S.freeOffer && S.freeSite ? { was: Math.round((S.normalPrice || price) / 100), ends: offerEnds(S.freeOffer), until: S.freeOffer, text: (S.sale && S.sale.text) || '' } : null;
