@@ -99,7 +99,10 @@ async function siteMode(fresh) {
   const open = MODE_FILE.open === true || process.env.OPEN_ACCESS === '1';
   const out = { signin: !open, free: false, freeMode: open, freeOffer: null };
   if (store.configured()) {
-    const [[s, m, sl]] = await store.pipeline([['HMGET', 'config', 'signin', 'mode', 'sale']]);
+    // a store error must not take the whole site down: keep the defaults and log why
+    const r = await store.pipeline([['HMGET', 'config', 'signin', 'mode', 'sale']]).catch((e) => { console.error('siteMode store error:', e.message); return null; });
+    const [s, m, sl] = (r && Array.isArray(r[0])) ? r[0] : [];
+    if (!r || !Array.isArray(r[0])) console.error('siteMode: config read failed', JSON.stringify(r));
     if (s === 'off' || s === 'on') out.signin = s === 'on';
     if (m === 'free' || m === 'paid') out.freeMode = m === 'free';
     try { const x = JSON.parse(sl || 'null'); if (x && x.price === 0 && x.until > Date.now()) out.freeOffer = x.until; } catch (e) {}

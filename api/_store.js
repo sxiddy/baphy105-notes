@@ -26,6 +26,7 @@ async function pipeline(cmds) {
   if (!r.ok) throw Object.assign(new Error('Store request failed (' + r.status + ')'), { status: 500 });
   const j = await r.json();
   return j.map((x, i) => {
+    if (x && x.error) console.error('store error on', cmds[i][0], x.error);
     const v = x && 'result' in x ? x.result : null;
     return String(cmds[i][0]).toUpperCase() === 'KEYS' && Array.isArray(v) ? v.map((k) => (k.startsWith(PREFIX) ? k.slice(PREFIX.length) : k)) : v;
   });
