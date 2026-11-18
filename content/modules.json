@@ -74,7 +74,7 @@
       "q-2a.js"
     ],
     "syllabus": "Linear vector space, basis vectors, orthonormal sets, Hilbert space, Dirac notation, inner and outer products, tensor product, linear operators, Hermitian, unitary and projection operators, eigenvalues and eigenvectors, Pauli matrices, commutation relations.",
-    "free": false,
+    "free": true,
     "syllabusRows": [
       {
         "n": "1",
@@ -160,7 +160,7 @@
       "q-3a.js"
     ],
     "syllabus": "Observables, expectation values, measurement in quantum mechanics, sequential Stern-Gerlach experiment, time-dependent and time-independent Schrödinger equations, numerical problems.",
-    "free": false,
+    "free": true,
     "syllabusRows": [
       {
         "n": "1",
@@ -217,7 +217,7 @@
       "q-4a.js"
     ],
     "syllabus": "Particle in a one-dimensional potential well, extension to three-dimensional wells, energy eigenvalues and eigenfunctions, degeneracy, quantum tunnelling, tunnelling probability, numerical problems.",
-    "free": false,
+    "free": true,
     "syllabusRows": [
       {
         "n": "1",
@@ -281,7 +281,7 @@
       "q-5a.js"
     ],
     "syllabus": "Introduction to qubits, single qubit states, the Bloch sphere, two-qubit systems, quantum entanglement, Bell states, single qubit gates, Pauli and Hadamard gates, two-qubit gates (CNOT), generation of entangled states.",
-    "free": false,
+    "free": true,
     "syllabusRows": [
       {
         "n": "1",

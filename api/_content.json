@@ -12,7 +12,7 @@
    "id": "m2",
    "num": "02",
    "title": "Mathematical Foundations of Quantum Mechanics",
-   "free": false,
+   "free": true,
    "topics": 11,
    "questions": 34
   },
@@ -20,7 +20,7 @@
    "id": "m3",
    "num": "03",
    "title": "Postulates of Quantum Mechanics",
-   "free": false,
+   "free": true,
    "topics": 6,
    "questions": 30
   },
@@ -28,7 +28,7 @@
    "id": "m4",
    "num": "04",
    "title": "Applications of Quantum Mechanics",
-   "free": false,
+   "free": true,
    "topics": 7,
    "questions": 32
   },
@@ -36,7 +36,7 @@
    "id": "m5",
    "num": "05",
    "title": "Elements of Quantum Computing",
-   "free": false,
+   "free": true,
    "topics": 10,
    "questions": 39
   }
