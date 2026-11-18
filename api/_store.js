@@ -3,6 +3,11 @@
 // configured, every call is a no-op and returns null, so the site keeps working.
 const crypto = require('crypto');
 
+// Turso replaced Upstash in Nov 2026 (Upstash's free plan ran out of requests). Remove these two settings in Vercel to go back.
+function tursoCfg() {
+  const url = process.env.TURSO_DATABASE_URL, token = process.env.TURSO_AUTH_TOKEN;
+  return url && token ? { url, token } : null;
+}
 function creds() {
   const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
@@ -16,15 +21,19 @@ const MULTI = new Set(['DEL', 'EXISTS', 'MGET', 'UNLINK']);
 const withPrefix = (cmd) => cmd.map((a, i) => (i >= 1 && (i === 1 || MULTI.has(String(cmd[0]).toUpperCase())) ? PREFIX + a : a));
 
 async function pipeline(cmds) {
-  const c = creds();
-  if (!c) return null;
-  const r = await fetch(c.url + '/pipeline', {
-    method: 'POST',
-    headers: { Authorization: 'Bearer ' + c.token, 'Content-Type': 'application/json' },
-    body: JSON.stringify(cmds.map(withPrefix)),
-  });
-  if (!r.ok) throw Object.assign(new Error('Store request failed (' + r.status + ')'), { status: 500 });
-  const j = await r.json();
+  const t = tursoCfg(), c = t ? null : creds();
+  if (!t && !c) return null;
+  let j;
+  if (t) j = await require('./_turso').pipeline(cmds.map(withPrefix), t); // Turso (SQLite) when its settings are present
+  else {
+    const r = await fetch(c.url + '/pipeline', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + c.token, 'Content-Type': 'application/json' },
+      body: JSON.stringify(cmds.map(withPrefix)),
+    });
+    if (!r.ok) throw Object.assign(new Error('Store request failed (' + r.status + ')'), { status: 500 });
+    j = await r.json();
+  }
   return j.map((x, i) => {
     if (x && x.error) console.error('store error on', cmds[i][0], x.error);
     const v = x && 'result' in x ? x.result : null;
@@ -44,4 +53,4 @@ const ipHash = (req) => crypto.createHash('sha256').update(String((req.headers['
 const IST = 5.5 * 3600e3;
 const today = () => new Date(Date.now() + IST).toISOString().slice(0, 10);
 
-module.exports = { configured: () => !!creds(), pipeline, pairs, ipHash, today };
+module.exports = { configured: () => !!(tursoCfg() || creds()), pipeline, pairs, ipHash, today };
