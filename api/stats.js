@@ -249,6 +249,7 @@ module.exports = handle(async (req, res) => {
   pays.forEach((p) => { const d = istDay(p.created_at * 1000); byDay[d] = (byDay[d] || 0) + 1; });
   (nx.payments || []).forEach((p) => { if (p.status !== 'paid' || !p.at) return; const d = istDay(Date.parse(p.at)); byDay[d] = (byDay[d] || 0) + 1; });
   let quizRaw = {};
+  let studentsTotal = 0;
   let visits = null, views = null, feedback = null, free = [], limits = [], quiz = [], confusing = [], funnel = null, banner = null, students = [], resetRequests = [], battles = null;
   if (store.configured()) {
     const [v, w, f, fr, lm, qz, ql, cf, cl, fn, fs, bn, dr, bt, rp] = await store.pipeline([
@@ -300,7 +301,11 @@ module.exports = handle(async (req, res) => {
     const nxBy = {}; (nx.payments || []).forEach((p) => { if (p.status === 'paid' || p.status === 'manual') nxBy[p.email] = p; });
     // students who signed in before this list existed only left a device record ("devices:<email>:<kind>")
     const early = (dk || []).map((k) => k.slice(k.indexOf(':') + 1, k.lastIndexOf(':'))).filter(isStudentEmail);
-    const emails = [...new Set([...Object.keys(first), ...Object.keys(paidBy), ...Object.keys(freeBy), ...early, ...Object.keys(nxBy)])].filter(isStudentEmail).slice(0, 2000); // not the Razorpay reviewer account
+    const allEmails = [...new Set([...Object.keys(first), ...Object.keys(paidBy), ...Object.keys(freeBy), ...early, ...Object.keys(nxBy)])].filter(isStudentEmail); // not the Razorpay reviewer account
+    studentsTotal = allEmails.length;
+    // only the 15 most recently active students: device counts cost 2 store requests per student (free tier is 500k/month)
+    const lastOf = (e) => seen[e] || login[e] || first[e] || '';
+    const emails = allEmails.sort((x, y) => (lastOf(y) > lastOf(x) ? 1 : lastOf(y) < lastOf(x) ? -1 : 0)).slice(0, 15);
     const dc = emails.length ? await store.pipeline(emails.flatMap((e) => deviceKeys(e).map((k) => ['ZCARD', k]))) : [];
     students = emails.map((e, i) => {
       const p = paidBy[e] != null ? parseJSON(paidBy[e], {}) : null;
@@ -327,6 +332,6 @@ module.exports = handle(async (req, res) => {
     content: contentStats(views, quizRaw),
     // a deploy made from the CLI has no git commit: then a push to GitHub does not reach the live site (checked daily by Notix)
     deploy: { git: !!process.env.VERCEL_GIT_COMMIT_SHA, sha: (process.env.VERCEL_GIT_COMMIT_SHA || '').slice(0, 7) },
-    visits, views, feedback, free, limits, quiz, confusing, funnel, students, resetRequests, battles,
+    visits, views, feedback, free, limits, quiz, confusing, funnel, students, studentsTotal, resetRequests, battles,
   });
 });
