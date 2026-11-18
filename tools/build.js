@@ -131,6 +131,7 @@ const html = `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${TITLE}</title>
 <meta name="description" content="Engineering Physics (BAPHY105) as tabbed study notes with diagrams, worked numericals, interactive models and scenario questions.">
