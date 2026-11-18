@@ -254,7 +254,9 @@ async function siteSettings() {
   const store = require('./_store');
   const out = { price: PRICE, normalPrice: PRICE, sale: null, banner: null, paused: null, business: '' };
   if (!store.configured()) return out;
-  const [[p, b, sl, pz, bz]] = await store.pipeline([['HMGET', 'config', 'price', 'banner', 'sale', 'paused', 'business']]);
+  const cfgRow = await store.pipeline([['HMGET', 'config', 'price', 'banner', 'sale', 'paused', 'business']]).catch((e) => { console.error('settings store error:', e.message); return null; });
+  if (!cfgRow || !Array.isArray(cfgRow[0])) console.error('settings: config read failed', JSON.stringify(cfgRow));
+  const [p, b, sl, pz, bz] = cfgRow && Array.isArray(cfgRow[0]) ? cfgRow[0] : [];
   try { const x = JSON.parse(pz || 'null'); if (x && x.on) out.paused = { text: typeof x.text === 'string' ? x.text.slice(0, 240) : '' }; } catch (e) {}
   if (typeof bz === 'string') out.business = bz.slice(0, 120);
   const n = parseInt(p, 10); if (Number.isInteger(n) && n >= 100) out.price = out.normalPrice = n;
