@@ -2139,7 +2139,7 @@ window.__startApp = function () {
   const syncBody = () => JSON.stringify({ data: S, mods: modsDone() });
   function syncSoon() {
     if (!syncOn) return; syncDirty = true;
-    if (!syncTimer) syncTimer = setTimeout(syncPush, Math.max(10000, 60000 - (Date.now() - syncLast)));
+    if (!syncTimer) syncTimer = setTimeout(syncPush, Math.max(10000, 300000 - (Date.now() - syncLast)) // at most one save every 5 min (plus one when the tab is hidden), to stay inside the free Worker limit);
   }
   function syncPush() {
     clearTimeout(syncTimer); syncTimer = 0; if (!syncOn || !syncDirty) return; syncDirty = false; syncLast = Date.now();
