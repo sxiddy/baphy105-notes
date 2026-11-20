@@ -57,7 +57,8 @@ function salesSummary(pays, nx, byDay) {
     .map((p) => ({ at: p.at, email: p.email, id: p.id, amount: (p.amount || 0) / 100, via: 'Notix', status: p.status, bundle: !!p.bundle }));
   return {
     source: 'notix', notixError: nx.error || null,
-    count: ok ? t.count : null, revenue: ok ? t.revenue / 100 : null, manual: ok ? t.manual : null,
+    // totals = Notix sales + payments made on this site itself (its Payment Links)
+    count: ok ? t.count + direct.count : null, revenue: ok ? t.revenue / 100 + direct.revenue : null, manual: ok ? t.manual : null,
     refunds: ok ? t.refunds : null, refunded: ok ? t.refunded / 100 : null,
     fees: direct.fees, before: direct, byDay,
     recent: [...nxRecent, ...directRecent].sort((a, b) => String(b.at).localeCompare(String(a.at))).slice(0, 30),
@@ -179,7 +180,7 @@ module.exports = handle(async (req, res) => {
       return send(res, 200, { ok: true, done: good.length, invalid: bad.slice(0, 50) });
     }
 
-    if (!['lookup', 'reset-devices', 'approve-reset', 'decline-reset', 'grant', 'revoke', 'set-limits', 'clear-limits'].includes(a)) return send(res, 400, { error: 'Unknown action.' });
+    if (!['lookup', 'reset-devices', 'approve-reset', 'decline-reset', 'grant', 'revoke', 'revoke-paid', 'set-limits', 'clear-limits'].includes(a)) return send(res, 400, { error: 'Unknown action.' });
     const email = normEmail(b.email);
     if (!isStudentEmail(email)) return send(res, 400, { error: `Enter a VIT student email (…@${DOMAIN}).` });
 
@@ -194,6 +195,16 @@ module.exports = handle(async (req, res) => {
     }
     if (a === 'revoke') {
       await store.pipeline([['HDEL', 'free', email]]);
+      return send(res, 200, { ok: true });
+    }
+    // remove Pro bought on this site (e.g. after a refund). The payment id is remembered so it can't grant Pro again.
+    // Refunding the money is done separately on Razorpay. Pro bought on the Notix store is removed on the store's admin.
+    if (a === 'revoke-paid') {
+      const [raw, prev] = await store.pipeline([['HGET', 'paid', email], ['HGET', 'paidRevoked', email]]);
+      if (raw == null) return send(res, 400, { error: 'This student has no Pro bought on this site.' });
+      const id = String(parseJSON(raw, {}).id || 'unknown');
+      const ids = [...new Set(String(prev || '').split(',').filter(Boolean).concat(id))].join(',');
+      await store.pipeline([['HSET', 'paidRevoked', email, ids], ['HDEL', 'paid', email]]);
       return send(res, 200, { ok: true });
     }
     if (a === 'set-limits') {
@@ -232,6 +243,7 @@ module.exports = handle(async (req, res) => {
     (nx.payments || []).forEach((p) => payments.push({ id: p.id || (p.manual ? 'given by hand on Notix' : ''), at: p.at, amount: (p.amount || 0) / 100, via: 'Notix', status: p.status }));
     return send(res, 200, {
       email,
+      sitePaid: !!pd,
       paid: !!pd || (nx.payments || []).some((p) => p.status === 'paid' || p.status === 'manual'),
       notixError: nx.error || null,
       payments, razorpayError,

@@ -57,8 +57,8 @@ module.exports = handle(async (req, res) => {
 
   if (b.action === 'check') {
     const orderId = String(b.orderId || '');
-    if (!/^order_[A-Za-z0-9]+$/.test(orderId)) return send(res, 400, { error: 'Bad order id.' });
-    const r = await unlockOrder(orderId, u.e);
+    if (!/^(order|plink)_[A-Za-z0-9]+$/.test(orderId)) return send(res, 400, { error: 'Bad order id.' });
+    const r = orderId.startsWith('plink_') ? await require('./_paylink').unlockLink(orderId, u.e) : await unlockOrder(orderId, u.e);
     if (r.ok) { await funnelPaid(); return send(res, 200, { ok: true, paymentId: r.paymentId }); }
     return send(res, r.pending ? 202 : 402, { ok: false, pending: !!r.pending, error: r.why });
   }

@@ -10,3 +10,6 @@ src/vtop/
 src/papers/
 
 .vercel
+dist/
+.wrangler/
+.dev.vars

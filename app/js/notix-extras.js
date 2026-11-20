@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   // One place to change when the store domain moves.
-  var NOTIX_STORE = 'https://notix-notes.vercel.app';
+  var NOTIX_STORE = 'https://notix.in';
   var SUBJECT_CODE = 'BAPHY105';
   var FREE_TOOL = 'opamp-gain'; // the one Pro tool open to everyone
   var STORE_PAGE = NOTIX_STORE + '/' + SUBJECT_CODE.toLowerCase();

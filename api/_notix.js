@@ -8,7 +8,7 @@ const { STORE_CODE } = require('./_lib');
 //    { on: true, error }                Notix could not be asked; the admin page says so instead of showing wrong numbers
 //    { on: true, totals, payments, refunds }   amounts in paise
 async function notixSales(email) {
-  const url = process.env.STORE_URL, secret = process.env.STORE_SECRET;
+  const url = process.env.STORE_URL || process.env.PRICE_FROM, secret = process.env.STORE_SECRET; // PRICE_FROM: Notix sales shown while this site still sells by Payment Link
   if (!url || !secret) return { on: false };
   const q = '/api/entitlement?sales=1&product=' + encodeURIComponent(STORE_CODE) + (email ? '&email=' + encodeURIComponent(email) : '');
   try {

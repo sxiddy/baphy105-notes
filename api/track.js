@@ -14,8 +14,11 @@ const label = (s) => String(s || '').replace(/[\u0000-\u001f]/g, ' ').trim().sli
 module.exports = handle(async (req, res) => {
   if (req.method !== 'POST') return send(res, 405, { error: 'POST only' });
   if (!store.configured()) return send(res, 200, { ok: true, stored: false });
-  const b = await body(req);
+  const got = await body(req);
   const cmds = [];
+  // { batch: [ ...up to 50 of the above ] } from the page's queue, or one object
+  for (const b of (Array.isArray(got.batch) ? got.batch.slice(0, 50) : [got])) {
+    if (!b || typeof b !== 'object') continue;
   if (b.visit) cmds.push(['HINCRBY', 'visits', store.today(), 1]);
   const topic = String(b.topic || '');
   if (TOPIC.test(topic)) cmds.push(['HINCRBY', 'views', topic, 1]);
@@ -31,6 +34,7 @@ module.exports = handle(async (req, res) => {
     if (b.label) cmds.push(['HSET', 'confusingLabel', f, label(b.label)]);
   }
   if (b.funnel === 'paywall' || b.funnel === 'start' || b.funnel === 'gopro') cmds.push(['HINCRBY', 'funnel', store.today() + ':' + b.funnel, 1]);
+  }
   if (cmds.length) await store.pipeline(cmds);
   send(res, 200, { ok: true });
 });

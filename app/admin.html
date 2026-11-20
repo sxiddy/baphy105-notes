@@ -87,13 +87,15 @@
   <div class="eyebrow"><span class="code">Owner</span><span>BAPHY105 Notes</span><span class="dot">·</span><a href="./" style="color:inherit">Back to the site</a></div>
   <div class="adm-top"><h1 class="h-display" style="font-size:34px;margin:0">Admin</h1>
     <label class="adm-subj"><span class="muted">Subject</span><select id="subj" class="sel" aria-label="Subject">
-      <option value="">BAPHY105 · Engineering Physics</option>
-      <option value="https://bachy105.vercel.app/admin">BACHY105 · Applied Chemistry ↗</option>
-      <option value="https://baeng101.vercel.app/admin">BAENG101 · English ↗</option>
+      <option value="https://bachy105.notix.in/admin">BACHY105 · Applied Chemistry ↗</option>
+      <option value="https://baeee101.notix.in/admin">BAEEE101 · Basic Engineering ↗</option>
+      <option value="https://baeng101.notix.in/admin">BAENG101 · English ↗</option>
+      <option value="" selected>BAPHY105 · Engineering Physics</option>
+      <option value="https://bachy101.notix.in/admin">BACHY101 · Environmental Sciences ↗</option>
     </select></label></div>
   <nav class="adm-nav" id="anav" hidden></nav>
   <div id="login">
-    <p class="muted">Enter your admin key (the <code>ADMIN_KEY</code> you set in Vercel). It stays in this tab only.</p>
+    <p class="muted">Enter your admin key (the <code>ADMIN_KEY</code> you set in Cloudflare). It stays in this tab only.</p>
     <form class="row" id="f"><input id="k" type="password" placeholder="Admin key" autocomplete="current-password" required><button class="btn primary">Show stats</button></form>
     <p class="msg" id="lm"></p>
   </div>
@@ -203,6 +205,7 @@
       <div class="look-row"><span>Study</span><div>${p ? `${esc(dur(p.total))} in total · ${esc(dur(p.today))} today · ${p.streak} day${p.streak === 1 ? '' : 's'} in a row · ${p.topics} topic${p.topics === 1 ? '' : 's'} and ${p.mods} module${p.mods === 1 ? '' : 's'} done <span class="muted">(synced ${whenInline(p.at)})</span>` : '<span class="muted">Not synced yet</span>'}</div></div>
       <div class="look-row"><span>Devices in use</span><div>${d.phones} of ${l.phones} phone${l.phones === 1 ? '' : 's'} · ${d.pcs} of ${l.pcs} laptop${l.pcs === 1 ? '' : 's'}/PC${l.pcs === 1 ? '' : 's'} ${l.custom ? '<span class="pill-tag">custom limit, ' + limUntil(l) + '</span>' : '<span class="muted">(default)</span>'}</div></div>
       <div class="look-act">
+        ${r.sitePaid ? `<button class="btn small ghost" data-look="revoke-paid">Remove paid Pro</button>` : ''}
         ${r.free ? `<button class="btn small ghost" data-look="revoke">Remove free access</button>` : `<button class="btn small" data-look="grant">Give free access…</button>`}
         <button class="btn small ghost" data-look="limits">Change device limits…</button>
         <button class="btn small ghost" data-look="reset">Reset devices</button>
@@ -213,9 +216,9 @@
   function salesNote(s) {
     const P = s.payments || {};
     if (P.source !== 'notix') return '';
-    if (P.notixError) return `<div class="note heads-up"><div class="note-label">Could not read sales from Notix: ${esc(P.notixError)}</div><p>Sales numbers are blank until it answers. Check that <code>STORE_URL</code> and <code>STORE_SECRET</code> in Vercel → Settings → Environment Variables match the Notix project, then reload.</p></div>`;
+    if (P.notixError) return `<div class="note heads-up"><div class="note-label">Could not read sales from Notix: ${esc(P.notixError)}</div><p>Sales numbers are blank until it answers. Check that <code>STORE_URL</code> and <code>STORE_SECRET</code> in Cloudflare → Workers &amp; Pages → this site → Settings → Variables and Secrets match the Notix project, then reload.</p></div>`;
     const B = P.before || { count: 0, revenue: 0 };
-    return `<p class="muted" style="margin:-4px 0 14px;font-size:13.5px">Sales are read live from Notix, so they match the Notix admin page for this subject${P.manual ? ` (plus ${P.manual} given Pro by hand there, not counted as sales)` : ''}.${B.count ? ` Before Notix, this site took ${B.count} payment${B.count === 1 ? '' : 's'} directly (₹${B.revenue.toLocaleString('en-IN')}); those are listed under Recent payments as "this site".` : ''}</p>`;
+    return `<p class="muted" style="margin:-4px 0 14px;font-size:13.5px">Totals are Notix sales for this subject plus payments made on this site itself${P.manual ? ` (plus ${P.manual} given Pro by hand there, not counted as sales)` : ''}.${B.count ? ` This site took ${B.count} payment${B.count === 1 ? '' : 's'} itself (₹${B.revenue.toLocaleString('en-IN')}); those are listed under Recent payments as "this site".` : ''}</p>`;
   }
   // modules and question papers on the site, from api/_content.json (rebuilt by every build), with how they are used
   function contentHTML(s) {
@@ -238,8 +241,8 @@
     const modChecks = (s.paidModules || []).map((m) => `<label class="lim"><input type="checkbox" class="gmod" value="${esc(m.id)}" checked> Module ${+m.num}</label>`).join('');
     $('#out').innerHTML = `
       <div class="note"><div class="note-label">Your own access</div><p>Turn on Pro on this device, free, with no device limit. Do it once on each phone or PC you use.</p><p style="margin-top:10px"><button class="btn primary" id="me">Turn on Pro on this device</button> <span class="msg" id="mm" style="display:inline-block;margin-left:10px"></span></p></div>
-      ${s.razorpayError ? `<div class="note heads-up"><div class="note-label">Razorpay said: ${esc(s.razorpayError)}</div><p>Payment numbers below are empty because Razorpay refused the keys. In Vercel → Settings → Environment Variables, check that <code>RAZORPAY_KEY_ID</code> and <code>RAZORPAY_KEY_SECRET</code> are a matching pair from the same mode (both live or both test), then redeploy. Students can't pay until this is fixed.</p></div>` : ''}
-      ${s.storage ? '' : `<div class="note heads-up"><div class="note-label">Storage not set up yet</div><p>Payments below come straight from Razorpay. Everything else starts working once you add Upstash Redis in Vercel → Storage (free).</p></div>`}
+      ${s.razorpayError ? `<div class="note heads-up"><div class="note-label">Razorpay said: ${esc(s.razorpayError)}</div><p>Payment numbers below are empty because Razorpay refused the keys. In Cloudflare → Workers &amp; Pages → this site → Settings → Variables and Secrets, check that <code>RAZORPAY_KEY_ID</code> and <code>RAZORPAY_KEY_SECRET</code> are a matching pair from the same mode (both live or both test), then redeploy. Students can't pay until this is fixed.</p></div>` : ''}
+      ${s.storage ? '' : `<div class="note heads-up"><div class="note-label">Storage not set up yet</div><p>Payments below come straight from Razorpay. Everything else starts working once you set TURSO_DATABASE_URL and TURSO_AUTH_TOKEN in Cloudflare.</p></div>`}
 
 
       <div class="kpis">
@@ -304,7 +307,7 @@
         <div class="sale"><div class="note-label">Legal pages</div>
           <p class="muted">The business name shown on the <a href="terms.html" target="_blank" style="color:inherit">terms</a>, <a href="refund.html" target="_blank" style="color:inherit">refund</a> and <a href="contact.html" target="_blank" style="color:inherit">contact</a> pages. Use exactly the name on your Razorpay account.</p>
           <form class="row" id="bzf"><input id="bzn" class="ann-line" maxlength="120" placeholder="Name on the Razorpay account" value="${esc(s.business || '')}" style="flex:1;min-width:0"><button class="btn">Save name</button></form><p class="msg" id="bzm"></p>
-          <p class="muted" style="font-size:13.5px;margin-top:8px">Razorpay reviewer sign-in (<a href="review.html" target="_blank" style="color:inherit">review.html</a>, username review@baphy105): <b>${s.reviewOn ? 'on' : 'off'}</b>. ${s.reviewOn ? 'It uses the REVIEW_CODE you set in Vercel. Delete that variable (and redeploy) to switch it off.' : 'To switch it on, add an environment variable REVIEW_CODE (the access code you give Razorpay) in Vercel and redeploy.'}</p></div>
+          <p class="muted" style="font-size:13.5px;margin-top:8px">Razorpay reviewer sign-in (<a href="review.html" target="_blank" style="color:inherit">review.html</a>, username review@baphy105): <b>${s.reviewOn ? 'on' : 'off'}</b>. ${s.reviewOn ? 'It uses the REVIEW_CODE you set in Cloudflare. Delete that variable (and redeploy) to switch it off.' : 'To switch it on, add an environment variable REVIEW_CODE (the access code you give Razorpay) in Cloudflare and redeploy.'}</p></div>
       </section>` : ''}
 
       <section class="sum-sec"><h2 class="h-sec">Payments per day <small>last 30 days</small></h2>${bars(p30)}</section>
@@ -379,9 +382,10 @@
           if (k === 'grant') { $('#gp').value = r.email; $('#gf').scrollIntoView({ block: 'center' }); $('#gn').focus(); return; }
           if (k === 'limits') { $('#lp').value = r.email; $('#lph').value = r.limits.phones; $('#lpc').value = r.limits.pcs; setWhen('lw', r.limits.until); $('#lf').scrollIntoView({ block: 'center' }); $('#lph').focus(); return; }
           if (k === 'revoke' && !confirm('Remove free access for ' + r.email + '?')) return;
+          if (k === 'revoke-paid' && !confirm('Remove the Pro that ' + r.email + ' bought on this site? This does not refund the money (do that on Razorpay). Their Pro notes lock within an hour.')) return;
           if (k === 'reset' && !confirm('Clear all devices for ' + r.email + '? They will need to sign in again on each device.')) return;
           b.disabled = true;
-          try { await post({ action: k === 'reset' ? 'reset-devices' : 'revoke', email: r.email }); openStudent(email, btn, true); }
+          try { await post({ action: k === 'reset' ? 'reset-devices' : k, email: r.email }); openStudent(email, btn, true); }
           catch (err) { b.disabled = false; say(err.message); }
         }));
       } catch (err) { box.innerHTML = `<p class="msg">${esc(err.message)}</p>`; }

@@ -1,0 +1,28 @@
+// Cloudflare Workers config for BAPHY105 (https://baphy105.notix.in). Deploy: npm run deploy
+// Secrets (RAZORPAY_KEY_SECRET, SESSION_SECRET, TURSO_AUTH_TOKEN, ...) go in with `npx wrangler secret put NAME`, never here.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "notix-baphy105",
+  "main": "worker/index.js",
+  "compatibility_date": "2025-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    // pages are served straight from the asset store; these paths go through the Worker (checks, API, protected files)
+    "run_worker_first": ["/api/*", "/data/*", "/img/*", "/_p/*", "/admin", "/stats", "/stats/*", "/stats.html"]
+  },
+  "routes": [{ "pattern": "baphy105.notix.in", "custom_domain": true }],
+  // no schedule: Razorpay tells notix.in when a Payment Link is paid (store api/_sitepay.js)
+  "vars": {
+    "PRODUCTION": "1",
+    "PAY_VIA_LINK": "1",
+    // the price (and crossed-out price) comes from the Notix store; payment still happens here by Payment Link
+    "PRICE_FROM": "https://notix.in",
+    "GOOGLE_CLIENT_ID": "1031135588562-kg77aahgjjbccieu0kahgkcpl3nnlj0i.apps.googleusercontent.com",
+    "RAZORPAY_KEY_ID": "rzp_live_U22jVeWOAsknIG",
+    "TURSO_DATABASE_URL": "libsql://notes-sxiddy.aws-us-east-1.turso.io"
+  },
+  "observability": { "enabled": true }
+}

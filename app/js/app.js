@@ -959,9 +959,9 @@ window.__startApp = function () {
   const SUBJECTS = [
     { code: 'BAPHY105', name: 'Engineering Physics', href: '#home', here: true, words: 'physics optics laser fibre quantum waves interference diffraction semiconductor',
       art: '<path d="M10 40h14l5-10 8 20 8-20 8 20 5-10h12" class="dsb"/><circle cx="96" cy="40" r="14" class="dso"/><path d="M88 40h16M96 32v16" class="dso"/>' },
-    { code: 'BACHY105', name: 'Applied Chemistry', href: 'https://bachy105.vercel.app', words: 'chemistry batteries fuel cells nanomaterials spectroscopy xrd',
+    { code: 'BACHY105', name: 'Applied Chemistry', href: 'https://bachy105.notix.in', words: 'chemistry batteries fuel cells nanomaterials spectroscopy xrd',
       art: '<path d="M44 14v18L28 62h48L60 32V14" class="dsg"/><path d="M40 14h24" class="dsg"/><path d="M34 50h36" class="dsb"/><circle cx="48" cy="56" r="3" class="dsb"/><circle cx="58" cy="54" r="2" class="dsb"/>' },
-    { code: 'BAENG101', name: 'English', href: 'https://baeng101.vercel.app', words: 'english communication writing grammar reading',
+    { code: 'BAENG101', name: 'English', href: 'https://baeng101.notix.in', words: 'english communication writing grammar reading',
       art: '<path d="M20 18h30q8 0 8 8v40q0-8-8-8H20z" class="dsp"/><path d="M96 18H66q-8 0-8 8v40q0-8 8-8h30z" class="dsp"/><path d="M28 30h20M28 40h20M68 30h20M68 40h14" class="dsy"/>' },
   ];
   function subjectCard(x) {
@@ -2019,9 +2019,17 @@ window.__startApp = function () {
   if (window.SIGNED_IN_AS) setTimeout(() => loadInbox(true), 1500);
 
   // anonymous counters: one "visit" per browser per day, one "open" per topic per session
-  function beacon(data) {
+  // counters are queued and sent together (one call) when the page is hidden or closed, or after 20 of them
+  const trackQ = [];
+  function flushTrack() {
+    if (!trackQ.length) return;
+    const data = trackQ.length === 1 ? trackQ[0] : { batch: trackQ.slice(0, 50) };
+    trackQ.length = 0;
     try { const b = new Blob([JSON.stringify(data)], { type: 'application/json' }); if (!(navigator.sendBeacon && navigator.sendBeacon('/api/track', b))) fetch('/api/track', { method: 'POST', body: b, keepalive: true }).catch(() => {}); } catch (e) { /* ignore */ }
   }
+  function beacon(data) { trackQ.push(data); if (trackQ.length >= 20) flushTrack(); }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushTrack(); });
+  window.addEventListener('pagehide', flushTrack);
   function trackTopic(id) {
     try { const k = 'bn_seen_' + id; if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k, '1'); } catch (e) { return; }
     beacon({ topic: id });
@@ -2090,7 +2098,7 @@ window.__startApp = function () {
     const w = String(window.SIGNED_IN_AS || '').split('@')[0].split('.')[0].replace(/[^a-z]/gi, '');
     return w ? w[0].toUpperCase() + w.slice(1).toLowerCase() : '';
   }
-  const SITE_URL = /baphy105\.vercel\.app/.test(location.host) ? 'https://baphy105.vercel.app' : location.origin;
+  const SITE_URL = /baphy105.notix.in/.test(location.host) ? 'https://baphy105.notix.in' : location.origin;
   const modsDone = () => MODULES.filter((m) => m.topics.length && doneIn(m.topics) === m.topics.length).length;
 
   // ================================================================ progress sync (follows the account)
@@ -2459,10 +2467,10 @@ window.__startApp = function () {
       paint(); plan();
     }
     function plan() {
-      const s = st; let wait = 2000;
+      const s = st; let wait = 3000;
       if (!s.role) { if (s.guest) return; wait = 3000; }
-      else if (!s.guest) wait = 2000;
-      else if (!s.start) wait = 1500; // waiting for both players to accept the rules
+      else if (!s.guest) wait = document.hidden ? 10000 : 3000; // waiting for a friend to join
+      else if (!s.start) wait = 3000; // waiting for both players to accept the rules
       else if (s.done) return;
       else {
         const t = now(), slot = s.qt + s.gap;

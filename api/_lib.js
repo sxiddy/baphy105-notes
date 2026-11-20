@@ -58,7 +58,7 @@ function readSigned(req, name) {
   try { return JSON.parse(unb64u(payload).toString('utf8')); } catch (e) { return null; }
 }
 function cookie(name, value, maxAge) {
-  const secure = process.env.VERCEL ? '; Secure' : '';
+  const secure = (process.env.VERCEL || process.env.PRODUCTION) ? '; Secure' : '';
   return `${name}=${value}; Path=/; Max-Age=${maxAge}; HttpOnly; SameSite=Lax${secure}`;
 }
 const userCookie = (email, deviceId) => cookie(USER_COOKIE, sign({ e: email, d: deviceId }), MAX_AGE);
@@ -94,7 +94,7 @@ function isOwner(req) {
 const MODE_FILE = (() => { try { return require('./_mode.json'); } catch (e) { return {}; } })();
 let MODE = null, MODE_AT = 0;
 async function siteMode(fresh) {
-  if (!fresh && MODE && Date.now() - MODE_AT < 5000) return MODE;
+  if (!fresh && MODE && Date.now() - MODE_AT < 300000) return MODE; // 5 min (was 5 s; lighter on Cloudflare CPU)
   const store = require('./_store');
   const open = MODE_FILE.open === true || process.env.OPEN_ACCESS === '1';
   const out = { signin: !open, free: false, freeMode: open, freeOffer: null };
@@ -134,6 +134,21 @@ async function storePaid(email) {
   return paid;
 }
 
+// The Notix store keeps its purchases in the same Turso database, without a key prefix ("paid:BAPHY105" hash).
+// Read it directly, so Pro still unlocks when the store website itself is down or STORE_URL is not set (ported from BACHY105).
+// Same rule as the store's isLive: a grant with an "until" time in the past no longer counts.
+async function storePaidDirect(email) {
+  const url = process.env.TURSO_DATABASE_URL, token = process.env.TURSO_AUTH_TOKEN;
+  if (!url || !token || !email) return false;
+  try {
+    const out = await require('./_turso').pipeline([['HGET', 'paid:' + STORE_CODE, email]], { url, token });
+    const raw = out && out[0] && 'result' in out[0] ? out[0].result : Array.isArray(out) ? out[0] : null;
+    if (raw == null) return false;
+    let x = {}; try { x = JSON.parse(raw) || {}; } catch (e) { return true; }
+    return !(x.until && x.until <= Date.now());
+  } catch (e) { console.error('storePaidDirect:', e.message); return false; }
+}
+
 // Who can see the paid modules: the owner, a student whose email paid (hash "paid"), or one on the owner's free
 // list (hash "free"; removing them locks them out straight away, and a temporary grant has an "until" time). A free grant can be limited to some modules;
 // then .modules lists them (null = everything). While the whole site is free, everyone who can open it.
@@ -148,7 +163,7 @@ async function hasAccess(req) {
   if (!(await deviceActive(u, req))) return null;
   const [paid, free] = await store.pipeline([['HGET', 'paid', u.e], ['HGET', 'free', u.e]]);
   if (paid != null) return { email: u.e, paid: true, modules: null };
-  if (await storePaid(u.e)) return { email: u.e, paid: true, modules: null, store: true };
+  if (await storePaid(u.e) || await storePaidDirect(u.e)) return { email: u.e, paid: true, modules: null, store: true };
   if (free == null) return null;
   let x = {}; try { x = JSON.parse(free) || {}; } catch (e) {}
   if (x.until && x.until <= Date.now()) { await store.pipeline([['HDEL', 'free', u.e]]); return null; } // temporary grant ended
@@ -224,6 +239,9 @@ const isOurs = (p) => p.status === 'captured' && p.method === 'upi' && p.currenc
 async function recordPaid(email, p) {
   const store = require('./_store');
   if (!store.configured()) throw Object.assign(new Error('Storage is not set up, so access cannot be saved.'), { status: 500 });
+  // a payment the owner removed on /admin (e.g. refunded) never grants Pro again, even if the poller or a claim sees it
+  const [gone] = await store.pipeline([['HGET', 'paidRevoked', email]]);
+  if (gone && String(gone).split(',').includes(String(p.id))) return;
   await store.pipeline([['HSET', 'paid', email, JSON.stringify({ id: p.id, at: new Date(p.created_at * 1000).toISOString(), amount: p.amount })]]);
 }
 
@@ -235,7 +253,7 @@ async function recordPaid(email, p) {
 // struck through while a store sale runs). Cached for 5 minutes; if the store can't be reached the site's own price stays.
 let STORE_PRICE = null;
 async function withStorePrice(out) {
-  const url = process.env.STORE_URL;
+  const url = process.env.STORE_URL || process.env.PRICE_FROM; // PRICE_FROM: price from Notix while still selling here
   if (!url) return out;
   try {
     if (!STORE_PRICE || STORE_PRICE.until < Date.now()) {
@@ -249,7 +267,13 @@ async function withStorePrice(out) {
   } catch (e) {} // store unreachable: keep the site's own price
   return out;
 }
-async function settings() { return withStorePrice(await siteSettings()); }
+// Cached 5 min in memory (lighter on Cloudflare CPU), so a burst of students does not each wait on the database for the same owner settings.
+let SETTINGS = null, SETTINGS_AT = 0;
+async function settings() {
+  if (SETTINGS && Date.now() - SETTINGS_AT < 300000) return { ...SETTINGS };
+  SETTINGS = await withStorePrice(await siteSettings()); SETTINGS_AT = Date.now();
+  return { ...SETTINGS };
+}
 async function siteSettings() {
   const store = require('./_store');
   const out = { price: PRICE, normalPrice: PRICE, sale: null, banner: null, paused: null, business: '' };

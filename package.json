@@ -1,0 +1,17 @@
+{
+  "name": "baphy105-notes",
+  "private": true,
+  "scripts": {
+    "cf-build": "node tools/cf-build.js",
+    "deploy": "node tools/cf-build.js && wrangler deploy"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "wrangler": "^4.166.0"
+  },
+  "allowScripts": {
+    "workerd@1.20261119.1": true
+  }
+}
