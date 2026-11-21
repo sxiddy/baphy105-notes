@@ -50,7 +50,7 @@
     root.innerHTML = `
       <div class="gate">
         <div class="gate-card">
-          <div class="gate-eyebrow">BAPHY105 · Engineering Physics</div>
+          <div class="gate-eyebrow">BAPHY105</div>
           <h1 class="gate-title">Engineering Physics</h1>
           <p class="gate-lead">Study notes for VIT students. Sign in with your <b>VIT student Google account</b> (…@${esc(domain)}) to continue.</p>
           <div id="gsi" class="gate-gsi"></div>
@@ -146,7 +146,7 @@
     root.innerHTML = `
       <div class="gate">
         <div class="gate-card">
-          <div class="gate-eyebrow">BAPHY105 · Engineering Physics</div>
+          <div class="gate-eyebrow">BAPHY105</div>
           <h1 class="gate-title">BAPHY105 Pro</h1>
           <p class="gate-lead">The notes stay free. Pro adds every flashcard, the formula sheet, model answers, model papers, the quiz, the timed mock CAT, the revision pack, interactive models and progress sync. One payment, no subscription.</p>
           ${S.sale && S.sale.text && S.normalPrice > price ? `<div class="gate-offer-note" role="note">${esc(S.sale.text)}</div>` : ''}
@@ -272,7 +272,7 @@
     root.innerHTML = `
       <div class="gate">
         <div class="gate-card">
-          <div class="gate-eyebrow">BAPHY105 · Engineering Physics</div>
+          <div class="gate-eyebrow">BAPHY105</div>
           <h1 class="gate-title">Pro is not on sale right now</h1>
           <p class="gate-lead">The notes are free to use. Paying for Pro needs a signed-in account, and sign-in is switched off right now, so Pro can't be bought at the moment. Please check back soon.</p>
           <p style="margin-top:14px"><a class="btn ghost" href="./">← Back to the notes</a></p>

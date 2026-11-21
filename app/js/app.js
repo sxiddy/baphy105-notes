@@ -363,7 +363,7 @@ window.__startApp = function () {
       </div>
       <button class="sb-search" data-act="search">${icon('search')}<span>Search notes</span><kbd>${isMac ? '⌘' : 'Ctrl'} K</kbd></button>
       <nav class="sb-nav">
-        <a class="sb-link sb-guide" href="#guide" data-key="guide">${icon('guide')}<span>HOW TO USE</span></a>
+        <a class="sb-link sb-guide" href="#guide" data-key="guide">${icon('guide')}<span>How to use</span></a>
         <a class="sb-link" href="#home" data-key="home">${icon('home')}<span>Home</span></a>
         ${MODULES.filter((m) => m.topics.length).map((m) => `
           <div class="sb-group${S.ui.closed[m.id] ? ' closed' : ''}" data-group="${m.id}">
