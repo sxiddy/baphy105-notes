@@ -37,6 +37,7 @@ function load(file) {
   global.QUESTIONS = (d) => { out.questions = d; };
   global.SUMMARY = (d) => { out.summary = d; };
   global.PAPERS = (d) => { out.papers = d; };
+  global.WHY = (d) => { out.why = d; };
   delete require.cache[abs];
   try { require(abs); } catch (e) { err(file, `does not load: ${e.message}`); return null; }
   return out;
@@ -271,6 +272,7 @@ for (const f of files) {
     for (const r of ctx.figRefs) if (!g.figIds.has(r.id)) err(r.where, `figure "${r.id}" is not a notes figure`);
     if (ctx.vizRefs.length) err(base, 'no viz inside papers');
     console.log(`\n${base}: ${ps.length} papers, ${nq} questions${d.papers.index ? `, index of ${d.papers.index.length}` : ''}${d.papers.asked ? `, ${Object.keys(d.papers.asked).length} asked topics` : ''}`);
+  } else if (d.why) { /* why-wrong reasons: checked by tools/check-why.js */
   } else err(base, 'no CHUNK/QUESTIONS/SUMMARY/PAPERS call found');
 }
 console.log(`\n${errors} error(s), ${warnings} warning(s)`);

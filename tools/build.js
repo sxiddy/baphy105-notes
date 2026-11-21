@@ -39,8 +39,8 @@ const read = (file, name) => { // run a content file and return what it passed t
 };
 const js = (fn, d) => `${fn}(${JSON.stringify(d)});\n`;
 const write = (f, s) => fs.writeFileSync(path.join(PDATA, f), s);
-const strip = (q) => { const o = Object.assign({}, q); delete o.correct; delete o.answer; delete o.explain; delete o.points; return o; };
-const answerOf = (q) => ({ correct: q.correct, answer: q.answer, explain: q.explain, points: q.points });
+const strip = (q) => { const o = Object.assign({}, q); delete o.correct; delete o.answer; delete o.explain; delete o.points; delete o.wrong; return o; };
+const answerOf = (q) => ({ correct: q.correct, answer: q.answer, explain: q.explain, points: q.points, wrong: q.wrong });
 const fileModule = {}, freeFiles = [], proFiles = [];
 
 // ---- figures: every figure is the site's own drawing (figs-svg/<id>.svg), served by api/img.js and packed into the
@@ -92,6 +92,10 @@ for (const m of MODULES) {
   for (const qf of [].concat(m.questions || [])) {
     if (!fs.existsSync(path.join(CONTENT, qf))) continue;
     const d = read(qf, 'QUESTIONS'), ans = {};
+    // why each wrong option is wrong (Pro, like the answer): content/why-M1.js -> WHY({ 'm1-q-01': ['reason A', '', 'reason C', 'reason D'] })
+    const wf = qf.replace(/^q-/, 'why-');
+    const why = fs.existsSync(path.join(CONTENT, wf)) ? read(wf, 'WHY') : {};
+    (d.questions || []).forEach((q) => { if (why[q.id]) q.wrong = why[q.id]; });
     const qs = (d.questions || []).map((q) => { ans[q.id] = answerOf(q); return strip(q); });
     write(qf, js('QUESTIONS', Object.assign({}, d, { questions: qs }))); freeFiles.push(qf); fileModule[qf] = m.id;
     const af = qf.replace(/^q-/, 'qa-');

@@ -1299,6 +1299,7 @@ window.__startApp = function () {
     return `<div class="qans-inner">
       <div class="verdict prose">${q.answer || ''}</div>
       ${q.explain ? `<div class="why prose">${q.explain}</div>` : ''}
+      ${q.options && q.wrong && q.correct != null ? `<div class="pts-title">Why not the others</div><ul class="whynot">${q.options.map((o, k) => k === q.correct || !q.wrong[k] ? '' : `<li data-wk="${k}"><span class="k">${'ABCD'[k]}</span><div><b>${o}</b><span class="prose">${q.wrong[k]}</span></div></li>`).join('')}</ul>` : ''}
       ${q.points && q.points.length ? `<div class="pts-title">What the examiner wants to see</div><ul class="pts prose">${q.points.map((p) => `<li>${p}</li>`).join('')}</ul>` : ''}
     </div>`;
   }
@@ -1332,6 +1333,7 @@ window.__startApp = function () {
       $$('.qopt', card).forEach((x) => { x.disabled = true; const kk = +x.dataset.k; if (kk === q.correct) x.classList.add('right'); else if (kk === k) x.classList.add('wrong'); else x.classList.add('dim'); });
       const st = qState(q.id); st.seen++; if (right) st.right++; else { st.wrong++; st.status = 'revisit'; } save();
       $('[data-st]', card).innerHTML = statusTag(q.id);
+      const pick = $(`.whynot [data-wk="${k}"]`, card); if (pick) { pick.classList.add('picked'); pick.parentNode.prepend(pick); }
       ans.classList.add('open'); paintRev();
       trackAnswer(q, right);
       if (opts.onAnswer) opts.onAnswer(right);

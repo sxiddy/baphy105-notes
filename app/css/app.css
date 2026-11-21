@@ -1174,3 +1174,11 @@ a.syl-name:hover { text-decoration: underline; }
 .sb-row { font-size: 11.5px; color: var(--text-dim); padding: 10px 10px 3px; line-height: 1.3; display: flex; gap: 6px; }
 .row-head { font-size: 13px; font-weight: 600; color: var(--text-dim); margin: 18px 0 6px; display: flex; gap: 8px; align-items: baseline; }
 .row-n { font-variant-numeric: tabular-nums; opacity: .8; min-width: 2.2em; flex: none; }
+
+/* ---- why not the others */
+.qans .whynot { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 8px; }
+.qans .whynot li { display: flex; gap: 10px; align-items: flex-start; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line, rgba(255,255,255,.08)); font-size: 14.5px; line-height: 1.5; }
+.qans .whynot .k { flex: none; font-family: var(--mono); font-size: 12px; opacity: .7; padding-top: 2px; }
+.qans .whynot b { display: block; font-weight: 600; margin-bottom: 2px; }
+.qans .whynot li.picked { border-color: color-mix(in srgb, var(--bad) 55%, transparent); background: color-mix(in srgb, var(--bad) 9%, transparent); }
+.qans .whynot li.picked .k { color: var(--bad); opacity: 1; }
