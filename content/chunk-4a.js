@@ -306,7 +306,7 @@ CHUNK({
       id: 'm4-numericals',
       title: 'Numerical problems: box and tunnelling',
       short: 'Numerical problems',
-      blurb: 'Past-paper numericals worked in full: electron in a 2 Å box, energy and frequency gaps, tunnelling through 0.2 nm, and two barriers of different widths.',
+      blurb: 'Numericals worked in full: electron in a 2 Å box, energy and frequency gaps, tunnelling through 0.2 nm, and two barriers of different widths.',
       source: 'Module 4 notes, past FAT and CAT papers',
       tabs: [
         { title: 'Box problems', html: `
@@ -329,7 +329,7 @@ CHUNK({
 <p>With the prefactor 16(E/U)(1 − E/U) = 16 × 0.5 × 0.5 = 4: T ≈ 4 × 0.0103 = 0.041.</p>
 <p>Exact formula: T = [1 + 100 sinh²(2.29)/(4 × 5 × 5)]<sup>−1</sup> = 0.040.</p></div>
 <div class="result">T ≈ 0.04 (4 %). If only T ≈ e<sup>−2k₂L</sup> is used, T ≈ 0.010 (1 %): state which formula you use.</div></div>
-<div class="worked"><div class="given">Past paper: two electrons of the same energy meet barriers of the same height, widths 0.5 nm and 1.0 nm. T = 10 % for the first. Find T for the second.</div>
+<div class="worked"><div class="given">Two electrons of the same energy meet barriers of the same height, widths 0.5 nm and 1.0 nm. T = 10 % for the first. Find T for the second.</div>
 <div class="solve"><p>T ∝ e<sup>−2k₂L</sup> with the same k₂. T₁ = e<sup>−2k₂(0.5 nm)</sup> = 0.1.</p>
 <p>T₂ = e<sup>−2k₂(1.0 nm)</sup> = [e<sup>−2k₂(0.5 nm)</sup>]² = 0.1² = 0.01.</p></div>
 <div class="result">T₂ ≈ 1 %: doubling the width squares the probability.</div></div>` }

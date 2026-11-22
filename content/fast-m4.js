@@ -20,10 +20,7 @@ FAST({
   mcqs: ['m4-4a-02', 'm4-4a-03', 'm4-4a-05', 'm4-4a-06', 'm4-4a-17', 'm4-4a-22', 'm4-4a-26', 'm4-4a-27', 'm4-4a-31', 'm4-4a-32'],
   practice: [
     { q: 'Energy eigenvalues and eigenfunctions in a 1D infinite well of length 3L; first three levels and probability densities', from: ['cat2-f2'], f: [1, 2, 3] },
-    { q: '1D box: 4th and 5th excited states', from: ['fat-d1-f25'], f: [2, 4] },
     { q: '200 g marble in a 2 cm box: first three levels; redo for 10⁻³¹ kg in 5 nm', from: ['fat-c1'], f: [2, 12] },
-    { q: 'Rectangular barrier, E < V₀: wavefunction in regions I, II, III; boundary conditions; transmission', from: ['fat-c1'], f: [8, 9, 10] },
-    { q: 'Factors that affect tunnelling probability', from: ['fat-d1-f25'], f: [10, 11] },
-    { q: 'Barrier widths 0.5 nm and 1.0 nm, T = 10% at the first: T at the second', from: ['fat-d1-f25'], f: [13] }
+    { q: 'Rectangular barrier, E < V₀: wavefunction in regions I, II, III; boundary conditions; transmission', from: ['fat-c1'], f: [8, 9, 10] }
   ]
 });

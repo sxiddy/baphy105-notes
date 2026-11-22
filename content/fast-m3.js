@@ -31,7 +31,6 @@ FAST({
     { q: 'Physical significance of commuting and non-commuting operators, with example', from: ['cat2-f1'], f: [8, 9] },
     { q: '70 kg person through a 1 m door: minimum velocity uncertainty; quantum effects?', from: ['cat1-f1'], f: [9] },
     { q: 'Sequential Stern–Gerlach with diagrams: non-commuting spin measurements, probabilistic nature', from: ['cat2-f1', 'fat-c1'], f: [10, 11] },
-    { q: 'Four SG magnets z, x, x, z with 2000 particles', from: ['fat-d1-f25'], f: [12, 10] },
     { q: 'Particle in a time-independent potential: obtain its equation of motion (TISE)', from: ['cat2-f2'], f: [13, 14, 15] }
   ]
 });

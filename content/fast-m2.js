@@ -36,7 +36,6 @@ FAST({
     { q: 'Show AA† is Hermitian; is (1/√2)[1 i; i 1] unitary?', from: ['cat2-f2'], f: [15] },
     { q: 'Hermitian operator: eigenvalues real, eigenvectors of different eigenvalues orthogonal', from: ['fat-c1'], f: [16] },
     { q: 'Eigenvalues and normalised eigenvectors of [2 −3 0; 2 −5 0; 0 0 3]', from: ['cat2-f2'], f: [17, 18] },
-    { q: 'Evaluate [σy, σz]', from: ['cat2-f1'], f: [19] },
-    { q: '[σx, σy], [σx, σz]; σz Hermitian; projection and unitary operators', from: ['fat-d1-f25'], f: [19, 10, 15] }
+    { q: 'Evaluate [σy, σz]', from: ['cat2-f1'], f: [19] }
   ]
 });

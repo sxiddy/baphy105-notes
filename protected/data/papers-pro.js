@@ -44,19 +44,9 @@ PAPERS({
     "paper": "cat1-c1-f25"
    },
    {
-    "where": "Q1a",
-    "what": "blackbody radiation and the quantum nature of light",
-    "paper": "cat1-d1-f25"
-   },
-   {
     "where": "Q1",
     "what": "why classical physics failed for blackbody radiation",
     "paper": "fat-c1-f25"
-   },
-   {
-    "where": "Q1a",
-    "what": "ultraviolet catastrophe",
-    "paper": "fat-d1-f25"
    }
   ],
   "m1-de-broglie": [
@@ -121,16 +111,6 @@ PAPERS({
     "where": "Q2b",
     "what": "Compton: 90 keV photon scattered at 60°, find E′",
     "paper": "cat1-c1-f25"
-   },
-   {
-    "where": "Q3a",
-    "what": "wave vs particle nature",
-    "paper": "cat1-d1-f25"
-   },
-   {
-    "where": "Q1b",
-    "what": "YDSE and superposition",
-    "paper": "fat-d1-f25"
    }
   ],
   "m1-planck": [
@@ -175,19 +155,9 @@ PAPERS({
     "paper": "cat1-c1-f25"
    },
    {
-    "where": "Q1a",
-    "what": "blackbody radiation and the quantum nature of light",
-    "paper": "cat1-d1-f25"
-   },
-   {
     "where": "Q1",
     "what": "classical failure, Planck’s hypothesis, low- and high-frequency limits",
     "paper": "fat-c1-f25"
-   },
-   {
-    "where": "Q1a",
-    "what": "Planck law versus Rayleigh–Jeans, resolving the UV catastrophe",
-    "paper": "fat-d1-f25"
    }
   ],
   "m1-stern-gerlach": [
@@ -220,16 +190,6 @@ PAPERS({
     "where": "Q5b",
     "what": "how Stern–Gerlach showed spin",
     "paper": "cat1-c1-f25"
-   },
-   {
-    "where": "Q3c",
-    "what": "Stern–Gerlach construction, working, outcome",
-    "paper": "cat1-d1-f25"
-   },
-   {
-    "where": "Q5a",
-    "what": "construction, principle and outcome of SG",
-    "paper": "fat-d1-f25"
    }
   ],
   "m1-wavefunction": [
@@ -272,11 +232,6 @@ PAPERS({
     "where": "Q5a",
     "what": "double slit for classical and quantum particles",
     "paper": "cat1-c1-f25"
-   },
-   {
-    "where": "Q1b",
-    "what": "wave function and five properties",
-    "paper": "cat1-d1-f25"
    }
   ],
   "m1-ydse": [
@@ -286,19 +241,9 @@ PAPERS({
     "paper": "cat1-c2-w25"
    },
    {
-    "where": "Q3b",
-    "what": "YDSE: d = 0.5 mm, D = 1.4 m, 20 fringes in 3 cm, find λ",
-    "paper": "cat1-d1-f25"
-   },
-   {
     "where": "Q2",
     "what": "conditions for bright and dark fringes; how YDSE proves wave nature",
     "paper": "fat-c1-f25"
-   },
-   {
-    "where": "Q1b",
-    "what": "how YDSE shows superposition",
-    "paper": "fat-d1-f25"
    }
   ],
   "m2-basis": [
@@ -360,11 +305,6 @@ PAPERS({
     "where": "Q1",
     "what": "eigenvalues and eigenvectors of [−1 −1; 2 −4]",
     "paper": "cat2-c2-f25"
-   },
-   {
-    "where": "Q2",
-    "what": "eigenvalues and eigenvectors of [1 −2; 2 1]",
-    "paper": "fat-d1-f25"
    }
   ],
   "m2-hermitian": [
@@ -392,26 +332,6 @@ PAPERS({
     "where": "Q2",
     "what": "is [2 1 0; 1 2 0; 0 0 5] unitary; eigenvalues, normalised eigenvectors",
     "paper": "cat2-c2-w25"
-   },
-   {
-    "where": "Q2",
-    "what": "is [1 −2; 2 1] Hermitian",
-    "paper": "fat-d1-f25"
-   },
-   {
-    "where": "Q2 OR(ii)",
-    "what": "adjoint of [1 i; −i 2]",
-    "paper": "fat-d1-f25"
-   },
-   {
-    "where": "Q6a(iii)",
-    "what": "is σz Hermitian",
-    "paper": "fat-d1-f25"
-   },
-   {
-    "where": "Q6b",
-    "what": "unitary operators",
-    "paper": "fat-d1-f25"
    }
   ],
   "m2-orthonormal": [
@@ -491,16 +411,6 @@ PAPERS({
     "where": "Q3b",
     "what": "outer product |ψ⟩⟨φ| of the normalised kets",
     "paper": "fat-c1-f25"
-   },
-   {
-    "where": "Q2 OR(i)",
-    "what": "build A = 2|ψ⟩⟨φ| − i|χ⟩⟨ψ|",
-    "paper": "fat-d1-f25"
-   },
-   {
-    "where": "Q6b",
-    "what": "projection operators",
-    "paper": "fat-d1-f25"
    }
   ],
   "m2-pauli": [
@@ -518,11 +428,6 @@ PAPERS({
     "where": "Q1",
     "what": "P = ½(I + σz) is a projector; P on |±z⟩",
     "paper": "cat2-c2-w25"
-   },
-   {
-    "where": "Q6a",
-    "what": "[σx, σy] = 2iσz, [σx, σz]",
-    "paper": "fat-d1-f25"
    }
   ],
   "m2-tensor": [
@@ -628,11 +533,6 @@ PAPERS({
     "paper": "fat-c1"
    },
    {
-    "where": "Q2c",
-    "what": "effect of measurement on the state",
-    "paper": "cat1-d1-f25"
-   },
-   {
     "where": "Q3a",
     "what": "[x̂, Ĥ] for Ĥ = p̂²/2m + V(x̂)",
     "paper": "cat2-c2-w25"
@@ -673,16 +573,6 @@ PAPERS({
     "where": "Q5",
     "what": "observables as operators; measurement and collapse",
     "paper": "fat-c1"
-   },
-   {
-    "where": "Q2a",
-    "what": "what an observable is",
-    "paper": "cat1-d1-f25"
-   },
-   {
-    "where": "Q2b",
-    "what": "p̂ acting on sin kx",
-    "paper": "cat1-d1-f25"
    }
   ],
   "m3-seq-sg": [
@@ -715,11 +605,6 @@ PAPERS({
     "where": "Q5",
     "what": "sequential SG along z, x, z: results and conclusions",
     "paper": "fat-c1-f25"
-   },
-   {
-    "where": "Q5b",
-    "what": "four magnets z, x, x, z with 2000 particles",
-    "paper": "fat-d1-f25"
    }
   ],
   "m3-tise": [
@@ -727,11 +612,6 @@ PAPERS({
     "where": "Q3b",
     "what": "equation of motion in a time-independent potential (TISE)",
     "paper": "cat2-f2"
-   },
-   {
-    "where": "Q4",
-    "what": "derive TDSE and TISE",
-    "paper": "cat1-d1-f25"
    },
    {
     "where": "Q4b",
@@ -779,11 +659,6 @@ PAPERS({
     "where": "Q7",
     "what": "energies and wavefunctions in a 1D infinite well, first three levels",
     "paper": "fat-c1-f25"
-   },
-   {
-    "where": "Q7",
-    "what": "derive box energies and ψ; sketch ψ and |ψ|² for the 4th and 5th excited states (n = 5, 6)",
-    "paper": "fat-d1-f25"
    }
   ],
   "m4-numericals": [
@@ -806,11 +681,6 @@ PAPERS({
     "where": "Q9b(ii)",
     "what": "2 Å box, Δν between the 8th and 6th excited states",
     "paper": "fat-c1-f25"
-   },
-   {
-    "where": "Q3b",
-    "what": "widths 0.5 nm and 1.0 nm, T = 10 % for the first",
-    "paper": "fat-d1-f25"
    }
   ],
   "m4-tunnel-prob": [
@@ -818,11 +688,6 @@ PAPERS({
     "where": "Q7",
     "what": "barrier wavefunctions in three regions, factors affecting T, plots",
     "paper": "fat-c1"
-   },
-   {
-    "where": "Q3a",
-    "what": "factors affecting tunnelling probability",
-    "paper": "fat-d1-f25"
    }
   ],
   "m4-tunnelling": [
@@ -842,11 +707,6 @@ PAPERS({
     "where": "Q10b(i)",
     "what": "Bell states, forms and maximal entanglement",
     "paper": "fat-c1-f25"
-   },
-   {
-    "where": "Q8b",
-    "what": "measuring one qubit of |β₀₀⟩",
-    "paper": "fat-d1-f25"
    }
   ],
   "m5-bell-gen": [
@@ -878,11 +738,6 @@ PAPERS({
     "where": "Q8",
     "what": "entanglement with example, lab creation, applications",
     "paper": "fat-c1-f25"
-   },
-   {
-    "where": "Q8a",
-    "what": "define entanglement",
-    "paper": "fat-d1-f25"
    }
   ],
   "m5-pauli-h": [
@@ -895,33 +750,6 @@ PAPERS({
     "where": "Q10a",
     "what": "Pauli X, Y, Z matrices and their rotations on the Bloch sphere",
     "paper": "fat-c1-f25"
-   },
-   {
-    "where": "Q4b",
-    "what": "Pauli-Z on (|0⟩ + |1⟩)/√2",
-    "paper": "fat-d1-f25"
-   },
-   {
-    "where": "Q8c",
-    "what": "Y on α|0⟩ + β|1⟩",
-    "paper": "fat-d1-f25"
-   },
-   {
-    "where": "Q8d",
-    "what": "H|0⟩ = |+⟩, H|1⟩ = |−⟩",
-    "paper": "fat-d1-f25"
-   }
-  ],
-  "m5-qubits": [
-   {
-    "where": "Q4a",
-    "what": "five differences between bits and qubits",
-    "paper": "fat-d1-f25"
-   },
-   {
-    "where": "Q8a",
-    "what": "superposition in qubits",
-    "paper": "fat-d1-f25"
    }
   ],
   "m5-two-qubit": [
@@ -953,13 +781,6 @@ PAPERS({
     "where": "Q3b",
     "what": "inner product; A† of [3 1+2i 3i; −i 2i 4; 2−i 5 6]",
     "paper": "cat1-c1-f25"
-   }
-  ],
-  "m3-tdse": [
-   {
-    "where": "Q4",
-    "what": "derive TDSE and TISE",
-    "paper": "cat1-d1-f25"
    }
   ],
   "m4-eigen": [
@@ -1349,47 +1170,6 @@ PAPERS({
    ]
   },
   {
-   "id": "cat1-d1-f25",
-   "questions": [
-    {
-     "n": "1a",
-     "answer": "<p>A <b>black body</b> absorbs all radiation falling on it and, in equilibrium, emits a spectrum that depends only on its temperature (model: a cavity with a small hole). The curve u(λ) rises, peaks at λ<sub>max</sub> (λ<sub>max</sub>T = constant, Wien) and falls; total power ∝ T⁴.</p><p>Classical theory (Rayleigh–Jeans, energy k<sub>B</sub>T per mode) fits only long wavelengths and predicts infinite energy in the UV, the ultraviolet catastrophe.</p><p>Planck fixed it by assuming the oscillators exchange energy only in quanta E = nhν. High-frequency modes then need large quanta and are rarely excited, giving</p><div class=\"eq\">u(ν) = (8πhν³/c³) · 1/(e<sup>hν/k<sub>B</sub>T</sup> − 1)</div><p>which fits the whole curve. So the blackbody spectrum was the first evidence that radiation energy is quantised, later extended by Einstein to photons.</p>"
-    },
-    {
-     "n": "1b",
-     "answer": "<p>The <b>wave function</b> ψ(x, t) is the (generally complex) amplitude that describes the state of a quantum particle; |ψ|² dx is the probability of finding it between x and x + dx.</p><ol><li>Single-valued everywhere.</li><li>Finite everywhere.</li><li>Continuous, with continuous first derivative (where V is finite).</li><li>Square-integrable and normalisable: ∫|ψ|² dx = 1.</li><li>ψ itself is not measurable; only |ψ|² = ψ*ψ has physical meaning. Solutions can be superposed.</li></ol>"
-    },
-    {
-     "n": "2a",
-     "answer": "<p>An <b>observable</b> is a measurable physical quantity (position, momentum, energy, spin). In quantum mechanics each one is a <b>Hermitian operator</b>; its eigenvalues are the only possible results of a measurement and are real.</p>"
-    },
-    {
-     "n": "2b",
-     "answer": "<div class=\"worked\"><div class=\"solve\"><div class=\"eq\">p̂ sin kx = −iℏ d/dx (sin kx) = −iℏk cos kx</div></div><div class=\"result\"><p>p̂[sin kx] = −iℏk cos kx</p></div></div><p>The result is not a multiple of sin kx, so sin kx is not a momentum eigenstate: it is the sum of e<sup>ikx</sup> and e<sup>−ikx</sup>, momenta +ℏk and −ℏk.</p>"
-    },
-    {
-     "n": "2c",
-     "answer": "<ul><li>Before measurement the state is a superposition of eigenstates of the observable: |ψ⟩ = Σ c<sub>n</sub>|a<sub>n</sub>⟩.</li><li>The result is one eigenvalue a<sub>n</sub>, with probability |c<sub>n</sub>|² = |⟨a<sub>n</sub>|ψ⟩|².</li><li>Right after, the state <b>collapses</b> to |a<sub>n</sub>⟩. Repeating the same measurement at once gives a<sub>n</sub> again with certainty.</li><li>Measuring a non-commuting observable afterwards disturbs this: the state collapses again, and the earlier value is lost (sequential Stern–Gerlach).</li></ul>"
-    },
-    {
-     "n": "3a",
-     "answer": "<table class=\"tbl vs\"><thead><tr><th>Wave nature</th><th>Particle nature</th></tr></thead><tbody><tr><td>Spread out in space, described by λ and ν</td><td>Localised, described by mass, momentum, position</td></tr><tr><td>Shows interference and diffraction</td><td>Shows collisions and discrete energy transfer (photoelectric, Compton)</td></tr></tbody></table>"
-    },
-    {
-     "n": "3b",
-     "answer": "<div class=\"worked\"><div class=\"given\"><p>d = 0.5 mm = 5 × 10<sup>−4</sup> m, D = 1.4 m, 20 fringes span 3 cm</p></div><div class=\"solve\"><div class=\"eq\">Fringe width β = 3 cm / 20 = 0.15 cm = 1.5 × 10<sup>−3</sup> m</div><div class=\"eq\">β = λD/d ⇒ λ = βd/D</div><div class=\"eq\">λ = (1.5 × 10<sup>−3</sup>)(5 × 10<sup>−4</sup>) / 1.4 = 5.36 × 10<sup>−7</sup> m</div></div><div class=\"result\"><p>λ ≈ 536 nm (green)</p></div></div><p class=\"note\">This takes \"20 fringes\" as 20 fringe widths, the usual reading. If it means 20 bright fringes (19 gaps), β = 1.58 mm and λ ≈ 564 nm.</p>"
-    },
-    {
-     "n": "3c",
-     "answer": "<p><b>Construction.</b> An oven heats silver to make a vapour; slits collimate it into a narrow beam of neutral atoms. The beam passes between magnet pole pieces shaped (one sharp, one flat) to give a strongly <b>non-uniform</b> field along z, then hits a glass plate in vacuum.</p><p><b>Working.</b> An atom with magnetic moment μ in a field has energy U = −μ·B. In a uniform field it only feels a torque; in a non-uniform field it feels a net force</p><div class=\"eq\">F<sub>z</sub> = μ<sub>z</sub> (∂B<sub>z</sub>/∂z)</div><p>so the deflection measures μ<sub>z</sub>, the moment along the field.</p><p><b>Expected (classical).</b> Moments point in all directions, so μ<sub>z</sub> is continuous and the plate should show one smeared band.</p><p><b>Outcome.</b> Two separate spots, equally intense, above and below the axis.</p><ul><li>μ<sub>z</sub> is quantised: space quantisation.</li><li>Silver's single outer electron has l = 0, so the moment is not orbital. Two spots need 2s + 1 = 2, so s = ½: intrinsic electron <b>spin</b>, S<sub>z</sub> = ±ℏ/2.</li><li>Each atom lands in one spot or the other at random, 50 : 50, the first sign of probabilistic measurement.</li></ul>"
-    },
-    {
-     "n": "4",
-     "answer": "<p><b>Assumptions.</b> A free particle is a plane wave ψ = A e<sup>i(kx − ωt)</sup>; de Broglie p = ℏk; Planck–Einstein E = ℏω; total energy E = p²/2m + V; the equation is linear so waves superpose.</p><p><b>Time-dependent equation.</b></p><div class=\"worked\"><div class=\"solve\"><div class=\"eq\">∂ψ/∂t = −iωψ ⇒ iℏ ∂ψ/∂t = ℏωψ = Eψ</div><div class=\"eq\">∂ψ/∂x = ikψ ⇒ −iℏ ∂ψ/∂x = pψ; ∂²ψ/∂x² = −k²ψ ⇒ −ℏ² ∂²ψ/∂x² = p²ψ</div><div class=\"eq\">Multiply E = p²/2m + V by ψ: Eψ = (p²/2m)ψ + Vψ</div><div class=\"eq\">Replace Eψ and p²ψ by the derivatives</div></div><div class=\"result\"><p>iℏ ∂ψ/∂t = −(ℏ²/2m) ∂²ψ/∂x² + V(x, t)ψ (TDSE)</p></div></div><p>So E → iℏ ∂/∂t and p → −iℏ ∂/∂x; in 3D, ∂²/∂x² → ∇².</p><p><b>Time-independent equation.</b> If V depends only on x, separate the variables: ψ(x, t) = φ(x) T(t).</p><div class=\"worked\"><div class=\"solve\"><div class=\"eq\">iℏ φ dT/dt = T[−(ℏ²/2m) d²φ/dx² + Vφ]</div><div class=\"eq\">Divide by φT: (iℏ/T) dT/dt = (1/φ)[−(ℏ²/2m) φ″ + Vφ] = E (each side depends on a different variable, so both equal a constant)</div><div class=\"eq\">Time part: dT/dt = −(iE/ℏ)T ⇒ T = e<sup>−iEt/ℏ</sup></div><div class=\"eq\">Space part: −(ℏ²/2m) d²φ/dx² + Vφ = Eφ</div></div><div class=\"result\"><p>d²φ/dx² + (2m/ℏ²)(E − V)φ = 0, i.e. Ĥφ = Eφ (TISE)</p></div></div><p>The separation constant E is the energy. ψ = φ e<sup>−iEt/ℏ</sup> is a stationary state: |ψ|² = |φ|² does not change in time.</p>"
-    }
-   ]
-  },
-  {
    "id": "cat2-c2-w25",
    "questions": [
     {
@@ -1530,43 +1310,6 @@ PAPERS({
     {
      "n": "10b",
      "answer": "<p><b>(i)</b> Bell states are the four maximally entangled two-qubit states:</p><div class=\"eq\">|Φ<sup>±</sup>⟩ = (|00⟩ ± |11⟩)/√2, |Ψ<sup>±</sup>⟩ = (|01⟩ ± |10⟩)/√2</div><p><b>Properties.</b></p><ul><li>Not factorisable: for |Φ<sup>+</sup>⟩, ad − bc = ½ ≠ 0, the largest possible value.</li><li>Each qubit alone is completely random (P = ½ for 0 and 1), yet results are perfectly correlated (Φ) or anti-correlated (Ψ).</li><li>They are orthonormal and form a basis of the two-qubit space (the Bell basis).</li><li>Measuring one qubit fixes the other instantly.</li></ul><p><b>(ii)</b> Circuit: H on qubit 1, then CNOT with qubit 1 as control.</p><figure data-fig=\"m5-bell-circuit\"></figure><div class=\"worked\"><div class=\"solve\"><div class=\"eq\">|00⟩ → (H ⊗ I) → (1/√2)(|0⟩ + |1⟩)|0⟩ = (1/√2)(|00⟩ + |10⟩)</div><div class=\"eq\">CNOT: |00⟩ unchanged, |10⟩ → |11⟩</div><div class=\"eq\">→ (1/√2)(|00⟩ + |11⟩) = |Φ<sup>+</sup>⟩</div></div><div class=\"result\"><p>H then CNOT turns |00⟩ into |Φ<sup>+</sup>⟩</p></div></div><p>Inputs |01⟩, |10⟩, |11⟩ give |Ψ<sup>+</sup>⟩, |Φ<sup>−</sup>⟩, |Ψ<sup>−</sup>⟩.</p>"
-    }
-   ]
-  },
-  {
-   "id": "fat-d1-f25",
-   "questions": [
-    {
-     "n": "1",
-     "answer": "<p><b>(a)</b> Rayleigh–Jeans gives each mode the classical average energy k<sub>B</sub>T; Planck allows only energies nhν, which makes the average hν/(e<sup>hν/k<sub>B</sub>T</sup> − 1).</p><div class=\"eq\">RJ: u(ν) = 8πν<sup>2</sup>k<sub>B</sub>T/c<sup>3</sup>  Planck: u(ν) = (8πhν<sup>3</sup>/c<sup>3</sup>) · 1/(e<sup>hν/k<sub>B</sub>T</sup> − 1)</div><figure data-fig=\"m1-uv-catastrophe\"></figure><ul><li>RJ grows as ν<sup>2</sup> for ever, so the total energy is infinite: the ultraviolet catastrophe.</li><li>In Planck’s law a high-frequency mode needs a large quantum hν ≫ k<sub>B</sub>T, which is rarely available; the exponential cuts u(ν) to zero.</li><li>At low ν (hν ≪ k<sub>B</sub>T), e<sup>x</sup> − 1 ≈ x and Planck reduces to RJ, so RJ is just its classical limit.</li></ul><p>The single difference, energy in quanta hν instead of continuous, gives the observed peak and finite total energy.</p><p><b>(b)</b> Two coherent slits a distance d apart send waves to a screen at distance D. At each point the waves add: ψ = ψ<sub>1</sub> + ψ<sub>2</sub> (superposition), and intensity is |ψ<sub>1</sub> + ψ<sub>2</sub>|<sup>2</sup>, not |ψ<sub>1</sub>|<sup>2</sup> + |ψ<sub>2</sub>|<sup>2</sup>.</p><figure data-fig=\"m1-ydse\"></figure><ul><li>Path difference d sin θ = nλ: in phase, bright fringe (4× one-slit intensity).</li><li>d sin θ = (n + ½)λ: antiphase, dark fringe (zero).</li><li>Fringe width β = λD/d.</li></ul><p>Darkness where both slits are open, but light with one slit, can only come from adding amplitudes with phase. The same pattern built up one electron at a time shows superposition holds for matter waves too.</p>"
-    },
-    {
-     "n": "2",
-     "answer": "<div class=\"worked\"><div class=\"solve\"><div class=\"eq\">det(A − λI) = (1 − λ)<sup>2</sup> + 4 = 0 ⇒ λ<sup>2</sup> − 2λ + 5 = 0</div><div class=\"eq\">λ = [2 ± √(4 − 20)]/2 = 1 ± 2i</div><div class=\"eq\">λ = 1 + 2i: [−2i −2; 2 −2i](x, y) = 0 ⇒ y = −ix ⇒ v<sub>1</sub> = (1/√2)(1, −i)</div><div class=\"eq\">λ = 1 − 2i: [2i −2; 2 2i](x, y) = 0 ⇒ y = ix ⇒ v<sub>2</sub> = (1/√2)(1, i)</div></div><div class=\"result\"><p>λ = 1 ± 2i with eigenvectors (1, ∓i)/√2</p></div></div><p><b>Hermitian?</b> A<sup>†</sup> = (A*)<sup>T</sup> = [1 2; −2 1] ≠ A, so A is <b>not Hermitian</b>. This also shows in the complex eigenvalues: a Hermitian matrix always has real eigenvalues. (The eigenvectors are still orthogonal, ⟨v<sub>1</sub>|v<sub>2</sub>⟩ = (1 + i·i)/2 = 0, because A commutes with A<sup>†</sup>.)</p><p><b>OR</b> (i) |ψ⟩⟨φ| has a 1 at row 1, column 2 and |χ⟩⟨ψ| has a 1 at row 3, column 1, so</p><div class=\"eq\">A = 2|ψ⟩⟨φ| − i|χ⟩⟨ψ| = [0 2 0; 0 0 0; −i 0 0]</div><p>(ii) Q̂* = [1 −i; i 2]; transposing gives Q̂<sup>†</sup> = [1 i; −i 2] = Q̂, so Q̂ is Hermitian.</p><div class=\"worked\"><div class=\"solve\"><div class=\"eq\">(iii) ⟨ψ| = (1 − i, 2, i), |φ⟩ = (i, 1 − i, 2)</div><div class=\"eq\">⟨ψ|φ⟩ = (1 − i)(i) + 2(1 − i) + (i)(2) = (i + 1) + (2 − 2i) + 2i</div></div><div class=\"result\"><p>⟨ψ|φ⟩ = 3 + i</p></div></div>"
-    },
-    {
-     "n": "3",
-     "answer": "<p><b>(a)</b> For E &lt; V<sub>0</sub> and a wide barrier,</p><div class=\"eq\">T ≈ 16(E/V<sub>0</sub>)(1 − E/V<sub>0</sub>) e<sup>−2κa</sup>, κ = √(2m(V<sub>0</sub> − E))/ℏ</div><figure data-fig=\"m4-tplots\"></figure><ul><li><b>Width a:</b> T falls exponentially; doubling a roughly squares T. The strongest factor.</li><li><b>V<sub>0</sub> − E:</b> κ ∝ √(V<sub>0</sub> − E); a higher barrier or a slower particle tunnels much less.</li><li><b>Mass m:</b> κ ∝ √m; electrons tunnel easily, protons and heavier particles hardly at all.</li><li>The prefactor 16(E/V<sub>0</sub>)(1 − E/V<sub>0</sub>) varies slowly and matters little.</li></ul><p>Significance: alpha decay, the scanning tunnelling microscope, tunnel diodes and flash memory all rely on this exponential sensitivity.</p><p><b>(b)</b> Same E, V<sub>0</sub> and m, so κ and the prefactor are the same; only a changes. Taking T ≈ e<sup>−2κa</sup>:</p><div class=\"worked\"><div class=\"solve\"><div class=\"eq\">T<sub>1</sub> = e<sup>−2κ(0.5 nm)</sup> = 0.10</div><div class=\"eq\">T<sub>2</sub> = e<sup>−2κ(1.0 nm)</sup> = (e<sup>−2κ(0.5 nm)</sup>)<sup>2</sup> = (0.10)<sup>2</sup></div></div><div class=\"result\"><p>T<sub>2</sub> ≈ 0.01, i.e. 1 %</p></div></div><p>Doubling the width squares the probability: 10 % drops to 1 %. (If the prefactor G is kept, T<sub>2</sub> = T<sub>1</sub><sup>2</sup>/G; with G ≈ 1 this is the same answer.)</p>"
-    },
-    {
-     "n": "4",
-     "answer": "<p><b>(a)</b></p><table class=\"tbl\"><tr><th>Classical bit</th><th>Qubit</th></tr><tr><td>State is 0 or 1</td><td>State α|0⟩ + β|1⟩, |α|<sup>2</sup> + |β|<sup>2</sup> = 1 (superposition)</td></tr><tr><td>Reading does not change it</td><td>Measurement gives 0 or 1 with probabilities |α|<sup>2</sup>, |β|<sup>2</sup> and collapses the state</td></tr><tr><td>Can be copied freely</td><td>An unknown qubit cannot be copied (no-cloning)</td></tr><tr><td>n bits hold one of 2<sup>n</sup> values</td><td>n qubits hold 2<sup>n</sup> complex amplitudes at once</td></tr><tr><td>Bits are independent</td><td>Qubits can be entangled, with correlations no bits can have</td></tr><tr><td>Logic gates (AND, OR) can be irreversible</td><td>Quantum gates are unitary and reversible</td></tr><tr><td>Picture: a switch on or off</td><td>Picture: any point on the Bloch sphere</td></tr></table><p><b>(b)</b> Z = [1 0; 0 −1]: Z|0⟩ = |0⟩, Z|1⟩ = −|1⟩.</p><div class=\"worked\"><div class=\"solve\"><div class=\"eq\">Z|ψ⟩ = (1/√2)(Z|0⟩ + Z|1⟩) = (1/√2)(|0⟩ − |1⟩)</div><div class=\"eq\">Matrix: [1 0; 0 −1](1, 1)/√2 = (1, −1)/√2</div></div><div class=\"result\"><p>Z|+⟩ = |−⟩ = (|0⟩ − |1⟩)/√2</p></div></div><p>Z is a phase flip: measurement probabilities in the 0/1 basis stay ½ and ½, but the relative phase changes by π (on the Bloch sphere +x goes to −x).</p>"
-    },
-    {
-     "n": "5",
-     "answer": "<p><b>(a)</b></p><p><b>Set-up.</b> Silver is heated in an oven; the beam of neutral atoms is collimated by slits, passes between magnet poles shaped to give a <b>non-uniform</b> field B<sub>z</sub>(z), and hits a detector plate. Silver has one unpaired outer electron, so the atom’s moment is that of one electron spin.</p><figure data-fig=\"m1-stern-gerlach\"></figure><p><b>Principle.</b> Energy E = −μ·B. A field gradient gives a force F<sub>z</sub> = μ<sub>z</sub> ∂B<sub>z</sub>/∂z, so atoms are pushed up or down according to μ<sub>z</sub>.</p><p><b>Classical expectation.</b> Randomly oriented moments give every value of μ<sub>z</sub>: a continuous smear.</p><p><b>Outcome.</b> Two separate spots only. The electron has intrinsic spin, and its component along the field is quantised: S<sub>z</sub> = +ℏ/2 or −ℏ/2.</p><p>Measuring along x instead again gives only ±ℏ/2. This is a real two-state system, the model for a qubit.</p><p><b>(b)</b> Reading the figure as: I is SG-z, II and III are SG-x, IV is SG-z, and one beam is blocked after each of I, II and III (taken as the −z, −x and −x beams; the scan does not label which). |±x⟩ = (|+z⟩ ± |−z⟩)/√2.</p><figure data-fig=\"m3-seq-sg\"></figure><ul><li><b>SG I (z).</b> 2000 unpolarised atoms → 1000 in |+z⟩, 1000 in |−z⟩. |−z⟩ blocked; 1000 go on in |+z⟩.</li><li><b>SG II (x).</b> |+z⟩ has P(±x) = ½: 500 in |+x⟩, 500 in |−x⟩. |−x⟩ blocked; 500 go on in |+x⟩.</li><li><b>SG III (x).</b> The atoms are already in |+x⟩, so all 500 come out in the +x beam and none in −x (a repeated measurement gives the same result). The blocked port receives nothing.</li><li><b>SG IV (z).</b> |+x⟩ has P(±z) = ½: about 250 in |+z⟩ and 250 in |−z⟩.</li></ul><p><b>Output:</b> 250 up and 250 down from IV. The −z state reappears because the x measurement erased the z information; [Ŝ<sub>z</sub>, Ŝ<sub>x</sub>] ≠ 0.</p>"
-    },
-    {
-     "n": "6",
-     "answer": "<div class=\"worked\"><div class=\"solve\"><div class=\"eq\">(i) σ<sub>x</sub>σ<sub>y</sub> = [0 1; 1 0][0 −i; i 0] = [i 0; 0 −i] = iσ<sub>z</sub></div><div class=\"eq\">σ<sub>y</sub>σ<sub>x</sub> = [0 −i; i 0][0 1; 1 0] = [−i 0; 0 i] = −iσ<sub>z</sub></div><div class=\"eq\">[σ<sub>x</sub>, σ<sub>y</sub>] = iσ<sub>z</sub> − (−iσ<sub>z</sub>) = 2iσ<sub>z</sub></div><div class=\"eq\">(ii) σ<sub>x</sub>σ<sub>z</sub> = [0 −1; 1 0], σ<sub>z</sub>σ<sub>x</sub> = [0 1; −1 0]</div><div class=\"eq\">[σ<sub>x</sub>, σ<sub>z</sub>] = [0 −2; 2 0] = −2i[0 −i; i 0]</div></div><div class=\"result\"><p>[σ<sub>x</sub>, σ<sub>y</sub>] = 2iσ<sub>z</sub>, [σ<sub>x</sub>, σ<sub>z</sub>] = −2iσ<sub>y</sub></p></div></div><p><b>(iii)</b> σ<sub>z</sub> is real and diagonal, so σ<sub>z</sub><sup>†</sup> = (σ<sub>z</sub>*)<sup>T</sup> = σ<sub>z</sub>: <b>Hermitian</b>, with real eigenvalues ±1 (S<sub>z</sub> = ±ℏ/2).</p><p><b>(b) Projection operator.</b> P = |a⟩⟨a| for a normalised |a⟩. P|ψ⟩ = ⟨a|ψ⟩|a⟩ keeps only the |a⟩ part. Properties: P<sup>2</sup> = P, P<sup>†</sup> = P, eigenvalues 0 and 1; a complete set gives Σ|a<sub>n</sub>⟩⟨a<sub>n</sub>| = I.</p><figure data-fig=\"m2-projection\"></figure><p>Significance: ⟨ψ|P|ψ⟩ = |⟨a|ψ⟩|<sup>2</sup> is the probability of outcome a, and P|ψ⟩/‖P|ψ⟩‖ is the state after the measurement (collapse). Example: P = ½(I + σ<sub>z</sub>) = |0⟩⟨0|.</p><p><b>Unitary operator.</b> U<sup>†</sup>U = UU<sup>†</sup> = I. It keeps inner products and norms: ⟨Uψ|Uφ⟩ = ⟨ψ|φ⟩; eigenvalues have |λ| = 1.</p><p>Significance: time evolution U = e<sup>−iĤt/ℏ</sup> is unitary, so total probability stays 1; every quantum gate (X, Y, Z, H, CNOT) is unitary and therefore reversible; changes of basis are unitary.</p>"
-    },
-    {
-     "n": "7",
-     "answer": "<p><b>Potential.</b> V = 0 for 0 ≤ x ≤ L, V = ∞ elsewhere, so ψ = 0 outside the box.</p><figure data-fig=\"m4-box\"></figure><p><b>Inside.</b> −(ℏ<sup>2</sup>/2m) d<sup>2</sup>ψ/dx<sup>2</sup> = Eψ, i.e. d<sup>2</sup>ψ/dx<sup>2</sup> + k<sup>2</sup>ψ = 0 with k = √(2mE)/ℏ, so ψ = A sin kx + B cos kx.</p><p><b>Boundary conditions.</b> ψ(0) = 0 gives B = 0; ψ(L) = A sin(kL) = 0 with A ≠ 0 gives kL = nπ, n = 1, 2, 3, … (n = 0 gives no particle). Only these k are allowed: the energy is quantised.</p><div class=\"eq\">E<sub>n</sub> = n<sup>2</sup>π<sup>2</sup>ℏ<sup>2</sup>/2mL<sup>2</sup> = n<sup>2</sup>h<sup>2</sup>/8mL<sup>2</sup></div><p><b>Normalisation.</b> |A|<sup>2</sup>∫<sub>0</sub><sup>L</sup> sin<sup>2</sup>(nπx/L) dx = |A|<sup>2</sup>L/2 = 1, so</p><div class=\"eq\">ψ<sub>n</sub>(x) = √(2/L) sin(nπx/L)</div><p><b>4th and 5th excited states.</b> The ground state is n = 1, so the 4th excited state is <b>n = 5</b> and the 5th excited state is <b>n = 6</b>.</p><ul><li><b>n = 5:</b> ψ<sub>5</sub> = √(2/L) sin(5πx/L), E<sub>5</sub> = 25E<sub>1</sub>. Five half-waves in the box, 4 interior nodes at L/5, 2L/5, 3L/5, 4L/5. Antinode at the centre, so |ψ<sub>5</sub>|<sup>2</sup> has five equal humps, one centred at L/2.</li><li><b>n = 6:</b> ψ<sub>6</sub> = √(2/L) sin(6πx/L), E<sub>6</sub> = 36E<sub>1</sub>. Six half-waves, 5 interior nodes at L/6, L/3, L/2, 2L/3, 5L/6. Node at the centre, so |ψ<sub>6</sub>|<sup>2</sup> has six humps and is zero at L/2.</li></ul><p>Sketch: ψ alternates above and below the axis between nodes, starting and ending at zero on the walls; |ψ|<sup>2</sup> is the same curve with every lobe positive, peak value 2/L. The gap E<sub>6</sub> − E<sub>5</sub> = 11E<sub>1</sub>. As n grows the humps crowd together and the average density approaches the uniform classical value 1/L.</p>"
-    },
-    {
-     "n": "8",
-     "answer": "<p><b>(a) Superposition:</b> a qubit can be in α|0⟩ + β|1⟩ with |α|<sup>2</sup> + |β|<sup>2</sup> = 1; a measurement gives 0 with probability |α|<sup>2</sup> and 1 with |β|<sup>2</sup>. <b>Entanglement:</b> a two-qubit state that cannot be written as a product |a⟩ ⊗ |b⟩; for a|00⟩ + b|01⟩ + c|10⟩ + d|11⟩ this means ad − bc ≠ 0.</p><p><b>(b)</b> |β<sub>00</sub>⟩ = (|00⟩ + |11⟩)/√2. Measuring qubit 1 gives 0 or 1 with probability ½ each. If 0, the pair collapses to |00⟩ and qubit 2 is now definitely |0⟩; if 1, it collapses to |11⟩ and qubit 2 is |1⟩. Before the measurement qubit 2 had no definite value; afterwards it is fixed, however far away it is. The results always agree, but each is random, so no message is sent.</p><p><b>(c)</b> Y = [0 −i; i 0]:</p><div class=\"worked\"><div class=\"solve\"><div class=\"eq\">Y|0⟩ = i|1⟩, Y|1⟩ = −i|0⟩</div><div class=\"eq\">Y(α|0⟩ + β|1⟩) = αi|1⟩ − βi|0⟩</div></div><div class=\"result\"><p>Y|ψ⟩ = −iβ|0⟩ + iα|1⟩</p></div></div><p>Bit flip and phase flip together (Y = iXZ).</p><p><b>(d)</b> H = (1/√2)[1 1; 1 −1].</p><div class=\"worked\"><div class=\"solve\"><div class=\"eq\">H|0⟩ = (1/√2)[1 1; 1 −1](1, 0) = (1/√2)(1, 1) = (|0⟩ + |1⟩)/√2 = |+⟩</div><div class=\"eq\">H|1⟩ = (1/√2)[1 1; 1 −1](0, 1) = (1/√2)(1, −1) = (|0⟩ − |1⟩)/√2 = |−⟩</div></div><div class=\"result\"><p>H|0⟩ = |+⟩, H|1⟩ = |−⟩</p></div></div><p>H turns a definite basis state into an equal superposition (P = ½ each). H is Hermitian and H<sup>2</sup> = I, so H|+⟩ = |0⟩ and H|−⟩ = |1⟩.</p>"
     }
    ]
   }

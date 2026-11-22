@@ -255,12 +255,6 @@ add('m1', 'Wien a check: nu_max/T from Planck peak (2.821 kB/h)', (2.821 * kB) /
     add('pp', 'FW26 Q9b m=1e-31, L=5 nm E1,E2,E3', [1, 2, 3].map((n) => Eb(n, 1e-31, 5e-9).toExponential(3)).join(', '), 'J');
     add('pp', 'FW26 Q9b same in eV', [1, 2, 3].map((n) => (Eb(n, 1e-31, 5e-9) / e).toFixed(4)).join(', '), 'eV'); }
   add('pp', 'FW26 Q9a A = √(2a), <x> = 1/(2a) at a = 1: ∫2e^{-2x}, ∫2x e^{-2x}', `${(() => { let s = 0, t = 0; for (let k = 0; k < 400000; k++) { const x = (k + 0.5) * 1e-4; s += 2 * Math.exp(-2 * x) * 1e-4; t += 2 * x * Math.exp(-2 * x) * 1e-4; } return s.toFixed(4) + ', ' + t.toFixed(4); })()}`);
-  // FAT D1 Fall 2025-26
-  add('pp', 'FD25 Q2 eig [1 -2; 2 1]: 1 ± 2i (trace 2, det 5)', `${1 + 1}, ${1 * 1 + 2 * 2}`);
-  { const C = (re, im = 0) => ({ re, im }), cm = (a, b) => C(a.re * b.re - a.im * b.im, a.re * b.im + a.im * b.re), ca = (a, b) => C(a.re + b.re, a.im + b.im), cj = (a) => C(a.re, -a.im);
-    const psi = [C(1, 1), C(2), C(0, -1)], phi = [C(0, 1), C(1, -1), C(2)]; const z = psi.reduce((s, x, k) => ca(s, cm(cj(x), phi[k])), C(0)); add('pp', 'FD25 Q2(OR)iii <psi|phi>', `${z.re}+${z.im}i`); }
-  add('pp', 'FD25 Q3b T2 = 0.1^2', 0.1 ** 2);
-  add('pp', 'FD25 Q5b SG counts I→II→III→IV', `${2000 / 2}, ${2000 / 4}, ${2000 / 4}, ${2000 / 8} + ${2000 / 8}`);
 }
 
 const want = process.argv.slice(2);

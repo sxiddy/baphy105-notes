@@ -601,7 +601,7 @@ CHUNK({
 <li>Reversing the order flips the sign: [σₓ, σ<sub>z</sub>] = −2iσ<sub>y</sub>.</li>
 </ul>` },
         { title: 'Proofs from papers', html: `
-<div class="worked"><div class="given">Past paper: prove [σₓ, σ<sub>y</sub>] = 2iσ<sub>z</sub>.</div>
+<div class="worked"><div class="given">Prove [σₓ, σ<sub>y</sub>] = 2iσ<sub>z</sub>.</div>
 <div class="solve"><p>σₓσ<sub>y</sub> = [0 1; 1 0][0 −i; i 0] = [i 0; 0 −i] = iσ<sub>z</sub>.</p>
 <p>σ<sub>y</sub>σₓ = [0 −i; i 0][0 1; 1 0] = [−i 0; 0 i] = −iσ<sub>z</sub>.</p>
 <p>[σₓ, σ<sub>y</sub>] = iσ<sub>z</sub> − (−iσ<sub>z</sub>) = 2iσ<sub>z</sub> = [2i 0; 0 −2i].</p></div>

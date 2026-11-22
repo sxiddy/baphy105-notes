@@ -20,11 +20,8 @@ FAST({
   ],
   mcqs: ['m5-5a-01', 'm5-5a-11', 'm5-5a-12', 'm5-5a-17', 'm5-5a-20', 'm5-5a-25', 'm5-5a-31', 'm5-5a-32', 'm5-5a-35', 'm5-5a-37'],
   practice: [
-    { q: 'Five differences between a bit and a qubit', from: ['fat-d1-f25'], f: [1, 2] },
     { q: 'Bloch sphere with diagram: meaning of the poles and equator; Pauli X on any state', from: ['fat-c1'], f: [4, 3, 10] },
-    { q: 'Pauli-Z on |+⟩', from: ['fat-d1-f25'], f: [10] },
     { q: 'Condition for entanglement; maximal entanglement and possibilities; two physical realisations', from: ['fat-c1'], f: [5, 6, 7, 8] },
-    { q: 'Superposition vs entanglement; measuring β00; Y gate; H|0⟩ and H|1⟩', from: ['fat-d1-f25'], f: [6, 8, 10, 11] },
     { q: 'Create a Bell state from |01⟩ with gates (calculation + circuit); start from a|01⟩ + b|11⟩', from: ['fat-c1'], f: [12, 13, 14] }
   ]
 });
