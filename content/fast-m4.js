@@ -1,0 +1,29 @@
+FAST({
+  module: 'm4',
+  minutes: 25,
+  hy: ['m4-box1d', 'm4-tunnelling', 'm4-tunnel-prob', 'm4-numericals'],
+  facts: [
+    /* 1 */ { t: 'm4-box1d', star: true, html: '<b>Infinite well</b>: V = 0 for 0 ≤ x ≤ a, ∞ outside → ψ = 0 outside and at the walls. Inside, TISE: ψ″ + k<sup>2</sup>ψ = 0, k = √(2mE)/ℏ → ψ = A sin kx + B cos kx. ψ(0) = 0 → B = 0; ψ(a) = 0 → <b>ka = nπ</b>.' },
+    /* 2 */ { t: 'm4-box1d', star: true, html: '<b>Results</b>: <b>E<sub>n</sub> = n<sup>2</sup>h<sup>2</sup>/8ma<sup>2</sup> = n<sup>2</sup>π<sup>2</sup>ℏ<sup>2</sup>/2ma<sup>2</sup></b>, <b>ψ<sub>n</sub> = √(2/a) sin(nπx/a)</b>, n = 1, 2, 3 … (n = 0 gives ψ = 0, not allowed). Box of width 3L: replace a by 3L, E<sub>n</sub> = n<sup>2</sup>h<sup>2</sup>/72mL<sup>2</sup>.' },
+    /* 3 */ { t: 'm4-box1d', star: true, html: '<b>Features</b>: energy quantised, levels spread as n<sup>2</sup> (E<sub>1</sub> : E<sub>2</sub> : E<sub>3</sub> = 1 : 4 : 9); <b>zero-point energy</b> E<sub>1</sub> ≠ 0; ψ<sub>n</sub> has <b>n − 1 nodes</b>; |ψ<sub>2</sub>|<sup>2</sup> is zero at the centre. Draw: ψ<sub>1</sub> one hump, ψ<sub>2</sub> one node, ψ<sub>3</sub> two nodes; |ψ|<sup>2</sup> all positive.' },
+    /* 4 */ { t: 'm4-box1d', star: true, html: '<b>State counting</b>: ground state n = 1; <b>k-th excited state is n = k + 1</b> (4th and 5th excited → n = 5, 6: E = 25E<sub>1</sub>, 36E<sub>1</sub>). Large n: probability becomes uniform (classical limit).' },
+    /* 5 */ { t: 'm4-box3d', star: false, html: '<b>3D box</b> separates into three 1D boxes: ψ = (2/a)<sup>3/2</sup> sin(n<sub>x</sub>πx/a) sin(n<sub>y</sub>πy/a) sin(n<sub>z</sub>πz/a), <b>E = (h<sup>2</sup>/8ma<sup>2</sup>)(n<sub>x</sub><sup>2</sup> + n<sub>y</sub><sup>2</sup> + n<sub>z</sub><sup>2</sup>)</b>; every n starts at 1. Rectangular: E = (h<sup>2</sup>/8m)(n<sub>x</sub><sup>2</sup>/a<sup>2</sup> + n<sub>y</sub><sup>2</sup>/b<sup>2</sup> + n<sub>z</sub><sup>2</sup>/c<sup>2</sup>).' },
+    /* 6 */ { t: 'm4-degeneracy', star: false, html: '<b>Degeneracy</b> = number of states with the same energy. Cube, E<sub>0</sub> = h<sup>2</sup>/8ma<sup>2</sup>: (1,1,1) 3E<sub>0</sub> non-degenerate; (1,1,2) 6E<sub>0</sub> <b>3-fold</b>; (1,2,3) 14E<sub>0</sub> <b>6-fold</b>. Rule: three equal numbers 1 state, two equal 3, all different 6. 1D box: no degeneracy.' },
+    /* 7 */ { t: 'm4-eigen', star: false, html: '<b>Orthonormality</b>: ∫<sub>0</sub><sup>a</sup> ψ<sub>m</sub>*ψ<sub>n</sub> dx = δ<sub>mn</sub>. Any state f = Σc<sub>n</sub>ψ<sub>n</sub>, <b>c<sub>n</sub> = ∫ψ<sub>n</sub>*f dx</b>, |c<sub>n</sub>|<sup>2</sup> = probability of E<sub>n</sub>, Σ|c<sub>n</sub>|<sup>2</sup> = 1.' },
+    /* 8 */ { t: 'm4-tunnelling', star: true, html: '<b>Rectangular barrier</b> height U (V<sub>0</sub>), width L, E &lt; U. Region I: ψ = e<sup>ik₁x</sup> + r e<sup>−ik₁x</sup>; Region II: ψ = A e<sup>−k₂x</sup> + B e<sup>k₂x</sup> (decays, not zero); Region III: ψ = t e<sup>ik₁x</sup> (no reflected wave). <b>k<sub>1</sub> = √(2mE)/ℏ, k<sub>2</sub> = √(2m(U − E))/ℏ</b>.' },
+    /* 9 */ { t: 'm4-tunnelling', star: true, html: '<b>Boundary conditions</b>: ψ and dψ/dx continuous at x = 0 and x = L → four equations. Exact <b>T = [1 + U<sup>2</sup>sinh<sup>2</sup>(k<sub>2</sub>L)/4E(U − E)]<sup>−1</sup></b>, R + T = 1. Transmitted wave: <b>same λ, smaller amplitude</b>. Classically T = 0.' },
+    /* 10 */ { t: 'm4-tunnel-prob', star: true, html: '<b>Thick barrier</b> (k<sub>2</sub>L ≫ 1): <b>T ≈ 16(E/U)(1 − E/U) e<sup>−2k₂L</sup></b>. T falls <b>exponentially</b> with width L, with √(U − E) and with √m: electrons tunnel far more easily than protons. Double the width (same k<sub>2</sub>) → T roughly squares.' },
+    /* 11 */ { t: 'm4-tunnel-prob', star: true, html: '<b>Examples</b>: α-decay, tunnel diode, nuclear fusion in stars, <b>STM</b>: tip–surface current I ∝ e<sup>−2k₂d</sup> (k<sub>2</sub> = √(2mϕ)/ℏ), so 0.1 nm gap change shifts I by about an order of magnitude; constant-current mode traces surface height.' },
+    /* 12 */ { t: 'm4-numericals', star: true, html: '<b>Box recipe</b>: E<sub>n</sub> = n<sup>2</sup>h<sup>2</sup>/8mL<sup>2</sup>, use SI, divide by 1.6 × 10<sup>−19</sup> for eV. Electron in 1 Å box: E<sub>1</sub> ≈ <b>37.6 eV</b>; 1 nm: 0.376 eV. 200 g marble in 2 cm: E<sub>1</sub> ≈ 6.9 × 10<sup>−64</sup> J (unmeasurable; quantisation invisible). m = 10<sup>−31</sup> kg in 5 nm: E<sub>1</sub> ≈ 2.2 × 10<sup>−20</sup> J (0.14 eV). Transition ν = ΔE/h.' },
+    /* 13 */ { t: 'm4-numericals', star: true, html: '<b>Tunnelling recipe</b>: get k<sub>2</sub> = √(2m(U − E))/ℏ (electron, U − E = 1 eV → k<sub>2</sub> ≈ 5.1 × 10<sup>9</sup> m<sup>−1</sup>), then T ≈ e<sup>−2k₂L</sup> (times 16(E/U)(1 − E/U) if asked). Two widths, same k<sub>2</sub>: <b>T<sub>2</sub>/T<sub>1</sub> = e<sup>−2k₂(L₂ − L₁)</sup></b>; if T = 10% at 0.5 nm, at 1.0 nm T ≈ 1%.' }
+  ],
+  mcqs: ['m4-4a-02', 'm4-4a-03', 'm4-4a-05', 'm4-4a-06', 'm4-4a-17', 'm4-4a-22', 'm4-4a-26', 'm4-4a-27', 'm4-4a-31', 'm4-4a-32'],
+  practice: [
+    { q: 'Energy eigenvalues and eigenfunctions in a 1D infinite well of length 3L; first three levels and probability densities', from: ['cat2-f2'], f: [1, 2, 3] },
+    { q: '1D box: 4th and 5th excited states', from: ['fat-d1-f25'], f: [2, 4] },
+    { q: '200 g marble in a 2 cm box: first three levels; redo for 10⁻³¹ kg in 5 nm', from: ['fat-c1'], f: [2, 12] },
+    { q: 'Rectangular barrier, E < V₀: wavefunction in regions I, II, III; boundary conditions; transmission', from: ['fat-c1'], f: [8, 9, 10] },
+    { q: 'Factors that affect tunnelling probability', from: ['fat-d1-f25'], f: [10, 11] },
+    { q: 'Barrier widths 0.5 nm and 1.0 nm, T = 10% at the first: T at the second', from: ['fat-d1-f25'], f: [13] }
+  ]
+});

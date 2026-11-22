@@ -8,7 +8,7 @@ const ACCESS = require('./_access.json');
 const FREE = new Set(ACCESS.freeFiles);
 module.exports = handle(async (req, res) => {
   const f = new URL(req.url, 'http://x').searchParams.get('f') || '';
-  if (!/^((chunk|pro|q|qa|summary|viz|papers)-[A-Za-z0-9-]+|figs)\.js$/.test(f)) { res.statusCode = 404; return res.end('not found'); }
+  if (!/^((chunk|pro|q|qa|summary|fast|viz|papers)-[A-Za-z0-9-]+|figs)\.js$/.test(f)) { res.statusCode = 404; return res.end('not found'); }
   const deny = (code) => { res.statusCode = code; res.setHeader('Cache-Control', 'no-store'); return res.end(code === 401 ? '/* sign in required */' : '/* payment required */'); };
   if (!(await canOpen(req))) return deny(401);
   if (!FREE.has(f)) {

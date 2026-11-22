@@ -21,3 +21,14 @@ Widgets are only for hard topics (processes, look-alike concepts, input-driven n
 - `m4` `box-levels` (viz-paid/viz-m4.js): topic m4-box1d, tab "Levels and densities". n 1–8, a 0.2–2 nm, ψ / |ψ|² toggle, nodes, energy ladder; 1 nm gives E₁ = 0.377 eV.
 - `m4` `tunnel` (viz-paid/viz-m4.js): topic m4-tunnelling, tab "The three regions". E, U, L sliders; Re ψ from exact value-and-slope matching; exact T (sinh, or sin when E ≥ U) and 16(E/U)(1 − E/U)e^{−2k₂L}; 5 eV, 10 eV, 0.2 nm gives T = 0.0403.
 - `m5` `bloch` (viz-paid/viz-m5.js): topic m5-bloch, tab "Geometry". θ, φ sliders, drag to turn the view, X/Y/Z/H gates (animated 180° turns), Reset, six presets, α, β, P(0), P(1), Bloch vector.
+
+### Added 22-11-2026 (chosen from all 15 past papers in src/PAPER-MAP.md: most-asked and hard topics only)
+
+- `m1` `planck-spectrum` (viz-paid/viz-m1.js): m1-blackbody tab "Rayleigh–Jeans and the UV catastrophe". T slider + Sun/bulb/iron presets, Planck vs RJ, Wien peak, σT⁴, colour of the glow. Planck 10/15 papers, blackbody 8/15.
+- `m1` `double-slit` (viz-paid/viz-m1.js): m1-wavefunction tab "Superposition and the double slit". Electrons land one by one, fringes build up; "watch which slit" gives two humps. 7/15.
+- `m1` `compton` (viz-paid/viz-m1-sg.js): m1-dual-nature tab "Compton effect". θ and energy sliders, animated photon in/out and electron recoil; preset 90 keV at 60° → Δλ 1.213 pm, KE 7.28 keV. 7/15.
+- `m1` `sg-experiment` (viz-paid/viz-m1-sg.js): m1-stern-gerlach tab "Result and meaning". Atoms through N/S magnet; quantum two spots vs classical smear. 8/15.
+- `m2` `tensor-product` (viz-paid/viz-m2.js): m2-tensor tab "Tensor product". θ_A, θ_B → four amplitudes with working; Bell state fails c00c11 = c01c10. 6/15.
+- `m3` `measure-spin` (viz-paid/viz-m3-measure.js): m3-expectation tab "In quantum mechanics". Collapse to ±ħ/2, histogram, running mean → (ħ/2)cos θ. Measurement 8/15, expectation 6/15.
+- `m5` `bell-circuit` (viz-paid/viz-m5-bell.js): m5-bell-gen tab "H then CNOT". Step-through from any of |00⟩…|11⟩ to the four Bell states, then sample measurements. Bell topics 5/15 combined; hard.
+Skipped as easy/procedural despite weight: m2-orthonormal, m2-outer, m2-eigen, m3-tise (derivation).

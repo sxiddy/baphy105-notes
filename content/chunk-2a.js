@@ -362,6 +362,7 @@ CHUNK({
       source: 'Module 2 notes §2.13',
       tabs: [
         { title: 'Tensor product', html: `
+<div data-viz="tensor-product"></div>
 <p class="lead">The <b>tensor product</b> V ⊗ W combines two vector spaces into a larger one. It describes <b>composite systems</b>: two particles, or two qubits, together.</p>
 <p>If V has dimension m (basis |eᵢ⟩) and W has dimension n (basis |fⱼ⟩), then V ⊗ W has <b>dimension m·n</b> with basis {|eᵢ⟩ ⊗ |fⱼ⟩}, written |eᵢfⱼ⟩ or |ij⟩.</p>
 <figure data-fig="m2-tensor"></figure>

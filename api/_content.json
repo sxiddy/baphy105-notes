@@ -81,6 +81,86 @@
    "sub": "Actual paper · Winter 2025–26 · all modules",
    "questions": 12,
    "access": "free"
+  },
+  {
+   "id": "cat1-c2-w25",
+   "kind": "actual",
+   "title": "CAT-1 · Slot C2+TC2 · 29-01-2026",
+   "sub": "Actual paper · Winter 2025–26",
+   "questions": 7,
+   "access": "free"
+  },
+  {
+   "id": "cat1-f1-w25",
+   "kind": "actual",
+   "title": "CAT-1 · Slot F1+TF1 · 01-02-2026",
+   "sub": "Actual paper · Winter 2025–26",
+   "questions": 8,
+   "access": "free"
+  },
+  {
+   "id": "cat1-f2-w25",
+   "kind": "actual",
+   "title": "CAT-1 · Slot F2+TF2 · 01-02-2026",
+   "sub": "Actual paper · Winter 2025–26 · with answer key",
+   "questions": 8,
+   "access": "free"
+  },
+  {
+   "id": "cat1-c1-f25",
+   "kind": "actual",
+   "title": "CAT-1 · Slot C1+TC1 · 19-08-2025",
+   "sub": "Actual paper · Fall 2025–26",
+   "questions": 9,
+   "access": "free"
+  },
+  {
+   "id": "cat1-d1-f25",
+   "kind": "actual",
+   "title": "CAT-1 · Slot D1+TD1 · August 2025",
+   "sub": "Actual paper · Fall 2025–26",
+   "questions": 9,
+   "access": "free"
+  },
+  {
+   "id": "cat2-c2-w25",
+   "kind": "actual",
+   "title": "CAT-2 · Slot C2+TC2 · 17-03-2026",
+   "sub": "Actual paper · Winter 2025–26",
+   "questions": 7,
+   "access": "free"
+  },
+  {
+   "id": "cat2-c1-f25",
+   "kind": "actual",
+   "title": "CAT-2 · Slot C1+TC1 · 07-10-2025",
+   "sub": "Actual paper · Fall 2025–26 · with answer key",
+   "questions": 7,
+   "access": "free"
+  },
+  {
+   "id": "cat2-c2-f25",
+   "kind": "actual",
+   "title": "CAT-2 · Slot C2+TC2 · 07-10-2025",
+   "sub": "Actual paper · Fall 2025–26",
+   "questions": 5,
+   "access": "free"
+  },
+  {
+   "id": "fat-c1-f25",
+   "kind": "actual",
+   "title": "FAT · Slot C1+TC1 · November 2025",
+   "sub": "Actual paper · Fall 2025–26 · all modules",
+   "questions": 12,
+   "access": "free"
+  },
+  {
+   "id": "fat-d1-f25",
+   "kind": "actual",
+   "title": "FAT · Slot D1+TD1 · Nov/Dec 2025",
+   "sub": "Actual paper · Fall 2025–26 · all modules",
+   "questions": 8,
+   "access": "free"
   }
  ]
 }

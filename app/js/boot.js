@@ -5,6 +5,7 @@ window.QUESTIONS = function (d) {
   (d.questions || []).forEach(function (q) { q.chunk = d.chunk; window.DATA.questions.push(q); });
 };
 window.SUMMARY = function (d) { window.DATA.summaries[d.module] = d; };
+window.FAST = function (d) { (window.DATA.fast = window.DATA.fast || {})[d.module] = d; };
 // Pro companions (tools/build.js): every flashcard, formula and one-liner per topic, and the answers to the questions
 window.PRO_CHUNK = function (d) { window.DATA.pro = Object.assign(window.DATA.pro || {}, d.topics || {}); };
 window.QANSWERS = function (d) { window.DATA.qa = Object.assign(window.DATA.qa || {}, d); };

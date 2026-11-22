@@ -73,6 +73,7 @@ CHUNK({
 <div class="solve"><p>(1) ν = c/λ = 3 × 10<sup>8</sup> / 600 × 10<sup>−9</sup> = 5.0 × 10<sup>14</sup> Hz.</p><p>(2) p = h/λ = 6.626 × 10<sup>−34</sup> / 700 × 10<sup>−9</sup> = 9.47 × 10<sup>−28</sup> kg m/s.</p><p>(3) p = hν/c = 6.626 × 10<sup>−34</sup> × 6 × 10<sup>14</sup> / 3 × 10<sup>8</sup> = 1.33 × 10<sup>−27</sup> kg m/s.</p></div>
 <div class="result">5.0 × 10<sup>14</sup> Hz; 9.47 × 10<sup>−28</sup> kg m/s; 1.33 × 10<sup>−27</sup> kg m/s</div></div>` },
         { title: 'Compton effect', html: `
+<div data-viz="compton"></div>
 <p class="lead"><b>A. H. Compton (1923)</b> fired <b>X-rays</b> at a material with loosely bound electrons. The scattered X-rays had a slightly <b>longer wavelength</b> (lower energy) and <b>electrons were ejected</b>, like one particle recoiling when struck by another.</p>
 <p>Classical wave theory cannot explain this. It makes sense only if light is made of photons with energy E = hν <b>and momentum</b>:</p>
 <ul>
@@ -214,6 +215,7 @@ CHUNK({
 <div class="worked"><div class="given">A star emits most strongly at 480 nm. Find its surface temperature.</div><div class="solve"><p>T = b/λ<sub>max</sub> = 2.898 × 10<sup>−3</sup> / 480 × 10<sup>−9</sup>.</p></div><div class="result">T ≈ 6038 K (≈ 6025 K with the b = 2.892 × 10<sup>−3</sup> m K used in the course solution)</div></div>
 <div class="worked"><div class="given">Total power radiated per unit area by a blackbody at 1200 K.</div><div class="solve"><p>P = σT<sup>4</sup> = 5.67 × 10<sup>−8</sup> × (1200)<sup>4</sup>.</p></div><div class="result">P ≈ 1.18 × 10<sup>5</sup> W m<sup>−2</sup></div></div>` },
         { title: 'Rayleigh–Jeans and the UV catastrophe', html: `
+<div data-viz="planck-spectrum"></div>
 <p class="lead"><b>Rayleigh and Jeans</b> used classical physics and statistical mechanics to derive the energy distribution:</p>
 <div class="eq">u(ν) dν = <span class="frac"><span>8πk<sub>B</sub>T</span><span>c<sup>3</sup></span></span> ν<sup>2</sup> dν</div>
 <p>ν: frequency; T: absolute temperature; k<sub>B</sub>: Boltzmann’s constant; c: speed of light.</p>
@@ -441,6 +443,7 @@ CHUNK({
 <h3>Dimensions of ψ</h3>
 <p>Since |ψ|<sup>2</sup>d<sup>n</sup>r must be dimensionless: in <b>1D [ψ] = length<sup>−1/2</sup></b>, in <b>2D length<sup>−1</sup></b>, in <b>3D length<sup>−3/2</sup></b>.</p>` },
         { title: 'Superposition and the double slit', html: `
+<div data-viz="double-slit"></div>
 <p class="lead"><b>Superposition principle</b>: if Ψ₁ describes one situation and Ψ₂ another, and both are equally possible, the total wavefunction is <b>Ψ = Ψ₁ + Ψ₂</b>.</p>
 <p>Classically you add <b>probabilities</b>. In quantum mechanics you add the <b>wavefunctions first</b> and then square: P = |Ψ|<sup>2</sup>. This produces <b>interference</b>, impossible if probabilities were added directly.</p>
 <figure data-fig="m1-double-slit-particles"></figure>
@@ -520,6 +523,7 @@ CHUNK({
 <li>The <b>force</b> comes from how the field <b>changes with position</b> (the gradient of B). A uniform field only twists a moment; a <b>non-uniform</b> field pushes it up or down.</li>
 </ul>` },
         { title: 'Result and meaning', html: `
+<div data-viz="sg-experiment"></div>
 <div class="vs"><div class="side"><h4>Expected classically</h4><p>An electron as a tiny spinning charged ball has a magnetic moment. Atoms are <b>randomly oriented</b>, so deflections take <b>all values</b>: a <b>continuous smear</b> on the screen.</p></div><div class="side"><h4>Observed</h4><p>The beam splits into <b>exactly two spots</b>, one above and one below the centre line. Classical physics cannot explain this.</p></div></div>
 <p>So the spin component along the field takes only <b>two values</b>, "up" and "down":</p>
 <div class="eq">S<sub>z</sub> = +ℏ/2  or  S<sub>z</sub> = −ℏ/2</div>

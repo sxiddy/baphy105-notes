@@ -109,6 +109,9 @@ for (const m of MODULES) {
     write(sf, js('SUMMARY', s)); freeFiles.push(sf); fileModule[sf] = m.id;
     if (Object.keys(ans).length) { const af = `qa-${m.id}-summary.js`; write(af, js('QANSWERS', ans)); proFiles.push(af); fileModule[af] = m.id; }
   }
+  // fast track: free (facts by topic, past questions, the ids of 10 must-do MCQs whose answers stay Pro)
+  const ff = `fast-${m.id}.js`;
+  if (fs.existsSync(path.join(CONTENT, ff))) { write(ff, js('FAST', read(ff, 'FAST'))); freeFiles.push(ff); fileModule[ff] = m.id; }
 }
 fs.writeFileSync(path.join(ROOT, 'api', '_battle.json'), JSON.stringify(battle) + '\n');
 

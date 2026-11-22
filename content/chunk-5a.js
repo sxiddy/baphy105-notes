@@ -527,6 +527,7 @@ CHUNK({
       source: 'Module 5 notes §5.6.1 and §5.7, Module 5 lecture deck (entangled states generation, open questions)',
       tabs: [
         { title: 'H then CNOT', html: `
+<div data-viz="bell-circuit"></div>
 <p class="lead">Two gates turn |00⟩ into a Bell state: a Hadamard on qubit 1, then a CNOT with qubit 1 as control and qubit 2 as target.</p>
 <figure data-fig="m5-bell-circuit"></figure>
 <div class="worked"><div class="given">Explain, with a quantum circuit, how a Bell state is generated using a Hadamard gate and a CNOT gate, giving the state after each step.</div>

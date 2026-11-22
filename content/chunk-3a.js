@@ -86,6 +86,7 @@ CHUNK({
 <h3>Continuous variable x</h3>
 <p>A probability density ρ(x): P(a ≤ x ≤ b) = ∫<sub>a</sub><sup>b</sup>ρ dx, ∫ρ dx = 1, ⟨x⟩ = ∫xρ dx, ⟨f(x)⟩ = ∫f(x)ρ dx, σ² = ⟨x²⟩ − ⟨x⟩².</p>` },
         { title: 'In quantum mechanics', html: `
+<div data-viz="measure-spin"></div>
 <p class="lead"><b>Born’s rule:</b> the probability density for position is ρ(x, t) = |ψ(x, t)|².</p>
 <div class="eq">P(a ≤ x ≤ b) = ∫<sub>a</sub><sup>b</sup> |ψ|² dx,   ∫|ψ|² dx = 1,   ⟨x⟩ = ∫ x|ψ|² dx</div>
 <p>For any observable the expectation value is always</p>

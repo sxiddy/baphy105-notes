@@ -72,6 +72,7 @@ window.__startApp = function () {
     share: '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/>',
     flag: '<path d="M5 21V4h11l-1.5 4L16 12H5"/>',
     menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+    target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',
     download: '<path d="M12 4v11"/><path d="m7 10.5 5 5 5-5"/><path d="M5 20h14"/>',
     lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
     fire: '<path d="M12 3c.5 3.2 4.5 5.2 4.5 10a4.5 4.5 0 0 1-9 0c0-2 .9-3.3 1.8-4.3.2 1.5 1 2.4 1.9 2.8C10.6 9 11.2 5.6 12 3z"/>',
@@ -87,7 +88,7 @@ window.__startApp = function () {
 
   // ================================================================ store
   const KEY = 'baphy105-notes:v1';
-  function blank() { return { visited: {}, done: {}, tags: {}, notes: {}, hl: {}, q: {}, cards: {}, confusing: {}, study: {}, syl: {}, resets: {}, last: null, ui: { closed: {}, lastTab: {} } }; }
+  function blank() { return { visited: {}, done: {}, tags: {}, notes: {}, hl: {}, q: {}, cards: {}, confusing: {}, study: {}, syl: {}, resets: {}, fast: {}, last: null, ui: { closed: {}, lastTab: {} } }; }
   function normalize(s) {
     const b = blank();
     if (!s || typeof s !== 'object') return b;
@@ -140,6 +141,24 @@ window.__startApp = function () {
     if (t.cardCount == null) t.cardCount = t.flashcards.length;
   });
   const SUM = D.summaries || {};
+  // Fast track (content/fast-mX.js, ported from the chemistry site): facts by topic, past questions, 10 must-do MCQs per module
+  const FAST = D.fast || {};
+  const HY = new Set(); // filled from past papers once IMP and QID exist
+  // Important topics, starred (owner, 22-11-2026, same rule as the chemistry site). A topic is judged only against the real
+  // papers that could have asked it (the modules each exam's papers used). Starred when asked in 2+ papers and in 40%+ of those.
+  const IMP = {};
+  {
+    const act = (D.papers || []).filter((p) => p.kind === 'actual'), exOf = (p) => p.exam || 'cat1';
+    const tops = (p) => new Set([].concat(...(p.questions || []).map((q) => q.topics || []))), modOf = (t) => t.split('-')[0], cov = {}, n = {};
+    act.forEach((p) => tops(p).forEach((t) => { (cov[exOf(p)] = cov[exOf(p)] || new Set()).add(modOf(t)); n[t] = (n[t] || 0) + 1; }));
+    Object.keys(n).forEach((t) => { const of = act.filter((p) => cov[exOf(p)].has(modOf(t))).length; if (n[t] >= 2 && n[t] / of >= 0.4) IMP[t] = [n[t], of]; });
+  }
+  // Important tabs inside a topic: notes refs (topic.tab) used by 2 or more real papers.
+  const IMPTAB = {};
+  (D.papers || []).filter((p) => p.kind === 'actual').forEach((p) => new Set([].concat(...(p.questions || []).map((q) => q.notes || []))).forEach((r) => { IMPTAB[r] = (IMPTAB[r] || 0) + 1; }));
+  const tabStar = (tid, k) => (IMPTAB[tid + '.' + k] >= 2 ? `<span class="imp-star" title="Important: used in ${IMPTAB[tid + '.' + k]} past-paper answers" aria-label="Important">★</span>` : '');
+  const impStar = (tid) => (IMP[tid] ? `<span class="imp-star" title="Important: asked in ${IMP[tid][0]} of the ${IMP[tid][1]} past papers that covered this module" aria-label="Important, asked in ${IMP[tid][0]} of ${IMP[tid][1]} past papers">★</span>` : '');
+  const hyTag = (tid) => (HY.has(tid) ? '<span class="hy-tag" title="Topics the past papers keep coming back to">Often asked</span>' : '');
   // Modules whose files were not loaded (not paid, or not in a single-module grant) show as locked.
   MODULES.forEach((m) => { m.locked = !!window.APP_LOCKED && !m.free && !m.topics.length; });
 
@@ -165,6 +184,20 @@ window.__startApp = function () {
   QS.sort((a, b) => qSort(a) - qSort(b) || String(a.id).localeCompare(String(b.id), undefined, { numeric: true }));
   QS.forEach((q) => { (QBY[q.topic] = QBY[q.topic] || []).push(q); });
   const QID = {}; QS.forEach((q) => { QID[q.id] = q; });
+  // Fast track follows the past papers too (owner, 21-11-2026): "Read these in full" = the module's starred topics, most-asked
+  // first; "Often asked" facts = facts on those topics; the 10 MCQs come from those topics (hand picks first, then the bank).
+  Object.entries(FAST).forEach(([mid, f]) => {
+    const imp = Object.keys(IMP).filter((t) => t.startsWith(mid + '-') && TOPIC[t]).sort((a, b) => IMP[b][0] / IMP[b][1] - IMP[a][0] / IMP[a][1] || IMP[b][0] - IMP[a][0]);
+    if (!imp.length) return;
+    f.hy = imp; imp.forEach((t) => HY.add(t));
+    (f.facts || []).forEach((x) => { x.star = !!IMP[x.t]; });
+    const picks = (f.mcqs || []).filter((id) => QID[id] && QID[id].options && IMP[QID[id].topic]), seen = new Set(picks);
+    const pool = imp.map((t) => QS.filter((q) => q.topic === t && q.options && !seen.has(q.id)));
+    for (let i = 0; picks.length < 10 && pool.some((l) => l.length); i = (i + 1) % pool.length) { const q = pool[i].shift(); if (q) picks.push(q.id); }
+    for (const id of f.mcqs || []) { if (picks.length >= 10) break; if (!picks.includes(id)) picks.push(id); }
+    f.mcqs = picks;
+  });
+
 
   // flashcards
   const CARDS = [];
@@ -372,7 +405,7 @@ window.__startApp = function () {
               <span class="sb-gcount" data-count="${m.id}"></span>${icon('chev', 'sb-chev')}
             </button>
             <div class="sb-items"><div>
-              ${m.topics.map((t, i) => rowHead(m, t, i, 'sb-row') + `<a class="sb-topic" href="#${t.id}" data-key="${t.id}"><span class="tick" data-tick="${t.id}"></span><span class="lbl">${rt(t.short || t.title)}</span><button class="tag-dot" data-act="tag" data-t="${t.id}" title="Colour tag" aria-label="Colour tag for ${rt(t.short || t.title)}"></button></a>`).join('')}
+              ${m.topics.map((t, i) => rowHead(m, t, i, 'sb-row') + `<a class="sb-topic" href="#${t.id}" data-key="${t.id}"><span class="tick" data-tick="${t.id}"></span><span class="lbl">${rt(t.short || t.title)}</span>${impStar(t.id)}<button class="tag-dot" data-act="tag" data-t="${t.id}" title="Colour tag" aria-label="Colour tag for ${rt(t.short || t.title)}"></button></a>`).join('')}
               <a class="sb-topic summary" href="#${m.id}-summary" data-key="${m.id}-summary">${icon('book')}<span class="lbl">Module summary</span></a>
             </div></div>
           </div>`).join('')}
@@ -396,6 +429,7 @@ window.__startApp = function () {
             ${(QBY.mixed || []).length ? `<a class="sb-topic" href="#questions.mixed" data-key="questions.mixed"><span class="lbl">Mixed: across modules</span><span class="count">${QBY.mixed.length}</span></a>` : ''}
           </div></div>
         </div>
+        ${Object.keys(FAST).length ? `<a class="sb-link" href="#fast" data-key="fast">${icon('target')}<span>Fast track</span><span class="count" data-fastpct>${fastTotal().pct}%</span></a>` : ''}
         <a class="sb-link" href="#quiz" data-key="quiz">${icon('quiz')}<span>Quiz</span>${PRO ? '' : '<span class="pro-tag">Pro</span>'}</a>
         <a class="sb-link" href="#cards" data-key="cards">${icon('cards')}<span>Flashcards</span><span class="count">${CARDS.length}</span></a>
         <a class="sb-link" href="#formulas" data-key="formulas">${icon('sigma')}<span>Formula sheet</span>${PRO ? '' : '<span class="pro-tag">Pro</span>'}</a>
@@ -563,7 +597,7 @@ window.__startApp = function () {
     let m = raw.match(/^(m[0-9]+)-summary$/);
     if (m && MOD[m[1]] && MOD[m[1]].locked) return { view: 'unlock' };
     if (m && MOD[m[1]]) return { view: 'summary', mod: m[1] };
-    m = raw.match(/^(questions|cards|quiz|formulas|lab|mine|guide|syllabus|battle|papers|revise|mock)(?:\.([a-z0-9-]+))?$/);
+    m = raw.match(/^(questions|cards|quiz|fast|formulas|lab|mine|guide|syllabus|battle|papers|revise|mock)(?:\.([a-z0-9-]+))?$/);
     if (m) return { view: m[1], arg: m[2] || null };
     m = raw.match(/^([a-z0-9-]+?)(?:\.(\d+))?$/);
     if (m && TOPIC[m[1]]) return { view: 'topic', id: m[1], tab: m[2] != null ? +m[2] : null };
@@ -612,6 +646,7 @@ window.__startApp = function () {
         case 'summary': view = viewSummary(r); break;
         case 'topic': view = viewTopic(r); break;
         case 'questions': view = viewBank(r); break;
+        case 'fast': view = viewFast(r); break;
         case 'quiz': view = PRO ? viewQuiz(r) : viewProTeaser('quiz'); break;
         case 'cards': view = viewCards(r); break;
         case 'formulas': view = PRO ? viewFormulas(r) : viewProTeaser('formulas'); break;
@@ -937,6 +972,221 @@ window.__startApp = function () {
     const l = MODULES.filter((m) => m.locked).map((m) => 'Module ' + (+m.num));
     return l.length > 1 ? l.slice(0, -1).join(', ') + ' and ' + l[l.length - 1] : l[0] || 'everything';
   }
+  // ---------------------------------------------------------------- fast track
+  const fmtMins = (m) => (m >= 60 ? `${Math.floor(m / 60)} h${m % 60 ? ' ' + (m % 60) + ' min' : ''}` : `${m} min`);
+  function fastProg(mid) {
+    const f = FAST[mid]; if (!f) return { pct: 0, answered: 0, total: 0, done: false };
+    const st = S.fast[mid] || {}, ids = (f.mcqs || []).filter((id) => QID[id]);
+    const answered = ids.filter((id) => S.q[id] && S.q[id].seen).length;
+    const pct = st.done ? 100 : Math.min(90, Math.round((st.read ? 30 : 0) + (ids.length ? (answered / ids.length) * 60 : 0)));
+    return { pct, answered, total: ids.length, done: !!st.done };
+  }
+  function fastTotal() {
+    const ids = MODULES.filter((m) => FAST[m.id] && m.topics.length).map((m) => m.id);
+    const pct = ids.length ? Math.round(ids.reduce((a, id) => a + fastProg(id).pct, 0) / ids.length) : 0;
+    return { pct, weeks: ids.length, mins: ids.reduce((a, id) => a + (FAST[id].minutes || 0), 0), ids };
+  }
+  // fast track: facts grouped by topic (in the order they appear), each past question placed under the topic most of its answer facts come from
+  function fastGroups(f) {
+    const facts = f.facts || [], order = [], G = {};
+    facts.forEach((x, k) => { if (!G[x.t]) { G[x.t] = { t: x.t, facts: [], qs: [] }; order.push(G[x.t]); } G[x.t].facts.push(Object.assign({ n: k + 1 }, x)); });
+    (f.practice || []).forEach((pq) => {
+      const c = {}; (pq.f || []).forEach((n) => { const t = facts[n - 1] && facts[n - 1].t; if (t) c[t] = (c[t] || 0) + 1; });
+      const best = Object.keys(c).sort((a, b) => c[b] - c[a])[0];
+      (G[best] || order[order.length - 1]).qs.push(pq);
+    });
+    return order;
+  }
+  function fastFig(t) {
+    const T = TOPIC[t]; if (!T) return '';
+    for (const tb of T.tabs || []) for (const x of String(tb.html || '').matchAll(/data-fig="([a-z0-9-]+)"/g)) if (FIGS[x[1]]) return x[1];
+    return '';
+  }
+  function fastPapers(pq) {
+    return (pq.from || []).map((id) => { const pp = PAPER[id] || PINDEX.find((y) => y.id === id); return pp ? esc((pp.short || pp.title).replace(/ paper$/, '')) : ''; }).filter(Boolean).join(' · ');
+  }
+  // ---- fast-track sheet (start) ----
+  // The printable Fast track sheet: a standalone light A4 document. modules = [{ num, title, minutes, facts: [{ star, html }], read: [name] }].
+  function fastSheetHTML(weeks, opts) {
+    opts = opts || {};
+    const PAL = ['#2f7d5b', '#2a6a96', '#a8601f', '#8a3a62', '#4a56ad', '#2f7a76', '#6b5a2e'];
+    const e = (x) => String(x == null ? '' : x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const keep = (html) => String(html || '').replace(/<(?!\/?(b|strong|i|em|sub|sup)\b)[^>]*>/g, '');
+    const nFacts = weeks.reduce((a, w) => a + w.facts.length, 0), nOften = weeks.reduce((a, w) => a + w.facts.filter((f) => f.star).length, 0);
+    const mins = weeks.reduce((a, w) => a + (w.minutes || 0), 0);
+    const one = weeks.length === 1;
+    const SITE = 'https://baphy105.notix.in', SITE_TXT = 'baphy105.notix.in';
+    const title = one ? `Module ${weeks[0].num}` : 'Fast track';
+    const sub = one ? e(weeks[0].title) : 'Must-know facts for every module';
+    const block = (w, i) => {
+      const c = PAL[(w.num - 1) % PAL.length];
+      return `<section class="wk" style="--c:${c}">
+        <header class="wk-h"><span class="wk-n">${String(w.num).padStart(2, '0')}</span><div class="wk-t"><span class="wk-k">Module ${w.num}</span><h2>${e(w.title)}</h2></div><span class="wk-m">${w.facts.length} facts${w.minutes ? ` · ${w.minutes} min` : ''}</span></header>
+        <ol class="facts">${w.facts.map((f, k) => `<li class="${f.star ? 'oa' : ''}"><span class="no">${k + 1}</span><p>${keep(f.html)}</p></li>`).join('')}</ol>
+        ${w.read && w.read.length ? `<div class="read"><span>Read in full</span>${w.read.map((r) => `<i>${e(r)}</i>`).join('')}</div>` : ''}
+        ${w.id ? `<a class="wk-go" href="${SITE}/#fast.${w.id}">Test yourself: 10 MCQs with answers for Module ${w.num} at <b>${SITE_TXT}</b> →</a>` : ''}
+      </section>`;
+    };
+    return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${one ? `Module ${weeks[0].num} · ` : ''}Fast track · BAPHY105</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap">
+<style>
+  @page { size: A4; margin: 13mm 13mm 15mm; @bottom-center { content: "baphy105.notix.in  ·  BAPHY105 Fast track  ·  page " counter(page) " of " counter(pages); font: 500 7.5pt "Hanken Grotesk", Arial, sans-serif; color: #8a8f98; } }
+  :root { --ink: #16181d; --soft: #4a4f5a; --faint: #8a8f98; --rule: #e3e5e9; --paper: #fff; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; background: #e9eaed; color: var(--ink); font: 9.4pt/1.47 "Source Serif 4", Georgia, serif; }
+  .sheet { width: 210mm; min-height: 297mm; margin: 18px auto 40px; padding: 13mm 13mm 15mm; background: var(--paper); box-shadow: 0 4px 30px rgba(0,0,0,.12); }
+  .bar { position: sticky; top: 0; z-index: 2; display: flex; gap: 12px; align-items: center; justify-content: center; padding: 10px 16px; background: #16181d; color: #e8e9ec; font: 500 13px "Hanken Grotesk", Arial, sans-serif; }
+  .bar button { font: 600 13px "Hanken Grotesk", Arial, sans-serif; padding: 7px 14px; border: 0; border-radius: 8px; background: #fff; color: #16181d; cursor: pointer; }
+  /* title block */
+  .top { display: grid; grid-template-columns: 1fr auto; gap: 6mm; align-items: end; padding-bottom: 5mm; margin-bottom: 6mm; border-bottom: 1.4pt solid var(--ink); }
+  .eyebrow { font: 600 7.5pt/1 "Hanken Grotesk", Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); }
+  .top h1 { margin: 2.2mm 0 1.2mm; font: 700 30pt/1 "Source Serif 4", Georgia, serif; letter-spacing: -.02em; }
+  .top .sub { margin: 0; font: 500 10.5pt/1.3 "Hanken Grotesk", Arial, sans-serif; color: var(--soft); }
+  .stats { display: flex; gap: 6mm; text-align: right; }
+  .stat b { display: block; font: 700 17pt/1 "Hanken Grotesk", Arial, sans-serif; }
+  .stat span { font: 500 7pt/1.2 "Hanken Grotesk", Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+  .legend { display: flex; flex-wrap: wrap; gap: 2mm 6mm; margin: -2mm 0 6mm; font: 500 7.8pt "Hanken Grotesk", Arial, sans-serif; color: var(--soft); }
+  .legend span { display: inline-flex; align-items: center; gap: 1.8mm; }
+  .legend .k1 { width: 4.2mm; height: 4.2mm; border-radius: 50%; background: #16181d; color: #fff; display: inline-grid; place-items: center; font-size: 6.5pt; font-weight: 700; }
+  .legend .k2 { width: 4.2mm; height: 4.2mm; border-radius: 50%; border: .8pt solid #b9bdc4; color: #8a8f98; display: inline-grid; place-items: center; font-size: 6.5pt; font-weight: 700; }
+  /* a module */
+  .wk { margin: 0 0 7.5mm; }
+  .wk-h { break-after: avoid; break-inside: avoid; }
+  .read { break-inside: avoid; break-before: avoid; }
+  .wk-h { display: grid; grid-template-columns: auto 1fr auto; gap: 4mm; align-items: center; padding-bottom: 2.4mm; margin-bottom: 3mm; border-bottom: 1.6pt solid var(--c); }
+  .wk-n { font: 800 25pt/0.9 "Hanken Grotesk", Arial, sans-serif; color: var(--c); letter-spacing: -.03em; }
+  .wk-k { font: 700 7pt/1 "Hanken Grotesk", Arial, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--c); }
+  .wk-h h2 { margin: 1mm 0 0; font: 700 12.5pt/1.2 "Hanken Grotesk", Arial, sans-serif; }
+  .wk-m { align-self: end; font: 500 7.8pt "Hanken Grotesk", Arial, sans-serif; color: var(--faint); white-space: nowrap; }
+  .facts { list-style: none; margin: 0; padding: 0; column-count: ${one ? 1 : 2}; column-gap: 7mm; }
+  .facts li { break-inside: avoid; display: grid; grid-template-columns: 5.2mm 1fr; gap: 2mm; padding: 1.25mm 0; }
+  .facts .no { width: 4.4mm; height: 4.4mm; margin-top: .55mm; border-radius: 50%; border: .8pt solid #c4c8ce; color: var(--faint); display: grid; place-items: center; font: 700 6.4pt/1 "Hanken Grotesk", Arial, sans-serif; }
+  .facts li.oa .no { border-color: var(--c); background: var(--c); color: #fff; }
+  .facts p { margin: 0; }
+  .facts b, .facts strong { font-weight: 700; color: #000; }
+  .facts li.oa p { color: #000; }
+  .read { display: flex; flex-wrap: wrap; align-items: center; gap: 1.6mm; margin-top: 2.6mm; padding-top: 2.4mm; border-top: .6pt dashed var(--rule); }
+  .read span { margin-right: 1mm; font: 700 6.8pt "Hanken Grotesk", Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--c); }
+  .read i { font: 500 7.6pt/1 "Hanken Grotesk", Arial, sans-serif; font-style: normal; padding: 1.2mm 2.2mm; border-radius: 99px; color: var(--c); background: color-mix(in srgb, var(--c) 10%, #fff); }
+  .eyebrow a { color: inherit; text-decoration: none; border-bottom: .6pt solid #c4c8ce; }
+  .wk-go { display: block; margin-top: 2.4mm; font: 500 7.8pt "Hanken Grotesk", Arial, sans-serif; color: var(--c); text-decoration: none; break-before: avoid; }
+  .wk-go b { font-weight: 700; }
+  .cta { break-inside: avoid; display: grid; grid-template-columns: 1fr auto; gap: 6mm; align-items: center; margin-top: 6mm; padding: 4.5mm 5.5mm; border-radius: 3mm; background: #16181d; color: #e9eaee; text-decoration: none; font: 400 8.8pt/1.5 "Hanken Grotesk", Arial, sans-serif; }
+  .cta b { color: #fff; }
+  .cta .u { color: #fff; font-weight: 600; }
+  .cta-url { font: 800 13pt/1 "Hanken Grotesk", Arial, sans-serif; color: #fff; white-space: nowrap; padding: 3mm 4mm; border: 1pt solid rgba(255,255,255,.35); border-radius: 2mm; }
+  .end { margin-top: 4mm; padding-top: 3mm; border-top: .6pt solid var(--rule); font: 500 7.5pt "Hanken Grotesk", Arial, sans-serif; color: var(--faint); text-align: center; }
+  @media print { body { background: none; } .bar { display: none; } .sheet { width: auto; min-height: 0; margin: 0; padding: 0; box-shadow: none; } }
+  @media screen and (max-width: 820px) { .sheet { width: auto; margin: 0; padding: 18px; min-height: 0; } .facts { column-count: 1; } }
+</style></head><body>
+${opts.bar === false ? '' : `<div class="bar">Pick <b>Save as PDF</b> as the printer to keep a copy. <button onclick="print()">Print / Save as PDF</button></div>`}
+<div class="sheet">
+  <div class="top"><div><div class="eyebrow">BAPHY105 · Engineering Physics · <a href="${SITE}">${SITE_TXT}</a></div><h1>${title}</h1><p class="sub">${sub}</p></div>
+    <div class="stats"><div class="stat"><b>${nFacts}</b><span>facts</span></div><div class="stat"><b>${nOften}</b><span>often asked</span></div>${mins ? `<div class="stat"><b>${mins >= 60 ? Math.round(mins / 6) / 10 + 'h' : mins + 'm'}</b><span>to finish</span></div>` : ''}</div></div>
+  <div class="legend"><span><i class="k1">1</i> Often asked in past papers: learn these first</span><span><i class="k2">2</i> Worth knowing</span><span>Bold = the word or number to remember</span></div>
+  ${weeks.map(block).join('')}
+  <a class="cta" href="${SITE}"><div><b>This is the short version.</b> The full BAPHY105 notes are free at <span class="u">${SITE_TXT}</span>: every topic with diagrams, ${opts.mcqs ? opts.mcqs + ' ' : ''}MCQs that explain why each wrong option is wrong, flashcards, quizzes and 1v1 quiz battles.</div><span class="cta-url">${SITE_TXT}</span></a>
+</div>
+${opts.autoprint === false ? '' : `<script>(document.fonts ? document.fonts.ready : Promise.resolve()).then(function () { setTimeout(function () { print(); }, 250); });<\/script>`}
+</body></html>`;
+  }
+  // ---- fast-track sheet (end) ----
+  // Printable Fast track: opens the sheet in its own window, which calls the browser's print dialog ("Save as PDF").
+  function printFast(ids) {
+    const w = window.open('', '_blank');
+    if (!w) { toast('Allow pop-ups for this site to save the PDF', 'warn'); return; }
+    w.document.write('<p style="font:16px sans-serif;padding:24px">Making the PDF…</p>');
+    const keep = (html) => String(html || '').replace(/<\/?(div|p|li|ul|ol|tr)\b[^>]*>/g, '<br>').replace(/<(?!\/?(b|strong|i|em|sub|sup|br)\b)[^>]*>/g, '').replace(/^(\s*<br>)+|(<br>\s*)+$/g, '').replace(/(<br>\s*){2,}/g, '<br>');
+    const mods = ids.map((id) => ({ id, m: MOD[id], f: FAST[id], groups: fastGroups(FAST[id]) }));
+    const figIds = []; mods.forEach((x) => x.groups.forEach((g) => { g.fig = fastFig(g.t); if (g.fig) figIds.push(g.fig); }));
+    Promise.all(figIds.map((id) => ((D.figs[id] || {}).svg ? loadSvg(id).catch(() => '') : Promise.resolve(`<img src="${location.origin}/img/${id}.webp">`)).then((svg) => [id, svg]))).then((pairs) => {
+      const SV = Object.fromEntries(pairs);
+      const body = mods.map((x) => `<section class="mod"><h1><small>Module ${+x.m.num}</small>${esc(x.m.title)}</h1>
+        ${x.groups.map((g, gi) => { const T = TOPIC[g.t]; return `<div class="topic"><div class="th"><h2><small>Topic ${gi + 1}</small>${T ? plain(T.title) : esc(g.t)}</h2>
+          ${g.fig && SV[g.fig] ? `<figure>${SV[g.fig]}${FIGS[g.fig] && FIGS[g.fig].caption ? `<figcaption>${keep(FIGS[g.fig].caption)}</figcaption>` : ''}</figure>` : ''}</div>
+          <h3>Learn these</h3><ol class="facts">${g.facts.map((fx) => `<li class="${fx.star ? 'star' : ''}"><span class="n">${fx.n}</span><div>${fx.star ? '<span class="tag">Often asked</span> ' : ''}${keep(fx.html)}</div></li>`).join('')}</ol>
+          ${g.qs.length ? `<h3>Asked in past papers</h3>${g.qs.map((pq, qi) => `<div class="q"><div class="qh"><p class="qt"><b>Q${qi + 1}.</b> ${keep(pq.q)}</p><p class="from">Asked in: ${fastPapers(pq)}</p></div><div class="ans"><b>Answer:</b>${(pq.f || []).map((n) => (x.f.facts[n - 1] ? `<p>${keep(x.f.facts[n - 1].html)}</p>` : '')).join('')}</div></div>`).join('')}` : ''}
+        </div>`; }).join('')}</section>`).join('');
+      w.document.open();
+      w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Fast track · BAPHY105</title><style>
+@page { size: A4; margin: 14mm; }
+body { font: 10.5pt/1.5 Georgia, serif; color: #16181d; max-width: 180mm; margin: 0 auto; padding: 10px; }
+.bar { position: sticky; top: 0; background: #16181d; color: #fff; padding: 10px; text-align: center; font: 14px sans-serif; }
+.bar button { margin-left: 10px; padding: 6px 14px; font-weight: 600; }
+.mod { break-before: page; } .mod:first-of-type { break-before: auto; }
+h1 { font: 700 22pt/1.15 Arial, sans-serif; border-bottom: 2.5pt solid #16181d; padding-bottom: 6px; margin: 0 0 6px; }
+h1 small, h2 small { display: block; font: 600 8pt Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #777; margin-bottom: 3px; }
+.topic { margin-top: 9mm; } h2 { font: 700 14.5pt/1.25 Arial, sans-serif; margin: 0 0 4px; padding: 6px 10px; background: #eef1f5; border-left: 4pt solid #2a6a96; break-after: avoid; }
+h3 { font: 700 8.5pt Arial, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #2a6a96; margin: 12px 0 4px; break-after: avoid; }
+figure { margin: 8px auto; text-align: center; break-inside: avoid; } figure svg, figure img { max-width: 100%; max-height: 95mm; height: auto; } figcaption { font: 8.5pt Arial, sans-serif; color: #555; margin-top: 3px; }
+.facts { list-style: none; padding: 0; margin: 0; } .facts li { position: relative; padding: 4px 0 4px 8mm; border-bottom: .5pt dashed #ddd; break-inside: avoid; }
+.facts .n { position: absolute; left: 0; top: 6px; font: 700 8pt Arial, sans-serif; color: #888; } .facts li.star .n { color: #a8601f; }
+.tag { font: 700 7pt Arial, sans-serif; color: #a8601f; border: .7pt solid #a8601f; border-radius: 6px; padding: 0 4px; }
+.th, .qh { break-inside: avoid; } .q { margin: 8px 0; padding: 8px 10px; border: .8pt solid #cfd5dc; border-radius: 6px; } h3 { break-after: avoid; } .q p { margin: 0; } .from { font: 8.5pt Arial, sans-serif; color: #666; margin: 2px 0 6px !important; }
+.ans { background: #f6f7f9; padding: 6px 9px; border-radius: 4px; } .ans p { margin: 3px 0 0 !important; }
+svg { --white: #16181d; --text-2: #3d424b; --text-dim: #6b717b; --line-2: #c4c8ce; --surface: #fff; --surface-2: #eef0f3; --surface-3: #e2e5e9; --dg-b: #1f6fb8; --dg-o: #c2621a; --dg-r: #c0392b; --dg-p: #7b4fc9; --dg-g: #1f8a55; --dg-y: #9a7400; font-family: Arial, sans-serif; }
+${'.dt{fill:var(--white)}.dt2{fill:var(--text-2)}.dt3{fill:var(--text-dim)}.dtb{fill:var(--dg-b)}.dto{fill:var(--dg-o)}.dtr{fill:var(--dg-r)}.dtp{fill:var(--dg-p)}.dtg{fill:var(--dg-g)}.dty{fill:var(--dg-y)}.ds,.dsw{stroke:var(--white)}.ds2{stroke:var(--text-dim)}.ds3{stroke:var(--line-2)}.dsb{stroke:var(--dg-b)}.dso{stroke:var(--dg-o)}.dsr{stroke:var(--dg-r)}.dsp{stroke:var(--dg-p)}.dsg{stroke:var(--dg-g)}.dsy{stroke:var(--dg-y)}.df{fill:var(--surface)}.df2{fill:var(--surface-2)}.df3{fill:var(--surface-3)}.dfw{fill:var(--white)}.dfd{fill:var(--text-dim)}.dfb{fill:var(--dg-b)}.dfo{fill:var(--dg-o)}.dfr{fill:var(--dg-r)}.dfp{fill:var(--dg-p)}.dfg{fill:var(--dg-g)}.dfy{fill:var(--dg-y)}'}
+@media print { .bar { display: none; } }
+</style></head><body><div class="bar">Pick <b>Save as PDF</b> as the printer. <button onclick="print()">Print / Save as PDF</button></div>${body}<script>setTimeout(function(){print()},600)<\/script></body></html>`);
+      w.document.close();
+    });
+  }
+  function viewFast(r) {
+    const el = h('div', { class: 'view fast' });
+    const mid = r.arg && FAST[r.arg] && MOD[r.arg] && MOD[r.arg].topics.length ? r.arg : null;
+    if (!mid) {
+      setCrumbs([{ t: 'Home', href: '#home' }, { t: 'Fast track' }]); setActive('fast'); document.title = 'Fast track · BAPHY105 Notes';
+      const ft = fastTotal();
+      el.innerHTML = `
+        <div class="eyebrow"><span class="code">Fast track</span><span>${ft.weeks} modules · about ${fmtMins(ft.mins)}</span></div>
+        <h1 class="h-display">Fast track</h1>
+        <p class="blurb">The short path through the course. For each module: the facts you must know, the topics quizzes keep coming back to, and 10 MCQs to lock it in. When every ring is full you've covered the core; the full notes are there whenever you want more depth.</p>
+        <div class="fast-total"><div class="ring" style="--p:${ft.pct}"><span>${ft.pct}%</span></div><p class="muted">${ft.ids.filter((id) => fastProg(id).done).length} of ${ft.weeks} modules done</p><button class="btn small" data-act="fastpdf" style="margin-left:auto">${icon('download')}Save all facts as PDF</button></div>
+        <div class="fast-list">${ft.ids.map((id) => { const m = MOD[id], p = fastProg(id); return `<a class="fast-row${p.done ? ' done' : ''}" href="#fast.${id}"><div class="ring" style="--p:${p.pct}"><span>${p.pct}%</span></div><div><span class="mod-num">Module ${+m.num}</span><h3>${esc(m.title)}</h3><p>${(FAST[id].facts || []).length} facts · ${p.answered}/${p.total} MCQs · about ${fmtMins(FAST[id].minutes || 0)}</p></div><span class="arrow">${icon('right')}</span></a>`; }).join('')}</div>`;
+      $('[data-act="fastpdf"]', el).addEventListener('click', () => printFast(ft.ids));
+      return { el };
+    }
+    const m = MOD[mid], f = FAST[mid];
+    setCrumbs([{ t: 'Home', href: '#home' }, { t: 'Fast track', href: '#fast' }, { t: 'Module ' + (+m.num) }]); setActive('fast'); document.title = `Module ${+m.num} fast track · BAPHY105 Notes`;
+    const st = S.fast[mid] || (S.fast[mid] = {});
+    if (!st.read) { st.read = Date.now(); save(); }
+    const ids = (f.mcqs || []).filter((id) => QID[id] && QID[id].options);
+    const hy = (f.hy || []).filter((t) => TOPIC[t]);
+    const ix = fastTotal().ids, nextId = ix[ix.indexOf(mid) + 1];
+    el.innerHTML = `
+      <div class="eyebrow"><span class="code">Fast track</span><span>Module ${+m.num}</span><span class="dot">·</span><span>about ${fmtMins(f.minutes || 0)}</span></div>
+      <h1 class="h-display">${esc(m.title)}</h1>
+      <div class="fast-prog"><div class="ring" data-ring><span></span></div><p class="muted">Go topic by topic: learn the facts, try the past questions, then do the 10 MCQs at the end.</p><button class="btn small" data-act="fastpdf" style="margin-left:auto">${icon('download')}Save as PDF</button></div>
+      <div class="ft-how"><b>How to use this page.</b> The module is split into its topics, in syllabus order. Each topic has <b>a diagram</b> (when there is one), <b>the facts to learn</b> (numbered; <span class="hy-tag">Often asked</span> means the past papers ask it a lot), and <b>the questions past CAT and FAT papers asked</b> on it. Try a question first, then tap <b>Show answer</b>.</div>
+      ${fastGroups(f).map((g, gi) => { const T = TOPIC[g.t], fig = fastFig(g.t); return `<section class="ft-topic">
+        <h2 class="ft-h"><span class="ft-k">Topic ${gi + 1}</span>${T ? rt(T.title) : esc(g.t)}${T ? ` <a class="fsrc" href="#${g.t}">Open full notes →</a>` : ''}</h2>
+        ${fig ? `<figure data-fig="${fig}"></figure>` : ''}
+        <h3 class="ft-sub">Learn these</h3>
+        <ol class="fast-facts">${g.facts.map((x) => `<li id="ff-${x.n}" class="${x.star ? 'star' : ''}"><span class="fnum" aria-hidden="true">${String(x.n).padStart(2, '0')}</span><div class="prose">${x.star ? '<span class="hy-tag">Often asked</span> ' : ''}${x.html}</div></li>`).join('')}</ol>
+        ${g.qs.length ? `<h3 class="ft-sub">Asked in past papers</h3><ol class="fast-qs">${g.qs.map((pq) => { const ps = fastPapers(pq); return `<li><p class="ft-q">${pq.q}</p>${ps ? `<p class="fast-qmeta">Asked in: ${ps}</p>` : ''}<details class="ft-ans"><summary>Show answer</summary><div class="prose">${(pq.f || []).map((n) => (f.facts[n - 1] ? `<p><a href="#" data-ff="${n}" class="ft-n">${n}</a> ${f.facts[n - 1].html}</p>` : '')).join('')}</div></details></li>`; }).join('')}</ol>` : ''}
+      </section>`; }).join('')}
+      <section class="sum-sec"><h2 class="h-sec">Lock it in: 10 MCQs</h2><p class="muted" style="margin-top:0" data-mcqcount></p><div data-mcqs></div></section>
+      <div class="btn-row fast-end"><button class="btn primary" data-done></button>${nextId ? `<a class="btn" href="#fast.${nextId}">Next: Module ${+MOD[nextId].num} ${icon('right')}</a>` : `<a class="btn" href="#fast">All modules</a>`}</div>`;
+    const holder = $('[data-mcqs]', el), cnt = $('[data-mcqcount]', el), doneBtn = $('[data-done]', el);
+    const paint = () => {
+      const p = fastProg(mid);
+      cnt.textContent = `${p.answered} of ${p.total} answered`;
+      const rg = $('[data-ring]', el); rg.style.setProperty('--p', p.pct); rg.firstChild.textContent = p.pct + '%';
+      doneBtn.innerHTML = `${icon('check')}${st.done ? 'Module ticked off' : 'Tick this module off'}`;
+      const sp = document.querySelector('[data-fastpct]'); if (sp) sp.textContent = fastTotal().pct + '%';
+    };
+    ids.forEach((id) => holder.appendChild(qCard(QID[id], { onAnswer: () => setTimeout(paint) })));
+    $('[data-act="fastpdf"]', el).addEventListener('click', () => printFast([mid]));
+    doneBtn.addEventListener('click', () => { st.done = !st.done; save(); if (st.done) toast(`Module ${+m.num} fast track done`, 'check'); paint(); });
+    el.addEventListener('click', (e) => { const a = e.target.closest('[data-ff]'); if (!a) return; e.preventDefault(); const li = $('#ff-' + a.dataset.ff, el); if (!li) return; li.scrollIntoView({ behavior: 'smooth', block: 'center' }); li.classList.remove('ff-hit'); void li.offsetWidth; li.classList.add('ff-hit'); });
+    hydrate(el);
+    paint();
+    return { el };
+  }
+
   function topicRow(t) {
     const f = frac(t);
     return `<a class="trow" href="#${t.id}">
@@ -989,6 +1239,7 @@ window.__startApp = function () {
         <div class="study-line">${icon('fire')}<span><b>${streakDays()}</b> day${streakDays() === 1 ? '' : 's'} in a row</span><span class="dot">·</span><span><b data-today>${fmtDur(todaySecs())}</b> today</span><span class="dot">·</span><span><b data-total>${fmtDur(totalSecs())}</b> in total</span></div>
         ${last ? `<div class="continue"><a class="btn primary" href="${last.hash}">Continue: ${rt(last.title)} ${icon('right')}</a></div>` : (TOPICS[0] ? `<div class="continue"><a class="btn primary" href="#${TOPICS[0].id}">Start with ${rt(TOPICS[0].title)} ${icon('right')}</a></div>` : '')}
       </section>
+      ${Object.keys(FAST).length ? (() => { const ft = fastTotal(); return `<a class="fast-hero" href="#fast"><div class="ring" style="--p:${ft.pct}"><span>${ft.pct}%</span></div><div><div class="eyebrow"><span class="code">Short on time?</span></div><h2 class="h-sec">Fast track · ${ft.weeks} modules · about ${fmtMins(ft.mins)}</h2><p>The core of every module in one sitting: the facts you must know, the topics quizzes keep coming back to and 10 MCQs to lock it in. Finish it, then go deeper in the notes.</p></div><span class="arrow">${icon('right')}</span></a>`; })() : ''}
       <section class="subjects">
         <div class="subj-head"><h2 class="h-sub">Subjects</h2><input class="subj-search" type="search" placeholder="Search subjects" aria-label="Search subjects" data-subjq></div>
         <div class="subj-list">${SUBJECTS.map(subjectCard).join('')}</div>
@@ -1098,7 +1349,7 @@ window.__startApp = function () {
       </div>
       <div class="t-progress"><div class="bar"><i></i></div><span data-tp></span><span class="faint">· ticks itself when every tab is read</span></div>
       <div class="tabs-wrap"><div class="tabs" role="tablist" aria-label="Sections">
-        ${t.tabs.map((tb, k) => `<button class="tab" role="tab" data-i="${k}" id="tab-${k}"><span class="seen"></span>${rt(tb.title)}</button>`).join('')}
+        ${t.tabs.map((tb, k) => `<button class="tab" role="tab" data-i="${k}" id="tab-${k}"><span class="seen"></span>${rt(tb.title)}${tabStar(t.id, k)}</button>`).join('')}
         <span class="tab-ink"></span></div></div>
       <div class="panel prose" role="tabpanel" aria-live="polite"></div>
       <div class="tab-nav"></div>
